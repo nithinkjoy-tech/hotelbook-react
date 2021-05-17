@@ -31,7 +31,7 @@ function DatePickerField({ name }) {
       <Form>
         <DatePickerField name="date" />
         <button type="submit">Submit</button>
-      </Form>
+      </Form> 
     </Formik>
   );
 }

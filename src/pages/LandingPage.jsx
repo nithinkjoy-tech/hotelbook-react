@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchComponent from './SearchComponent'
+import SearchComponent from '../components/landingPageComponent/SearchComponent'
 
 function LandingPage() {
     return (
