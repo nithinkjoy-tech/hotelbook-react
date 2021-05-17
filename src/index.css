@@ -25,3 +25,10 @@ code {
   font-size: 20;
   font-weight: "bold";
 }
+
+.room-option{
+  border: 1px solid black;
+  padding: 5px 3px;
+  border-radius: 10px;
+  cursor: pointer;
+}
