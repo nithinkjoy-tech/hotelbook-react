@@ -1,8 +1,12 @@
 import React from "react";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import DatePicker, {utils} from "@hassanmojab/react-modern-calendar-datepicker";
+import {useFormikContext} from "formik";
 
-const Calendar = ({selectedDayRange, setSelectedDayRange}) => {
+const Calendar = ({selectedDayRange, name}) => {
+  const formik = useFormikContext();
+  const field = formik.getFieldProps(name);
+
   const renderCustomInput = ({ref}) => (
     <input
       readOnly
@@ -26,17 +30,19 @@ const Calendar = ({selectedDayRange, setSelectedDayRange}) => {
         color: "#9c88ff",
         outline: "none",
         height: "20px",
-        cursor: "pointer"
+        cursor: "pointer",
       }}
-      className="my-custom-input-class" // a styling class
+      className="my-custom-input-class"
     />
   );
 
   return (
     <DatePicker
       renderInput={renderCustomInput}
-      value={selectedDayRange}
-      onChange={setSelectedDayRange}
+      value={field.value}
+      onChange={value => {
+        formik.setFieldValue(name, value);
+      }}
       inputPlaceholder="Select days"
       shouldHighlightWeekends
       minimumDate={utils().getToday()}

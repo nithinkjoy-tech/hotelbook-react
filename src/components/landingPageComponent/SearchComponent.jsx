@@ -2,68 +2,61 @@ import React, {useState} from "react";
 import ModalComponent from "../common/ModalComponent";
 import RoomRequirement from "./RoomRequirement";
 import Calendar from "./Calendar";
+import * as Yup from "yup";
+import {Formik, Form} from "formik";
+
+const dateValidator = Yup.object()
+  .shape({
+    day: Yup.number().min(1).max(31).required(),
+    month: Yup.number().min(1).max(12).required(),
+    year: Yup.number().min(2021).max(3000).required(),
+  })
+  .nullable();
+
+const validationSchema = Yup.object().shape({
+  placeForSearch: Yup.string().min(1).required(),
+  date: Yup.object().shape({
+    from: dateValidator,
+    to: dateValidator,
+  }),
+  rooms: Yup.number().min(1).max(9999).required(),
+});
 
 function SearchComponent() {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [rooms, setRooms] = useState(1);
-  const [placeForSearch, setPlaceForSearch] = useState("");
-  const [errors,setErrors]=useState()
-  const [selectedDayRange, setSelectedDayRange] = useState({
-    from: null,
-    to: null
-  });
-  
-  const handleSubmit=()=>{
-      let err={
-        placeForSearch:"",
-        selectedDayRange:"",
-        rooms:""
-    }
-      if(placeForSearch.length<1) {
-        err.placeForSearch="place for search is required"
-          setErrors(err)
-      }
-      
-    if(!selectedDayRange?.from?.day) {
-        err.selectedDayRange="date is required"
-        setErrors(err)
-    } 
-    if(rooms<1){
-        err.rooms="number of room is required"
-        setErrors(err)
-    }
 
-    if(errors) return 
-    
-  }
-
-  const decrementRoom = () => {
-    if (rooms <= 1) return;
-    setRooms(rooms - 1);
-  };
-
-  const incrementRoom = () => {
-    if (rooms >= 9999) return;
-    setRooms(rooms + 1);
+  const handleSubmit = values => {
+    console.log(values);
   };
 
   return (
-    <div>
-      <input type="text" value={placeForSearch} onChange={({currentTarget})=>{setPlaceForSearch(currentTarget.value)}} placeholder="search a place" />
-      {errors?.placeForSearch&&<p>{errors["placeForSearch"]}</p>}
-      <Calendar selectedDayRange={selectedDayRange} setSelectedDayRange={setSelectedDayRange} />
-      {errors?.selectedDayRange&&<p>{errors["selectedDayRange"]}</p>}
-      <span className="room-option" onClick={() => setIsOpen(true)} >{`${rooms} room`+(rooms===1?"":"s")}</span>
-      {errors?.rooms&&<p>{errors["rooms"]}</p>}
-      <ModalComponent modalIsOpen={modalIsOpen} setIsOpen={setIsOpen}>
-        <RoomRequirement
-          rooms={rooms}
-          decrementRoom={decrementRoom}
-          incrementRoom={incrementRoom}
-        />
-      </ModalComponent>
-      <button onClick={handleSubmit} type="submit">Submit</button>
-    </div>
+    <Formik
+      initialValues={{
+        placeForSearch: "",
+        date: {
+          from: null,
+          to: null,
+        },
+        rooms: 1,
+      }}
+      validationSchema={validationSchema}
+      onSubmit={values => handleSubmit(values)}
+    >
+      {({errors, touched, values, handleChange}) => (
+        <Form>
+          <input name="placeForSearch" onChange={handleChange} />
+          {errors.placeForSearch && touched.placeForSearch ? <p>{errors.placeForSearch}</p> : null}
+          <Calendar name="date" onChange={handleChange} selectedDayRange={values.date} />
+          <span className="room-option" onClick={() => setIsOpen(true)}>
+            {`${values.rooms} room` + (values.rooms === 1 ? "" : "s")}
+          </span>
+          <ModalComponent modalIsOpen={modalIsOpen} setIsOpen={setIsOpen}>
+            <RoomRequirement name="rooms" rooms={values.rooms} />
+          </ModalComponent>
+          <button type="submit">Submit</button>
+        </Form>
+      )}
+    </Formik>
   );
 }
 

@@ -1,6 +1,20 @@
 import React from "react";
+import {useFormikContext} from "formik";
 
-function RoomRequirement({decrementRoom, incrementRoom, rooms}) {
+function RoomRequirement({name, rooms}) {
+  const formik = useFormikContext();
+  const field = formik.getFieldProps(name);
+
+  const decrementRoom = () => {
+    if (rooms <= 1) return;
+    formik.setFieldValue(name, rooms - 1);
+  };
+
+  const incrementRoom = () => {
+    if (rooms >= 9999) return;
+    formik.setFieldValue(name, rooms + 1);
+  };
+
   return (
     <div>
       <span style={{fontSize: "22px"}}>Rooms</span>
@@ -11,7 +25,9 @@ function RoomRequirement({decrementRoom, incrementRoom, rooms}) {
       >
         <span className="room-requirement-symbol">-</span>
       </button>
-      <span className="number-of-rooms">{rooms}</span>
+      <span value={field.value} className="number-of-rooms">
+        {rooms}
+      </span>
       <button
         onClick={incrementRoom}
         className="btn btn-outline-primary btn-md room-requirement-button"
