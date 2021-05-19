@@ -4,6 +4,7 @@ import RoomRequirement from "./RoomRequirement";
 import Calendar from "./Calendar";
 import * as Yup from "yup";
 import {Formik, Form} from "formik";
+import apiClient from "./../../api/client";
 
 const dateValidator = Yup.object()
   .shape({
@@ -15,7 +16,7 @@ const dateValidator = Yup.object()
 
 const validationSchema = Yup.object().shape({
   placeForSearch: Yup.string().min(1).required(),
-  date: Yup.object().shape({
+  selectedDayRange: Yup.object().shape({
     from: dateValidator,
     to: dateValidator,
   }),
@@ -25,15 +26,16 @@ const validationSchema = Yup.object().shape({
 function SearchComponent() {
   const [modalIsOpen, setIsOpen] = useState(false);
 
-  const handleSubmit = values => {
-    console.log(values);
-  };
+  const handleSubmit = async values => {
+    const {data} = await apiClient.get("/guest/book",values);
+    console.log(data);
+  }; 
 
   return (
     <Formik
       initialValues={{
         placeForSearch: "",
-        date: {
+        selectedDayRange: {
           from: null,
           to: null,
         },
@@ -46,7 +48,11 @@ function SearchComponent() {
         <Form>
           <input name="placeForSearch" onChange={handleChange} />
           {errors.placeForSearch && touched.placeForSearch ? <p>{errors.placeForSearch}</p> : null}
-          <Calendar name="date" onChange={handleChange} selectedDayRange={values.date} />
+          <Calendar
+            name="selectedDayRange"
+            onChange={handleChange}
+            selectedDayRange={values.selectedDayRange}
+          />
           <span className="room-option" onClick={() => setIsOpen(true)}>
             {`${values.rooms} room` + (values.rooms === 1 ? "" : "s")}
           </span>
@@ -61,3 +67,4 @@ function SearchComponent() {
 }
 
 export default SearchComponent;
+ 

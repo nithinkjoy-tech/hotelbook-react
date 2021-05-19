@@ -9,7 +9,7 @@ const Calendar = ({selectedDayRange, name}) => {
 
   const renderCustomInput = ({ref}) => (
     <input
-      readOnly
+      readOnly 
       ref={ref}
       value={
         selectedDayRange?.from?.day

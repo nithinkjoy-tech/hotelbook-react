@@ -1,6 +1,7 @@
 import { create } from "apisauce";
 import settings from "../config/settings";
-tokenKey="token"
+import jwtDecode from "jwt-decode";
+const tokenKey="token"
 
 const apiClient = create({
   baseURL: settings.apiUrl,
@@ -9,8 +10,9 @@ const apiClient = create({
 apiClient.addAsyncRequestTransform(async (request) => {
     try {
         const authtoken = localStorage.getItem(tokenKey);
+        console.log(jwtDecode(authtoken))
         if(jwtDecode(authtoken)){
-            request.headers["x-auth-token"] = authToken;
+            request.headers["x-auth-token"] = authtoken;
         }
       } catch (ex) {
           return null
@@ -30,5 +32,5 @@ apiClient.addAsyncRequestTransform(async (request) => {
 //   const data = await cache.get(url);
 //   return data ? { ok: true, data } : response;
 // };
-
+ 
 export default apiClient;
