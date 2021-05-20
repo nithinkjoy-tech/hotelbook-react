@@ -2,9 +2,6 @@ import React from "react";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import DatePicker, {utils} from "@hassanmojab/react-modern-calendar-datepicker";
 import {useFormikContext} from "formik";
-import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
-import { CalendarTodayOutlined } from '@material-ui/icons';
-
      
 const Calendar = ({selectedDayRange, name}) => {
   const formik = useFormikContext();

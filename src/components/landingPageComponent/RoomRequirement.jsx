@@ -22,6 +22,7 @@ function RoomRequirement({name, rooms}) {
         onClick={decrementRoom}
         className="btn btn-outline-secondary btn-sm room-requirement-button"
         disabled={rooms <= 1}
+        type="button"
       >
         <span className="room-requirement-symbol">-</span>
       </button>
@@ -32,6 +33,7 @@ function RoomRequirement({name, rooms}) {
         onClick={incrementRoom}
         className="btn btn-outline-primary btn-sm room-requirement-button"
         disabled={rooms >= 9999}
+        type="button"
       >
         <span className="room-requirement-symbol">+</span>
       </button>
