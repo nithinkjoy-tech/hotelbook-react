@@ -16,11 +16,11 @@ function RoomRequirement({name, rooms}) {
   };
 
   return (
-    <div>
-      <span style={{fontSize: "22px"}}>Rooms</span>
+    <div className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full" >
+      <span style={{fontSize: "15px"}}>Rooms</span>
       <button
         onClick={decrementRoom}
-        className="btn btn-outline-secondary btn-md room-requirement-button"
+        className="btn btn-outline-secondary btn-sm room-requirement-button"
         disabled={rooms <= 1}
       >
         <span className="room-requirement-symbol">-</span>
@@ -30,7 +30,7 @@ function RoomRequirement({name, rooms}) {
       </span>
       <button
         onClick={incrementRoom}
-        className="btn btn-outline-primary btn-md room-requirement-button"
+        className="btn btn-outline-primary btn-sm room-requirement-button"
         disabled={rooms >= 9999}
       >
         <span className="room-requirement-symbol">+</span>

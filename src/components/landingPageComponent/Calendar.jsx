@@ -5,10 +5,11 @@ import {useFormikContext} from "formik";
 import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
 import { CalendarTodayOutlined } from '@material-ui/icons';
 
-
+     
 const Calendar = ({selectedDayRange, name}) => {
   const formik = useFormikContext();
   const field = formik.getFieldProps(name);
+
 
   const renderCustomInput = ({ref}) => (
     <input
@@ -21,7 +22,7 @@ const Calendar = ({selectedDayRange, name}) => {
             }${selectedDayRange?.to?.day ? " - " + selectedDayRange?.to?.day + "/" : ""}${
               selectedDayRange?.to?.month ? selectedDayRange?.to?.month + "/" : ""
             }${selectedDayRange?.to?.year ? selectedDayRange?.to?.year +"📅": ""}`
-          : "Select a date              📅"
+          : "Select a date           📅"
       }
       style={{
         cursor: "pointer",

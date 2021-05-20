@@ -1,6 +1,6 @@
 import React from "react";
 
-function InputBox({label,type,placeholder,name}) {
+function InputBox({label,type,placeholder,handleChange,touched,name,error}) {
   return (
     <div className="form-input col-md-4 col-sm-6 mt-3">
       <label>{label}</label>
@@ -9,9 +9,11 @@ function InputBox({label,type,placeholder,name}) {
         type={type}
         name={name}
         placeholder={placeholder}
+        onChange={handleChange}
       />
+      <p style={{color:"red",padding:"8px 12px"}}>{error[name]}</p>
     </div>
   );
 }
 
-export default InputBox;
+export default InputBox; 
