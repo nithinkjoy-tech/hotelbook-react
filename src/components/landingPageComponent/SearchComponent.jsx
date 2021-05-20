@@ -75,7 +75,7 @@ function SearchComponent() {
                         </div>
 
                         <div className="bottom-btn col-md-2 col-sm-6 mt-3">
-                          <button type="submit" className="btn btn-style btn-primary py-3 w-100 px-2">
+                          <button type="submit" disabled={!values.placeForSearch} className="btn btn-style btn-primary py-3 w-100 px-2">
                             Check Availability
                           </button>
                         </div>
