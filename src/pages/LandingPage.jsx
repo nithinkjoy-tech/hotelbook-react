@@ -1,7 +1,7 @@
 import React from 'react'
 import SearchComponent from '../components/landingPageComponent/SearchComponent'
 import Carousel from '../components/common/Carousel';
-import NavBar from './../components/common/NavBar';
+import NavBar from '../components/common/NavBar';
 
 function LandingPage() {
     return (
@@ -9,7 +9,7 @@ function LandingPage() {
             <NavBar/>
             <Carousel/> 
             <SearchComponent/>
-        </div>
+        </div> 
     )
 }
 

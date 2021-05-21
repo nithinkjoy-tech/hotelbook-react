@@ -17,7 +17,6 @@ apiClient.addAsyncRequestTransform(async (request) => {
       } catch (ex) {
           return null
       }
-  
 });
 
 // const get = apiClient.get;
