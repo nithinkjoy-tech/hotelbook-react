@@ -12,15 +12,22 @@ const AutoplaySlider = withAutoplay(AwesomeSlider);
 function Carousel() {
   const style = {
     //?paste properties here
-    "--control-bullet-color": "#df2a2a",
-    "--control-bullet-active-color": "#1dc962",
-    "--loader-bar-color": "#ee1111",
-    "--loader-bar-height": "5px",
-    "--slider-height-percentage": "43%",
+    "--slider-height-percentage": "38%",
+    "--slider-transition-duration": "2000ms",
+    "--organic-arrow-thickness": "4px",
+    "--organic-arrow-border-radius": "30px",
+    "--organic-arrow-height": "23px",
+    "--organic-arrow-color": "#d5d5d5",
+    "--control-button-width": "5%",
+    "--control-button-height": "25%",
+    "--control-button-background": "transparent",
+    "--control-bullet-color": "#858080",
+    "--control-bullet-active-color": "#d5d5d5",
+    "--loader-bar-color": "transparent",
   };
 
   return (
-    <AutoplaySlider style={style} play={true} cancelOnInteraction={false} interval={3000}>
+    <AutoplaySlider style={style} play={true} cancelOnInteraction={false} interval={3500}>
       <div data-src={slide1} />
       <div data-src={slide2} />
       <div data-src={slide3} />
