@@ -1,9 +1,10 @@
 import React from "react";
-import RoomRequirement from "./RoomRequirement";
-import Calendar from "./Calendar";
+import {useHistory} from "react-router-dom";
+import RoomRequirement from "../landingPageComponent/RoomRequirement";
+import Calendar from "../landingPageComponent/Calendar";
 import * as Yup from "yup";
 import {Formik, Form} from "formik";
-import InputBox from "./../common/InputBox";
+import InputBox from "./InputBox";
 import {getHotels} from "../../api/book";
 
 const dateValidator = Yup.object()
@@ -23,23 +24,26 @@ const validationSchema = Yup.object().shape({
   rooms: Yup.number().min(1).max(9999).required(),
 });
 
-function SearchComponent() {
+function SearchComponent({initialValues}) {
+  const history = useHistory();
+
   const handleSubmit = async values => {
-    console.log(values, "bfore");
     const {data} = await getHotels(values);
-    console.log(data);
+    history.push("/search", {data, values});
   };
 
   return (
     <Formik
-      initialValues={{
-        placeForSearch: "",
-        selectedDayRange: {
-          from: null,
-          to: null,
-        },
-        rooms: 1,
-      }}
+      initialValues={
+        initialValues || {
+          placeForSearch: "",
+          selectedDayRange: {
+            from: null,
+            to: null,
+          },
+          rooms: 1,
+        }
+      }
       validationSchema={validationSchema}
       onSubmit={values => handleSubmit(values)}
     >
@@ -60,6 +64,7 @@ function SearchComponent() {
                           error={errors}
                           touched={touched}
                           handleChange={handleChange}
+                          values={values}
                         />
                         <div className="form-input col-md-2 col-sm-6 mt-3 ">
                           <Calendar

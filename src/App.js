@@ -1,9 +1,19 @@
-import './App.css';
-import LandingPage from './pages/LandingPage';
+import "./App.css";
+import React from "react";
+import {Switch, Route, Redirect} from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import SearchPage from "./pages/SearchPage";
+import NavBar from "./components/common/NavBar.jsx";
 
 function App() {
   return (
-    <LandingPage/>
+    <React.Fragment>
+      <NavBar />
+      <Switch>
+        <Route path="/search" component={SearchPage} />
+        <Route path="/" component={LandingPage} />
+      </Switch>
+    </React.Fragment>
   );
 }
 

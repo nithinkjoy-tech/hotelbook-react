@@ -1,14 +1,12 @@
 import React from 'react'
-import SearchComponent from '../components/landingPageComponent/SearchComponent'
+import SearchComponent from '../components/common/SearchComponent'
 import Carousel from '../components/common/Carousel';
-import NavBar from '../components/common/NavBar';
 
 function LandingPage() {
     return (
         <div> 
-            <NavBar/>
             <Carousel/> 
-            <SearchComponent/>
+            <SearchComponent initialValues={null} />
         </div> 
     )
 }
