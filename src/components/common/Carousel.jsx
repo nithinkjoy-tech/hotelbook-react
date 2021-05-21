@@ -11,8 +11,7 @@ const AutoplaySlider = withAutoplay(AwesomeSlider);
 
 function Carousel() {
   const style = {
-    //?paste properties here
-    "--slider-height-percentage": "38%",
+    "--slider-height-percentage": "42.5%",
     "--slider-transition-duration": "2000ms",
     "--organic-arrow-thickness": "4px",
     "--organic-arrow-border-radius": "30px",
