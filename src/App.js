@@ -4,6 +4,7 @@ import {Switch, Route, Redirect} from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import SearchPage from "./pages/SearchPage";
 import NavBar from "./components/common/NavBar.jsx";
+import SigninPage from './pages/SigninPage';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <NavBar />
       <Switch>
         <Route path="/search" component={SearchPage} />
+        <Route path="/signin" component={SigninPage} />
         <Route path="/" component={LandingPage} />
       </Switch>
     </React.Fragment>
