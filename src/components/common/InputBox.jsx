@@ -1,20 +1,28 @@
 import React from "react";
+import {ErrorMessage} from "formik";
+import Error from "./../forms/Error";
 
-function InputBox({label,type,placeholder,handleChange,values,touched,name,error}) {
+function InputBox({label, type, placeholder, handleChange, handleBlur, values, name}) {
   return (
-    <div className="form-input col-md-4 col-sm-6 mt-3">
-      <label>{label}</label>
+    <div>
+      {label&&<label
+        className="block uppercase text-gray-700 text-xs font-bold mb-2"
+        htmlFor="grid-password"
+      >
+        {label}
+      </label>}
       <input
-        className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+        onBlur={handleBlur}
+        className="border-1 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
         type={type}
         name={name}
         placeholder={placeholder}
         onChange={handleChange}
         value={values[name]}
       />
-      <p style={{color:"red",padding:"8px 12px"}}>{error[name]}</p>
+      <ErrorMessage name={name} component={Error} />
     </div>
   );
 }
 
-export default InputBox; 
+export default InputBox;

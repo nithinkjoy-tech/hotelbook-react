@@ -1,8 +1,8 @@
+import Footer from '../components/common/Footer'
 import React from 'react'
 import SearchComponent from '../components/common/SearchComponent'
 import Carousel from '../components/common/Carousel';
 import Room from '../components/landingPageComponent/rooms'
-import Footer from '../components/common/Footer'
 
 function LandingPage() {
     return (
@@ -15,4 +15,4 @@ function LandingPage() {
     )
 }
 
-export default LandingPage
+export default LandingPage;
