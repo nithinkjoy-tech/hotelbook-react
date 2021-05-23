@@ -5,7 +5,8 @@ import {guestSignin} from "../api/guest";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-  userId: Yup.string().required("Email or Username is required").label("Email or Username"),
+  email: Yup.string().required("Email or Username is required").label("Email or Username"),
+  username: Yup.string().required("Email or Username is required").label("Email or Username"),
   password: Yup.string().required("Password is required").label("Password"),
 });
 
@@ -54,11 +55,25 @@ function SigninPage() {
                             error={errors}
                             handleBlur={handleBlur}
                             touched={touched}
-                            label="Email or Username"
+                            label="Email"
                             values={values}
                             type="text"
-                            name="userId"
-                            placeholder="Email or Username"
+                            name="email"
+                            placeholder="Email"
+                            handleChange={handleChange}
+                            style={{transition: "all .15s ease"}}
+                          />
+                        </div>
+                        <div className="relative w-full mb-3">
+                          <InputBox
+                            error={errors}
+                            handleBlur={handleBlur}
+                            touched={touched}
+                            label="Username"
+                            values={values}
+                            type="text"
+                            name="username"
+                            placeholder="Username"
                             handleChange={handleChange}
                             style={{transition: "all .15s ease"}}
                           />
@@ -73,6 +88,20 @@ function SigninPage() {
                             type={passwordType}
                             name="password"
                             placeholder="Password"
+                            handleChange={handleChange}
+                            style={{transition: "all .15s ease"}}
+                          />
+                        </div>
+                        <div className="relative w-full mb-3">
+                          <InputBox
+                            error={errors}
+                            handleBlur={handleBlur}
+                            touched={touched}
+                            label="Confirm Password"
+                            values={values}
+                            type={passwordType}
+                            name="confirmpassword"
+                            placeholder="Confirm Password"
                             handleChange={handleChange}
                             style={{transition: "all .15s ease"}}
                           />
@@ -98,7 +127,7 @@ function SigninPage() {
                             type="submit"
                             style={{transition: "all .15s ease"}}
                           >
-                            Sign In
+                            Sign Up
                           </button>
                         </div>
                         <div className="flex flex-wrap mt-6">

@@ -1814,7 +1814,7 @@ a.btn.disabled,
 fieldset:disabled a.btn {
   pointer-events: none; }
 
-.btn-primary {
+/* .btn-primary {
   color: #fff;
   background-color: #d63447;
   border-color: #d63447; }
@@ -2220,7 +2220,7 @@ fieldset:disabled a.btn {
   display: block;
   width: 100%; }
   .btn-block + .btn-block {
-    margin-top: 0.5rem; }
+    margin-top: 0.5rem; } */
 
 input[type="submit"].btn-block,
 input[type="reset"].btn-block,
