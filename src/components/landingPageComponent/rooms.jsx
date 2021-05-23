@@ -5,6 +5,7 @@ import room2 from "../../images/room2.jpg";
 import room3 from "../../images/room3.jpg";
 import room4 from "../../images/room4.jpg";
 import room5 from "../../images/room5.jpg";
+
 const Rooms = () => {
     return ( <div className="best-rooms py-5">
     <div className="container py-lg-5 py-sm-4">
