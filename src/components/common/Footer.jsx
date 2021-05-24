@@ -3,7 +3,7 @@ import "../../css/room.css";
 
 const Footer = () => {
   return (
-    <div style={{marginTop:"30px"}}>
+    <div>
       <div className="w3l-footer-29-main">
         <div className="footer-29 py-5">
           <div className="container py-lg-4">

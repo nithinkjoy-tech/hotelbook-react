@@ -7,3 +7,7 @@ export function getHotels(values){
 export function guestSignin(values){
     return apiClient.post("/guest/signin", values);
 }
+
+export function guestSignup(values){
+    return apiClient.post("/guest/signup", values);
+}

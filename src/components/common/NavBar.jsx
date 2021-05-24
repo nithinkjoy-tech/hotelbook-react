@@ -6,7 +6,7 @@ import logo from "../../images/hotels.png"
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
-  { name: 'List Your Property', href: '#', current: false },
+  { name: 'List Your Property', href: '/renter/signup', current: false },
 //   { name: 'Projects', href: '#', current: false },
 //   { name: 'Calendar', href: '#', current: false },
 ]

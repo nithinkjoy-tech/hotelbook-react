@@ -1,34 +1,49 @@
 import React, {useState} from "react";
 import InputBox from "./../components/common/InputBox";
 import {Formik, Form} from "formik";
-import {guestSignin} from "../api/guest";
+import {guestSignup} from "../api/guest";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
+  name: Yup.string().min(2).max(50).required("Name is required").label("Name"),
   email: Yup.string().required("Email is required").email("Email must be valid").label("Email"),
   username: Yup.string()
     .required("Username is required")
     .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, "Invalid Username")
     .label("Username"),
-  password: Yup.string().required("Password is required").label("Password"),
-  confirmPassword: Yup.string().when("password", {
-    is: val => (val && val.length > 0 ? true : false),
-    then: Yup.string().oneOf([Yup.ref("password")], "Both password must match"),
-  }),
+  password: Yup.string().required("Password is required").min(6).max(256).label("Password"),
+  confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
 });
 
-function SigninPage() {
+function SigninPage({location}) {
   const [passwordType, setPasswordType] = useState("password");
 
+  let pagecolor = ""
+  let traycolor=""
+  if (location.pathname === "/signin") {
+    traycolor="white"
+    pagecolor = "white";
+  }
+  if (location.pathname === "/renter/signin") {
+    traycolor=""
+    pagecolor = "#fc5c65";
+  }
+  if (location.pathname === "/admin/signin") {
+    traycolor=""
+    pagecolor = "#fc5c65";
+  }
+
   const handleSubmit = async (values, setFieldError) => {
-    const {data, status} = await guestSignin(values);
-    if (status === 400) setFieldError("userId", data);
-    else console.log("login success");
+    const {data, status} = await guestSignup(values);
+    console.log(data.property, data.msg, status);
+    if (status === 400) setFieldError(data.property, data.msg);
+    else console.log("signup success");
   };
 
   return (
     <Formik
       initialValues={{
+        name: "",
         email: "",
         username: "",
         password: "",
@@ -39,12 +54,12 @@ function SigninPage() {
     >
       {({errors, touched, values, handleChange, handleBlur}) => (
         <Form>
-          <main>
+          <main style={{backgroundColor:pagecolor}} >
             <section className="top-10 w-full h-full">
               <div
                 className="top-0 w-full h-full bg-gray-900"
-                style={{
-                  backgroundColor: "white",
+                style={{ 
+                  backgroundColor: "red",
                   backgroundSize: "100%",
                   backgroundRepeat: "no-repeat",
                 }}
@@ -53,11 +68,25 @@ function SigninPage() {
                 <div className="flex content-center items-center justify-center h-full">
                   <div className="w-full lg:w-4/12 px-4">
                     <div
-                      style={{backgroundColor: "white", width: "110%"}}
+                      style={{backgroundColor: traycolor, width: "110%"}}
                       className="mt-24 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0"
                     >
                       <div className="rounded-t mb-0 px-6 py-6">
                         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
+                          <div className="relative w-full mb-3">
+                            <InputBox
+                              error={errors}
+                              handleBlur={handleBlur}
+                              touched={touched}
+                              label="Name"
+                              values={values}
+                              type="text"
+                              name="name"
+                              placeholder="Name"
+                              handleChange={handleChange}
+                              style={{transition: "all .15s ease"}}
+                            />
+                          </div>
                           <div className="relative w-full mb-3">
                             <InputBox
                               error={errors}
