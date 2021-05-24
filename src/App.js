@@ -4,8 +4,9 @@ import {Switch, Route, Redirect} from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import SearchPage from "./pages/SearchPage";
 import NavBar from "./components/common/NavBar.jsx";
-import SigninPage from './pages/SigninPage';
-import SignupPage from './pages/SignupPage';
+import SigninPage from "./pages/SigninPage";
+import SignupPage from "./pages/SignupPage";
+import Footer from "./components/common/Footer";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/signup" component={SignupPage} />
         <Route path="/" component={LandingPage} />
       </Switch>
+      <Footer />
     </React.Fragment>
   );
 }

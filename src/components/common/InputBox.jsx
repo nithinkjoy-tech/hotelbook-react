@@ -19,6 +19,7 @@ function InputBox({label, type, placeholder, handleChange, handleBlur, values, n
         placeholder={placeholder}
         onChange={handleChange}
         value={values[name]}
+        autoComplete="off"
       />
       <ErrorMessage name={name} component={Error} />
     </div>

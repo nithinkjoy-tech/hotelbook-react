@@ -1,4 +1,3 @@
-import Footer from '../components/common/Footer'
 import React from 'react'
 import SearchComponent from '../components/common/SearchComponent'
 import Carousel from '../components/common/Carousel';
@@ -10,7 +9,6 @@ function LandingPage() {
             <Carousel/> 
             <SearchComponent initialValues={null} />
             <Room />
-            <Footer />
         </div> 
     )
 }

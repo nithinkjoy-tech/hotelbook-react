@@ -30,9 +30,9 @@ function SigninPage() {
       {({errors, touched, values, handleChange, handleBlur}) => (
         <Form>
           <main>
-            <section className="absolute w-full h-full">
+            <section className="w-full h-full">
               <div
-                className="absolute top-0 w-full h-full bg-gray-900"
+                className="top-0 w-full h-full bg-gray-900"
                 style={{
                   backgroundColor: "white",
                   backgroundSize: "100%",
@@ -44,10 +44,9 @@ function SigninPage() {
                   <div className="w-full lg:w-4/12 px-4">
                     <div
                       style={{backgroundColor: "white", width: "110%"}}
-                      className="mt-10 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0"
+                      className="mt-24 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0"
                     >
-                      <div className="rounded-t mb-0 px-6 py-6">
-                      </div>
+                      <div style={{marginTop:"20px"}} className="rounded-t mb-0 px-6 py-6">
                       <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                         <div className="relative w-full mb-3">
                           <InputBox
@@ -122,6 +121,7 @@ function SigninPage() {
                           </div>
                         </div>
                       </div>
+                    </div>
                     </div>
                   </div>
                 </div>

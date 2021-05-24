@@ -3,9 +3,10 @@ import slide1 from "../../images/slide1.jpg";
 //wazirx bluewallet
 function HotelsComponent({hotels}) {
   return (
-    <div>
+    <section style={{display:"flex"}}>
+    <div >
       {hotels.map(hotel => (
-        <div className=" p-2 float-right" style={{width: "60%", marginRight: "213px"}}>
+        <div className=" p-2 float-right" style={{width: "60%", marginRight:"13.313rem"}}>
           <div className=" w-full lg:max-w-full lg:flex">
             <div
               className="h-48 lg:h-auto lg:w-72 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
@@ -31,6 +32,7 @@ function HotelsComponent({hotels}) {
         </div>
       ))}
     </div>
+    </section>
   );
 }
 
