@@ -17,8 +17,8 @@ function SigninPage({location}) {
   let bgcolor = "";
   let traycolor = "";
   if (location.pathname === "/signin") {
-    traycolor = "white";
-    bgcolor = "white";
+    traycolor=""
+    bgcolor = "";
   }
   if (location.pathname === "/renter/signin") {
     traycolor = "red";
