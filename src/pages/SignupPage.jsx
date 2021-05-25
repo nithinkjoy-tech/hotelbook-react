@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import InputBox from "./../components/common/InputBox";
 import {Formik, Form} from "formik";
 import {guestSignup} from "../api/guest";
+import {renterSignup} from "../api/renter";
+import {adminSignup} from "../api/admin";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
@@ -18,26 +20,40 @@ const validationSchema = Yup.object().shape({
 function SigninPage({location}) {
   const [passwordType, setPasswordType] = useState("password");
 
-  let pagecolor = ""
-  let traycolor=""
+  let pagecolor = "";
+  let traycolor = "";
   if (location.pathname === "/signin") {
-    traycolor="white"
+    traycolor = "white";
     pagecolor = "white";
   }
   if (location.pathname === "/renter/signin") {
-    traycolor=""
+    traycolor = "";
     pagecolor = "#fc5c65";
   }
   if (location.pathname === "/admin/signin") {
-    traycolor=""
+    traycolor = "";
     pagecolor = "#fc5c65";
   }
 
   const handleSubmit = async (values, setFieldError) => {
-    const {data, status} = await guestSignup(values);
-    console.log(data.property, data.msg, status);
-    if (status === 400) setFieldError(data.property, data.msg);
-    else console.log("signup success");
+    if (location.pathname === "/signup") {
+      const {data, status} = await guestSignup(values);
+      console.log(data.property, data.msg, status);
+      if (status === 400) setFieldError(data.property, data.msg);
+      else console.log("signup success");
+    }
+    if (location.pathname === "/renter/signup") {
+      const {data, status} = await renterSignup(values);
+      console.log(data.property, data.msg, status);
+      if (status === 400) setFieldError(data.property, data.msg);
+      else console.log("signup success");
+    }
+    if (location.pathname === "/admin/signup") {
+      const {data, status} = await adminSignup(values);
+      console.log(data.property, data.msg, status);
+      if (status === 400) setFieldError(data.property, data.msg);
+      else console.log("signup success");
+    }
   };
 
   return (
@@ -54,11 +70,11 @@ function SigninPage({location}) {
     >
       {({errors, touched, values, handleChange, handleBlur}) => (
         <Form>
-          <main style={{backgroundColor:pagecolor}} >
+          <main style={{backgroundColor: pagecolor}}>
             <section className="top-10 w-full h-full">
               <div
                 className="top-0 w-full h-full bg-gray-900"
-                style={{ 
+                style={{
                   backgroundColor: "red",
                   backgroundSize: "100%",
                   backgroundRepeat: "no-repeat",

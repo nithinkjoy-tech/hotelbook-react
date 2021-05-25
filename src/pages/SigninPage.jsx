@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import InputBox from "./../components/common/InputBox";
 import {Formik, Form} from "formik";
 import {guestSignin} from "../api/guest";
+import {renterSignin} from "../api/renter";
+import {adminSignin} from "../api/admin";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
@@ -11,26 +13,38 @@ const validationSchema = Yup.object().shape({
 
 function SigninPage({location}) {
   const [passwordType, setPasswordType] = useState("password");
-  console.log(location.pathname);
-  let bgcolor = ""
-  let traycolor=""
+  
+  let bgcolor = "";
+  let traycolor = "";
   if (location.pathname === "/signin") {
-    traycolor="white"
+    traycolor = "white";
     bgcolor = "white";
   }
   if (location.pathname === "/renter/signin") {
-    traycolor=""
-    bgcolor = "#fc5c65";
+    traycolor = "red";
+    bgcolor = "red";
   }
   if (location.pathname === "/admin/signin") {
-    traycolor=""
-    bgcolor = "#fc5c65";
+    traycolor = "blue";
+    bgcolor = "blue";
   }
 
   const handleSubmit = async (values, setFieldError) => {
-    const {data, status} = await guestSignin(values);
-    if (status === 400) setFieldError("userId", data);
-    else console.log("login success");
+    if (location.pathname === "/signin") {
+      const {data, status} = await guestSignin(values);
+      if (status === 400) setFieldError("userId", data);
+      else console.log("login success");
+    }
+    if (location.pathname === "/renter/signin") {
+      const {data, status} = await renterSignin(values);
+      if (status === 400) setFieldError("userId", data);
+      else console.log("login success");
+    }
+    if (location.pathname === "/admin/signin") {
+      const {data, status} = await adminSignin(values);
+      if (status === 400) setFieldError("userId", data);
+      else console.log("login success");
+    }
   };
 
   return (
@@ -44,7 +58,7 @@ function SigninPage({location}) {
     >
       {({errors, touched, values, handleChange, handleBlur}) => (
         <Form>
-          <main style={{backgroundColor:bgcolor}}>
+          <main style={{backgroundColor: bgcolor}}>
             <section className="w-full h-full">
               <div
                 className="top-0 w-full h-full bg-gray-900"
