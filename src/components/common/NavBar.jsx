@@ -43,7 +43,6 @@ export default function NavBar() {
                     className="hidden lg:block h-8 w-auto"
                     src={logo}
                     alt="Workflow"
-                    
                   />
                   <span style={{color:"white",paddingTop:"2px",paddingLeft:"8px"}} >HotelBook</span>
                 </div>
