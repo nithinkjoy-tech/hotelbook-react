@@ -2,7 +2,7 @@
 import { Fragment,useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import logo from "../../images/hotels.png"
+import logo from "../../images/HotelBook.png"
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
@@ -40,14 +40,14 @@ export default function NavBar() {
                 <a href="/" style={{textDecoration:"none"}} >
                 <div className="flex-shrink-0 flex items-center">
                   <img
-                    className="hidden lg:block h-8 w-auto"
+                    // className="hidden lg:block h-8 w-auto"
                     src={logo}
+                    style={{width:"150px"}}
                     alt="Workflow"
                   />
-                  <span style={{color:"white",paddingTop:"2px",paddingLeft:"8px"}} >HotelBook</span>
                 </div>
                 </a>
-                <div className="hidden sm:block sm:ml-6">
+                <div style={{marginTop:"15px"}} className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
