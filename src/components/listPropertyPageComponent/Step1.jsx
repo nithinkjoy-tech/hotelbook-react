@@ -1,10 +1,11 @@
 import React from "react";
-import {Form} from "formik";
 import PropertyInputBox from "../common/PropertyInputBox";
 
 function Step1() {
+
+
+
   return (
-    <Form>
       <div style={{marginLeft: "7.75vw", width: "85%"}} className="md:grid md:grid-cols-1 md:gap-6">
         <div className="mt-10 sm:mt-0">
           <div className="md:grid md:grid-cols-1 md:gap-6">
@@ -15,7 +16,6 @@ function Step1() {
               <div className="shadow overflow-hidden sm:rounded-md">
                 <div className="px-4 py-5 bg-white sm:p-6">
                   <div className="grid grid-cols-6 gap-6">
-
                     <div className="col-span-6 sm:col-span-3">
                       <PropertyInputBox label="Hotel Name" type="text" name="hotelName" />
                     </div>
@@ -152,7 +152,7 @@ function Step1() {
                     type="button"
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
-                    Save
+                    Save All Forms as Draft
                   </button>
                 </div>
               </div>
@@ -160,7 +160,6 @@ function Step1() {
           </div>
         </div>
       </div>
-    </Form>
   );
 }
 

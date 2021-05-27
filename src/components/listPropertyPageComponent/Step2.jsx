@@ -1,10 +1,8 @@
 import React from "react";
-import {Form} from "formik";
 import PropertyInputBox from './../common/PropertyInputBox';
 
 function Step2() {
   return (
-    <Form>
       <div
         style={{marginLeft: "7.75vw", width: "85%"}}
         className="md:grid md:grid-cols-1 md:gap-6"
@@ -178,7 +176,6 @@ function Step2() {
           </div>
         </div>
       </div>
-    </Form>
   );
 }
 
