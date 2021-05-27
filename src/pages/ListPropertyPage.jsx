@@ -45,8 +45,11 @@ const validationSchema = Yup.object().shape({
 function ListPropertyPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
+  localStorage.setItem('rememberMe', "i am nithin");
+  console.log(localStorage.getItem("rememberMe"))
+
   const sections = [
-    {title: "Basic Details", onClick: () => setCurrentPage(1)},
+    {title: "Basic Info", onClick: () => setCurrentPage(1)},
     {title: "Employment Details", onClick: () => setCurrentPage(2)}
     // { title: 'Review', onClick: () => setCurrentPage(4) },
     // { title: 'Review', onClick: () => setCurrentPage(5) },
@@ -57,23 +60,20 @@ function ListPropertyPage() {
       console.log(values,"val")
   };
 
-  const previousButtonStyle = {
+  const buttonStyle={
     width: "120px",
     marginTop: "10px",
     marginBottom: "10px",
-    marginLeft: "34vw",
-  };
-  const nextButtonStyle = {
-    width: "120px",
-    marginTop: "10px",
-    marginBottom: "10px",
-    marginRight: "34vw",
-  };
+  }
+
+  const previousButtonStyle = {...buttonStyle};
+  previousButtonStyle.marginLeft="34vw";
+
+  const nextButtonStyle={...buttonStyle}
+  nextButtonStyle.marginRight="34vw"
 
   const firstNextButtonStyle={...previousButtonStyle};
   firstNextButtonStyle.marginLeft="57.1vw"
-
-  console.log(firstNextButtonStyle)
 
   const next = () => setCurrentPage(prev => prev + 1);
   const prev = () => setCurrentPage(prev => prev - 1);
