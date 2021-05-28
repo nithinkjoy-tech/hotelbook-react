@@ -1,7 +1,6 @@
 import React from 'react';
-import "../../css/room.css";
 
-const Rating = () => {
+const Rating = ({value}) => {
     return ( 
         <ul>
      <li><i className={value >=1 ? 'fas fa-star' : value>=0.5 ? 'fas fa-star-half-alt' : 'far fa-star'}></i></li> 
