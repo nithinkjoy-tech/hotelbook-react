@@ -3,7 +3,7 @@ import {ErrorMessage} from "formik";
 import Error from "./../forms/Error";
 import {useFormikContext} from "formik"
 
-function PropertyInputBox({label, type, name}) {
+function PropertyInputBox({label, type, name,...other}) {
 
   const {values,handleChange,handleBlur}=useFormikContext()
 
@@ -22,6 +22,7 @@ function PropertyInputBox({label, type, name}) {
         onChange={handleChange}
         value={values[name]}
         autoComplete="off"
+        {...other}
       />
       <ErrorMessage name={name} component={Error} />
     </div>

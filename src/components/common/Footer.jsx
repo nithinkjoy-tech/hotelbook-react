@@ -77,23 +77,23 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <section class="w3l-footer-29-main w3l-copyright">
-        <div class="container">
-          <div class="row bottom-copies">
-            <p class="col-lg-8 copy-footer-29">© 2021 HotelBook. All rights reserved </p>
+      <section className="w3l-footer-29-main w3l-copyright">
+        <div className="container">
+          <div className="row bottom-copies">
+            <p className="col-lg-8 copy-footer-29">© 2021 HotelBook. All rights reserved </p>
 
-            <div class="col-lg-4 main-social-footer-29">
-              <a href="#facebook" class="facebook">
-                <span class="fa fa-facebook"></span>
+            <div className="col-lg-4 main-social-footer-29">
+              <a href="#facebook" className="facebook">
+                <span className="fa fa-facebook"></span>
               </a>
-              <a href="#twitter" class="twitter">
-                <span class="fa fa-twitter"></span>
+              <a href="#twitter" className="twitter">
+                <span className="fa fa-twitter"></span>
               </a>
-              <a href="#instagram" class="instagram">
-                <span class="fa fa-instagram"></span>
+              <a href="#instagram" className="instagram">
+                <span className="fa fa-instagram"></span>
               </a>
-              <a href="#linkedin" class="linkedin">
-                <span class="fa fa-linkedin"></span>
+              <a href="#linkedin" className="linkedin">
+                <span className="fa fa-linkedin"></span>
               </a>
             </div>
           </div>

@@ -46,3 +46,12 @@ code {
   object-fit:cover;
 }
   
+.holder{
+  display: flex;
+  flex-direction: column;
+}
+
+.bigholder{
+  display: flex;
+  flex-direction: row;
+}
