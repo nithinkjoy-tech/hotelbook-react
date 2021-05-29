@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import Rating from '../common/Rating'
 import "../../css/room.css";
 
 // Data model
