@@ -12,8 +12,7 @@ function Step2({saveAsDraft}) {
   // console.log(data,"mm")
 
   let checkBoxModified = feature => {
-    if (value.includes(feature)) 
-    value = value.filter(val => feature!==val);
+    if (value.includes(feature)) value = value.filter(val => feature !== val);
     else value.push(feature);
     setFieldValue(name, value);
   };
@@ -73,20 +72,20 @@ function Step2({saveAsDraft}) {
                                   <div className="holder">
                                     {leftFeature.map(feature => (
                                       <FormCheckBox
-                                      key={feature}
-                                      defaultChecked={value.includes(feature)}
-                                      label={feature}
-                                      onChange={() => checkBoxModified(feature)}
+                                        key={feature}
+                                        defaultChecked={value.includes(feature)}
+                                        label={feature}
+                                        onChange={() => checkBoxModified(feature)}
                                       />
                                     ))}
                                   </div>
                                   <div className="holder">
                                     {rightFeature.map(feature => (
                                       <FormCheckBox
-                                      key={feature}
-                                      defaultChecked={value.includes(feature)}
-                                      label={feature}
-                                      onChange={() => checkBoxModified(feature)}
+                                        key={feature}
+                                        defaultChecked={value.includes(feature)}
+                                        label={feature}
+                                        onChange={() => checkBoxModified(feature)}
                                       />
                                     ))}
                                   </div>
