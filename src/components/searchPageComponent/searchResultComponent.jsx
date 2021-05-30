@@ -1,6 +1,7 @@
 import React from 'react';
 import Rating from '../common/Rating'
 import "../../css/room.css";
+import room1 from '../../images/room1.jpg'
 
 // Data model
 // const data=[{id:"1",name:'hotel abc',rent:'1200',guests:'2',description:'Lorem ipsum dolor sit amet consectetur adipisicing elit. A recusandae, illum sequi numquam tempora voluptates?',rating:3,roomSize:15},
