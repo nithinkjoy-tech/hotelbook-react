@@ -9,10 +9,14 @@ import SignupPage from "./pages/SignupPage";
 import Footer from "./components/common/Footer";
 import Step1 from './components/listPropertyPageComponent/Step1';
 import ListPropertyPage from './pages/ListPropertyPage';
+import {ToastContainer} from "react-toastify";
 
 function App() {
   return (
     <React.Fragment>
+      <ToastContainer
+          position="top-center"
+        />
       <NavBar />
       <Switch>
         <Route path="/search" component={SearchPage} />

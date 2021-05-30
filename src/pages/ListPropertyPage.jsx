@@ -4,25 +4,27 @@ import Step2 from "./../components/listPropertyPageComponent/Step2";
 import Stepper from "react-stepper-horizontal";
 import {Formik,Form} from "formik";
 import * as Yup from "yup";
+import { displayNotification } from './../services/notificationService';
+
 
 const validationSchema = Yup.object().shape({
   hotelName: Yup.string().min(1).max(50).required(),
-//   starRating: Yup.string().oneOf(["1", "2", "3", "4", "5"]),
+  starRating: Yup.string().oneOf(["1", "2", "3", "4", "5"]).nullable(),
   contactName: Yup.string().required().min(2).max(50),
   phoneNumber: Yup.string()
     .required()
-    .length(10)
+    .length(12)
     .matches(/^[0-9]+$/, "Mobile number must include only numbers"),
-//   address: Yup.string().required().min(8).max(255),
-//   city: Yup.string().required().min(1).max(50),
-//   placeForSearch: Yup.string().required().min(1).max(50),
-//   postalCode: Yup.string()
-//     .required()
-//     .length(6)
-//     .matches(/^[0-9]+$/, "Postal code must include only numbers"),
-//   parking: Yup.string().required().oneOf(["No", "Yes, Free", "Yes, Paid"]),
-//   breakfast: Yup.string().required().oneOf(["No", "Yes, Free", "Yes, Paid"]),
-//   facilities: Yup.array().required().min(1),
+  address: Yup.string().required().min(8).max(255),
+  city: Yup.string().required().min(1).max(50),
+  placeForSearch: Yup.string().required().min(1).max(50),
+  postalCode: Yup.string()
+    .required()
+    .length(6)
+    .matches(/^[0-9]+$/, "Postal code must include only numbers"),
+  parking: Yup.string().required().oneOf(["No", "Yes, Free", "Yes, Paid"]),
+  breakfast: Yup.string().required().oneOf(["No", "Yes, Free", "Yes, Paid"]),
+  facilities: Yup.array().required().min(1),
 //   extraBed: Yup.boolean().required(),
 //   extraBedDetails: Yup.array().nullable(),
 //   mainPhoto: Yup.string().required(),
@@ -43,14 +45,20 @@ const validationSchema = Yup.object().shape({
 });
 
 function ListPropertyPage() {
+
+  let initialValues;
   const [currentPage, setCurrentPage] = useState(1);
 
-  localStorage.setItem('rememberMe', "i am nithin");
-  console.log(localStorage.getItem("rememberMe"))
+  const saveAsDraft=(data)=>{
+    localStorage.setItem('saveAsDraft', JSON.stringify(data));
+    displayNotification("info","Succesfully saved as draft")
+  }
+
+  initialValues=JSON.parse(localStorage.getItem("saveAsDraft"))
 
   const sections = [
     {title: "Basic Info", onClick: () => setCurrentPage(1)},
-    {title: "Employment Details", onClick: () => setCurrentPage(2)}
+    {title: "Facilities and Services", onClick: () => setCurrentPage(2)}
     // { title: 'Review', onClick: () => setCurrentPage(4) },
     // { title: 'Review', onClick: () => setCurrentPage(5) },
     // { title: 'Review', onClick: () => setCurrentPage(6) },
@@ -80,18 +88,18 @@ function ListPropertyPage() {
 
   return (
     <Formik
-      initialValues={{
+      initialValues={initialValues||{
         hotelName: "",
-        // starRating: "",
+        starRating: "",
         contactName: "",
         phoneNumber: "",
-        // address: "",
-        // city: "",
-        // placeForSearch: "",
-        // postalCode: "",
-        // parking: "",
-        // breakfast: "",
-        // facilities: "",
+        address: "",
+        city: "",
+        placeForSearch: "",
+        postalCode: "",
+        parking: "",
+        breakfast: "",
+        facilities: [],
         // extraBed: "",
         // extraBedDetails: "",
         // mainPhoto: "",
@@ -128,7 +136,7 @@ function ListPropertyPage() {
 
         {currentPage === 1 && (
           <>
-            <Step1 />
+            <Step1 saveAsDraft={saveAsDraft} />
             <button style={firstNextButtonStyle} className="btn btn-primary" onClick={next}>
               Next
             </button>
@@ -137,7 +145,7 @@ function ListPropertyPage() {
 
         {currentPage === 2 && (
           <>
-            <Step2 />
+            <Step2 saveAsDraft={saveAsDraft} />
             <div style={{display: "flex", justifyContent: "space-between"}}>
               <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
                 Back
