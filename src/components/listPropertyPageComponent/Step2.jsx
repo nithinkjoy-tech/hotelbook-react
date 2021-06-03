@@ -1,7 +1,7 @@
 import React from "react";
-import PropertyInputBox from "./../common/PropertyInputBox";
-import {useFormikContext} from "formik";
-import SaveAsDraftButton from "./../common/SaveAsDraftButton";
+import {useFormikContext, ErrorMessage} from "formik";
+import Error from "./../forms/Error";
+import SaveAsDraftButton from "./SaveAsDraftButton";
 import PropertySelectBox from "./../common/PropertySelectBox";
 import FormCheckBox from "./../common/FormCheckBox";
 
@@ -9,7 +9,7 @@ function Step2({saveAsDraft}) {
   const {values, getFieldProps, setFieldValue} = useFormikContext();
 
   let {value, name} = getFieldProps("facilities");
-  // console.log(data,"mm")
+  let {value:extraBed} = getFieldProps("extraBed");
 
   let checkBoxModified = feature => {
     if (value.includes(feature)) value = value.filter(val => feature !== val);
@@ -42,16 +42,34 @@ function Step2({saveAsDraft}) {
                     <PropertySelectBox
                       label="Parking"
                       name="parking"
-                      options={[null, "No", "Yes, Free", "Yes, Paid"]}
+                      options={["No", "Yes, Free", "Yes, Paid"]}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
                     <PropertySelectBox
                       label="Breakfast"
                       name="breakfast"
-                      options={[null, "No", "Yes, Free", "Yes, Paid"]}
+                      options={["No", "Yes, Free", "Yes, Paid"]}
                     />
                   </div>
+                  
+                  <div className="col-span-6 sm:col-span-3">
+                    <PropertySelectBox
+                      label="Extra Bed"
+                      name="extraBed"
+                      options={["Yes", "No"]}
+                    />
+                    <ErrorMessage name="extraBed" component={Error} />
+                  </div> 
+                  {extraBed==="Yes"?<div className="col-span-6 sm:col-span-3">
+                    <PropertySelectBox
+                      label="No. of extra beds"
+                      name="noOfExtraBeds"
+                      options={[1,2,3,4]}
+                    />
+                    <ErrorMessage name="noOfExtraBeds" component={Error} />
+                  </div>:<div></div>}
+
                   <div className="col-span-6 sm:col-span-3">
                     <label htmlFor="hotelName" className="text-sm font-medium text-gray-700">
                       Features and Facilities
@@ -97,7 +115,6 @@ function Step2({saveAsDraft}) {
                       </div>
                     </div>
                   </div>
-
                   {/* <label htmlFor="hotelName" className="block text-sm font-medium text-gray-700">
                     Features and Facilities
                   </label>

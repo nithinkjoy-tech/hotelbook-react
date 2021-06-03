@@ -5,7 +5,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import {useFormikContext, ErrorMessage} from "formik";
 import Error from "./../forms/Error";
-import SaveAsDraftButton from './../common/SaveAsDraftButton';
+import SaveAsDraftButton from './SaveAsDraftButton';
 // var pincodeDirectory = require('india-pincode-lookup');
 
 function Step1({saveAsDraft}) {

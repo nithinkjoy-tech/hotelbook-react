@@ -12,11 +12,11 @@ import munnar from "../../images/munnar.jpg";
 import mysore from "../../images/mysore.jpg";
 import ooty from "../../images/ooty.jpg";
 
-const Cities = () => {
+const Places = () => {
   return (
     <div className="best-rooms py-5">
     <div className="container py-lg-5 py-sm-4">
-        <h3 className="title-big text-center">Top Cities</h3>
+        <h3 className="title-big text-center">Top Places</h3>
         <div className="ban-content-inf row py-lg-3">
 
 <div className="maghny-gd-1 col-lg-6 mt-lg-0 mt-4">
@@ -141,9 +141,9 @@ const Cities = () => {
                 </div>
             </div>
         </div>
-    </div>
+    </div> 
 </div>
   );
 };
 
-export default Cities;
+export default Places;
