@@ -15,7 +15,7 @@ function Step3({saveAsDraft}) {
   const [numberOfImages, setNumberOfImages] = useState(0);
   const {getFieldProps, values, setFieldValue} = useFormikContext();
 
-  let {name} = getFieldProps("mainPhoto");
+  let {value,name} = getFieldProps("mainPhoto");
   const handleDelete = () => {
     setFieldValue(name, null);
     setPrev(null);
@@ -63,7 +63,7 @@ function Step3({saveAsDraft}) {
                 />
                 <ErrorMessage name="mainPhoto" component={Error} />
               </div>
-              {prev ? (
+              {prev&&value ? (
                 <div>
                   <center>
                     <img className="image" src={prev} alt="hotel" />

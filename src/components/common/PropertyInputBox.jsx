@@ -3,7 +3,7 @@ import {ErrorMessage} from "formik";
 import Error from "./../forms/Error";
 import {useFormikContext} from "formik"
 
-function PropertyInputBox({label, type, name,...other}) {
+function PropertyInputBox({label, type="text", name,...other}) {
 
   const {values,handleChange,handleBlur}=useFormikContext()
 

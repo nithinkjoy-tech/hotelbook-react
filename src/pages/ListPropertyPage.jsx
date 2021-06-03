@@ -3,6 +3,7 @@ import Step1 from "./../components/listPropertyPageComponent/Step1";
 import Step2 from "./../components/listPropertyPageComponent/Step2";
 import Step3 from "./../components/listPropertyPageComponent/Step3";
 import Step4 from "./../components/listPropertyPageComponent/Step4";
+import Step5 from "./../components/listPropertyPageComponent/Step5";
 import Stepper from "react-stepper-horizontal";
 import {Formik, Form} from "formik";
 import * as Yup from "yup";
@@ -37,12 +38,18 @@ const validationSchema = Yup.object().shape({
   accomodateChildren: Yup.string().required(),
   allowPets: Yup.string().required(),
   provideDormitoryForDriver: Yup.string().required(),
-  //   isPrepaymentRequired: Yup.boolean().required(),
-  //   GST: Yup.boolean(),
-  //   tradeName: Yup.string(),
-  //   GSTIN: Yup.string(),
-  //   panCardNumber: Yup.string(),
-  //   state: Yup.string(),
+  isPrepaymentRequired: Yup.string().required(),
+    GST: Yup.string().required(),
+    tradeName: Yup.string().when("GST", {
+      is: "Yes",
+      then: Yup.string().required("Trade name is required")
+    }),
+    GSTIN: Yup.string().when("GST", {
+      is: "Yes",
+      then: Yup.string().required("GSTIN is required")
+    }),
+    panCardNumber: Yup.string(),
+    state: Yup.string(),
 });
 
 function ListPropertyPage() {
@@ -61,7 +68,7 @@ function ListPropertyPage() {
     {title: "Facilities and Services", onClick: () => setCurrentPage(2)},
     {title: "Photos", onClick: () => setCurrentPage(3)},
     {title: "Policies", onClick: () => setCurrentPage(4)},
-    // { title: 'Review', onClick: () => setCurrentPage(5) },
+    {title: "Payments", onClick: () => setCurrentPage(5) },
   ];
 
   const handleSubmit = (values, {setFieldError}) => {
@@ -112,12 +119,12 @@ function ListPropertyPage() {
           accomodateChildren: "No",
           allowPets: "No",
           provideDormitoryForDriver: "No",
-          // isPrepaymentRequired: "",
-          // GST: "",
-          // tradeName: "",
-          // GSTIN: "",
-          // panCardNumber: "",
-          // state: "",
+          isPrepaymentRequired: "No",
+          GST: "No",
+          tradeName: "",
+          GSTIN: "",
+          panCardNumber: "",
+          state: "",
         }
       }
       validationSchema={validationSchema}
@@ -187,6 +194,19 @@ function ListPropertyPage() {
             {currentPage === 4 && (
               <>
                 <Step4 saveAsDraft={saveAsDraft} />
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                  <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
+                    Back
+                  </button>
+                  <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
+                    Next
+                  </button>
+                </div>
+              </>
+            )}
+            {currentPage === 5 && (
+              <>
+                <Step5 saveAsDraft={saveAsDraft} />
                 <div style={{display: "flex", justifyContent: "space-between"}}>
                   <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
                     Back
