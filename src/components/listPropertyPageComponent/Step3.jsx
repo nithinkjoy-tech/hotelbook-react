@@ -21,12 +21,21 @@ function Step3({saveAsDraft}) {
     setPrev(null);
   };
 
+  const loadImage = () => {
+    setPrev(JSON.parse(localStorage.getItem("coverPhoto")))
+  };
+
+  useEffect(() => {
+    loadImage();
+  }, []);
+
   let handleImageChange = data => {
     const reader = new FileReader();
 
     reader.onload = () => {
       if (reader.readyState === 2) {
         setPrev(reader.result);
+        localStorage.setItem("coverPhoto", JSON.stringify(reader.result));
       }
     };
     reader.readAsDataURL(data);
@@ -74,13 +83,13 @@ function Step3({saveAsDraft}) {
                   label="Other photos"
                   multiple={true}
                   onChange={event => {
-                    let data=event.target.files
-                    setFieldValue("photos",data);
-                    setNumberOfImages(data.length)
+                    let data = event.target.files;
+                    setFieldValue("photos", data);
+                    setNumberOfImages(data.length);
                   }}
                   numberOfImages={numberOfImages}
                 />
-              </div>              
+              </div>
               <SaveAsDraftButton values={values} saveAsDraft={saveAsDraft} />
             </div>
           </div>

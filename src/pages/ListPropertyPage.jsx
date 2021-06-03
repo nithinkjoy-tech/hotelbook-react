@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import Step1 from "./../components/listPropertyPageComponent/Step1";
 import Step2 from "./../components/listPropertyPageComponent/Step2";
 import Step3 from "./../components/listPropertyPageComponent/Step3";
+import Step4 from "./../components/listPropertyPageComponent/Step4";
 import Stepper from "react-stepper-horizontal";
 import {Formik, Form} from "formik";
 import * as Yup from "yup";
@@ -29,14 +30,14 @@ const validationSchema = Yup.object().shape({
   noOfExtraBeds: Yup.number().min(1).max(4),
   mainPhoto: Yup.mixed().required(),
   photos: Yup.array().nullable(),
-  //   freeCancellationAvailable: Yup.boolean().required(),
-  //   ifNotCancelledBeforeDate: Yup.string(),
-  //   checkIn: Yup.string().required(),
-  //   checkOut: Yup.string().required(),
-  //   accomodateChildren: Yup.boolean().required(),
-  //   allowPets: Yup.boolean().required(),
+  freeCancellationAvailable: Yup.string().required(),
+  ifNotCancelledBeforeDate: Yup.string(),
+  checkIn: Yup.string().required(),
+  checkOut: Yup.string().required(),
+  accomodateChildren: Yup.string().required(),
+  allowPets: Yup.string().required(),
+  provideDormitoryForDriver: Yup.string().required(),
   //   isPrepaymentRequired: Yup.boolean().required(),
-  //   provideDormitoryForDriver: Yup.boolean().required(),
   //   GST: Yup.boolean(),
   //   tradeName: Yup.string(),
   //   GSTIN: Yup.string(),
@@ -59,8 +60,8 @@ function ListPropertyPage() {
     {title: "Basic Info", onClick: () => setCurrentPage(1)},
     {title: "Facilities and Services", onClick: () => setCurrentPage(2)},
     {title: "Photos", onClick: () => setCurrentPage(3)},
+    {title: "Policies", onClick: () => setCurrentPage(4)},
     // { title: 'Review', onClick: () => setCurrentPage(5) },
-    // { title: 'Review', onClick: () => setCurrentPage(6) },
   ];
 
   const handleSubmit = (values, {setFieldError}) => {
@@ -104,14 +105,14 @@ function ListPropertyPage() {
           noOfExtraBeds: 1,
           mainPhoto: "",
           photos: "",
-          // freeCancellationAvailable: "",
-          // ifNotCancelledBeforeDate: "",
-          // checkIn: "",
-          // checkOut: "",
-          // accomodateChildren: "",
-          // allowPets: "",
+          freeCancellationAvailable: "None.(Guest cannot cancel once booked)",
+          ifNotCancelledBeforeDate: "of the first day",
+          checkIn: "00 : 00",
+          checkOut: "00 : 00",
+          accomodateChildren: "No",
+          allowPets: "No",
+          provideDormitoryForDriver: "No",
           // isPrepaymentRequired: "",
-          // provideDormitoryForDriver: "",
           // GST: "",
           // tradeName: "",
           // GSTIN: "",
@@ -167,15 +168,25 @@ function ListPropertyPage() {
                   <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
                     Next
                   </button>
-                  {/* <button type="submit" className="btn btn-success">
-                    Submit
-                  </button> */}
                 </div>
               </>
             )}
             {currentPage === 3 && (
               <>
                 <Step3 saveAsDraft={saveAsDraft} />
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                  <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
+                    Back
+                  </button>
+                  <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
+                    Next
+                  </button>
+                </div>
+              </>
+            )}
+            {currentPage === 4 && (
+              <>
+                <Step4 saveAsDraft={saveAsDraft} />
                 <div style={{display: "flex", justifyContent: "space-between"}}>
                   <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
                     Back
