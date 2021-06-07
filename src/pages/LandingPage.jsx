@@ -3,7 +3,7 @@ import SearchComponent from '../components/common/SearchComponent'
 import Carousel from '../components/common/Carousel';
 import Places from '../components/landingPageComponent/Places'
 
-import SearchResultComponent from './../components/searchPageComponent/searchResultComponent';
+
 
 function LandingPage() {
 
@@ -22,7 +22,6 @@ function LandingPage() {
             <Carousel/> 
             <SearchComponent initialValues={null} />
             <Places />
-            <SearchResultComponent hotels={data} />
         </div> 
     )
 }
