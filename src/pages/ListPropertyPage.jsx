@@ -8,6 +8,7 @@ import Stepper from "react-stepper-horizontal";
 import {Formik, Form} from "formik";
 import * as Yup from "yup";
 import {displayNotification} from "./../services/notificationService";
+import {registerHotels} from "./../api/renter";
 
 const validationSchema = Yup.object().shape({
   hotelName: Yup.string().min(1).max(50).required(),
@@ -35,21 +36,21 @@ const validationSchema = Yup.object().shape({
   ifNotCancelledBeforeDate: Yup.string(),
   checkIn: Yup.string().required(),
   checkOut: Yup.string().required(),
-  accomodateChildren: Yup.string().required(),
-  allowPets: Yup.string().required(),
-  provideDormitoryForDriver: Yup.string().required(),
-  isPrepaymentRequired: Yup.string().required(),
-    GST: Yup.string().required(),
-    tradeName: Yup.string().when("GST", {
-      is: "Yes",
-      then: Yup.string().required("Trade name is required")
-    }),
-    GSTIN: Yup.string().when("GST", {
-      is: "Yes",
-      then: Yup.string().required("GSTIN is required")
-    }),
-    panCardNumber: Yup.string(),
-    state: Yup.string(),
+  accomodateChildren: Yup.string().required().oneOf(["No", "Yes"]),
+  allowPets: Yup.string().required().oneOf(["No", "Yes"]),
+  provideDormitoryForDriver: Yup.string().required().oneOf(["No", "Yes"]),
+  isPrepaymentRequired: Yup.string().required().oneOf(["No", "Yes"]),
+  GST: Yup.string().required().oneOf(["No", "Yes"]),
+  tradeName: Yup.string().when("GST", {
+    is: "Yes",
+    then: Yup.string().required("Trade name is required"),
+  }),
+  GSTIN: Yup.string().when("GST", {
+    is: "Yes",
+    then: Yup.string().required("GSTIN is required"),
+  }),
+  panCardNumber: Yup.string().required(),
+  state: Yup.string().req,
 });
 
 function ListPropertyPage() {
@@ -68,11 +69,29 @@ function ListPropertyPage() {
     {title: "Facilities and Services", onClick: () => setCurrentPage(2)},
     {title: "Photos", onClick: () => setCurrentPage(3)},
     {title: "Policies", onClick: () => setCurrentPage(4)},
-    {title: "Payments", onClick: () => setCurrentPage(5) },
+    {title: "Payments", onClick: () => setCurrentPage(5)},
   ];
 
-  const handleSubmit = (values, {setFieldError}) => {
-    console.log(values, "val");
+  const handleSubmit = async (values, setFieldError) => {
+    let finalValues = {...values};
+    let {placeForSearch} = finalValues;
+    finalValues.placeForSearch = placeForSearch.toLowerCase();
+
+    let formData = new FormData();
+
+    for (let [key, value] of Object.entries(finalValues)) {
+      if (key === "photos") {
+        for (let index in finalValues.photos) {
+          formData.append(`photos[${index}]`, finalValues.photos[index]);
+        }
+      } else {
+        formData.append(key, value);
+      }
+    }
+
+    const {data, status} = await registerHotels(formData);
+    if (status === 400) setFieldError(data.property, data.msg);
+    console.log(data);
   };
 
   const buttonStyle = {
@@ -158,9 +177,6 @@ function ListPropertyPage() {
                   <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
                     Next
                   </button>
-                  {/* <button type="submit" className="btn btn-success">
-                    Submit
-                  </button> */}
                 </div>
               </>
             )}

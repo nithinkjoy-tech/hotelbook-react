@@ -23,6 +23,7 @@ function Step3({saveAsDraft}) {
 
   const loadImage = () => {
     setPrev(JSON.parse(localStorage.getItem("coverPhoto")))
+    setNumberOfImages(localStorage.getItem("numberOfImages"))
   };
 
   useEffect(() => {
@@ -36,6 +37,7 @@ function Step3({saveAsDraft}) {
       if (reader.readyState === 2) {
         setPrev(reader.result);
         localStorage.setItem("coverPhoto", JSON.stringify(reader.result));
+        
       }
     };
     reader.readAsDataURL(data);
@@ -56,9 +58,9 @@ function Step3({saveAsDraft}) {
                   text="Upload an image"
                   multiple={false}
                   onChange={event => {
-                    let data = event.target.files[0];
-                    setFieldValue("mainPhoto", data);
-                    handleImageChange(data);
+                    let image = event.target.files[0];
+                    setFieldValue("mainPhoto", image);
+                    handleImageChange(image);
                   }}
                 />
                 <ErrorMessage name="mainPhoto" component={Error} />
@@ -83,9 +85,10 @@ function Step3({saveAsDraft}) {
                   label="Other photos"
                   multiple={true}
                   onChange={event => {
-                    let data = event.target.files;
-                    setFieldValue("photos", data);
-                    setNumberOfImages(data.length);
+                    let images = event.target.files;
+                    setFieldValue("photos", images);
+                    setNumberOfImages(images.length);
+                    localStorage.setItem("numberOfImages",images.length)
                   }}
                   numberOfImages={numberOfImages}
                 />

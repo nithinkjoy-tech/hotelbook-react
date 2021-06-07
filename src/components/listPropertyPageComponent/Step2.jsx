@@ -59,7 +59,6 @@ function Step2({saveAsDraft}) {
                       name="extraBed"
                       options={["Yes", "No"]}
                     />
-                    <ErrorMessage name="extraBed" component={Error} />
                   </div> 
                   {extraBed==="Yes"?<div className="col-span-6 sm:col-span-3">
                     <PropertySelectBox
@@ -67,7 +66,6 @@ function Step2({saveAsDraft}) {
                       name="noOfExtraBeds"
                       options={[1,2,3,4]}
                     />
-                    <ErrorMessage name="noOfExtraBeds" component={Error} />
                   </div>:<div></div>}
 
                   <div className="col-span-6 sm:col-span-3">

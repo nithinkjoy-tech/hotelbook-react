@@ -36,7 +36,7 @@ function Step4({saveAsDraft}) {
                       options={["No","Yes"]}
                     />
                   </div>
-                  {(GST&&GST.startsWith("Y"))?<><div className="col-span-6 sm:col-span-6">
+                  {(GST&&GST==="Yes")?<><div className="col-span-6 sm:col-span-6">
                     <PropertyInputBox
                       label="Trade name"
                       name="tradeName"

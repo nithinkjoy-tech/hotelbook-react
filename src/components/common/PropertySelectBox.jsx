@@ -1,5 +1,6 @@
 import React from "react";
-import {useFormikContext} from "formik";
+import {useFormikContext,ErrorMessage} from "formik";
+import Error from "../forms/Error";
 
 function PropertySelectBox({label, name, options}) {
   const {values, handleChange} = useFormikContext();
@@ -18,6 +19,7 @@ function PropertySelectBox({label, name, options}) {
           <option key={option}>{option}</option>
         ))}
       </select>
+      <ErrorMessage name={name} component={Error} />
     </React.Fragment>
   );
 }

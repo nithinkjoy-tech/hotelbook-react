@@ -1,8 +1,8 @@
 import React,{useEffect} from 'react'
 import SearchComponent from '../components/common/SearchComponent'
 import {useHistory} from "react-router-dom";
-import searchResultComponent from './../components/searchPageComponent/searchResultComponent';
-// import HotelsComponent from './../components/searchPageComponent/HotelsComponent';
+import SearchResultComponent from './../components/searchPageComponent/SearchResultComponent';
+// import HotelsComponent from '../components/searchPageComponent/SearchResultComponent';
 
 function SearchPage() {
 
@@ -18,8 +18,7 @@ function SearchPage() {
     return (
         <div> 
             <SearchComponent initialValues={values} />
-            {/* <HotelsComponent hotels={data} /> */}
-            <searchResultComponent hotels={data} />
+            <SearchResultComponent hotels={data} />
         </div>
     )
 }

@@ -5,6 +5,7 @@ import {guestSignin} from "../api/guest";
 import {renterSignin} from "../api/renter";
 import {adminSignin} from "../api/admin";
 import * as Yup from "yup";
+import { setAuthToken } from './../services/authService';
 
 const validationSchema = Yup.object().shape({
   userId: Yup.string().required("Email or Username is required").label("Email or Username"),
@@ -33,17 +34,17 @@ function SigninPage({location}) {
     if (location.pathname === "/signin") {
       const {data, status} = await guestSignin(values);
       if (status === 400) setFieldError("userId", data);
-      else console.log("login success");
+      else setAuthToken(data)
     }
     if (location.pathname === "/renter/signin") {
       const {data, status} = await renterSignin(values);
       if (status === 400) setFieldError("userId", data);
-      else console.log("login success");
+      else setAuthToken(data)
     }
     if (location.pathname === "/admin/signin") {
       const {data, status} = await adminSignin(values);
       if (status === 400) setFieldError("userId", data);
-      else console.log("login success");
+      else setAuthToken(data)
     }
   };
 
