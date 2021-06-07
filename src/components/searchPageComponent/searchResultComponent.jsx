@@ -57,7 +57,7 @@ function SearchResultComponent({hotels}) {
                         </a>
                       </li>
                     </ul>
-                    <a href="room-single.html" className="btn view">
+                    <a href="#" className="btn view">
                       Full Info →
                     </a>
                   </div>
