@@ -7,7 +7,7 @@ import SearchResultComponent from '../components/searchPageComponent/SearchResul
 function SearchPage() {
 
     useEffect(() => {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0) 
       }, [])
 
     const history=useHistory()

@@ -12,9 +12,9 @@ function SearchResultComponent({hotels}) {
                 <figure className="effect-lily">
                   <img className="img-fluid" style={{height:"260px"}} src={hotel.mainPhoto} alt="Room" />
                   <figcaption>
-                    <div>
+                    <div>  
                       <h4 className="top-text">
-                        {hotel.hotelName}
+                        {hotel.hotelName} 
                         <Rating value={hotel?.starRating} />
                       </h4>
                       <p>Book for Rs.{hotel?.startingRatePerDay} </p>
