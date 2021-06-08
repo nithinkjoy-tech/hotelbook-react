@@ -14,7 +14,7 @@ function SearchPage() {
     if(!history.location.state) window.location="/"
 
     const {data,values}=history.location.state
-
+ 
     return (
         <div> 
             <SearchComponent initialValues={values} />

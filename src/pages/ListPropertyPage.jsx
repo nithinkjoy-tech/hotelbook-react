@@ -50,7 +50,7 @@ const validationSchema = Yup.object().shape({
     then: Yup.string().required("GSTIN is required"),
   }),
   panCardNumber: Yup.string().required(),
-  state: Yup.string().req,
+  state: Yup.string().required(),
 });
 
 function ListPropertyPage() {
@@ -73,23 +73,28 @@ function ListPropertyPage() {
   ];
 
   const handleSubmit = async (values, setFieldError) => {
-    let finalValues = {...values};
-    let {placeForSearch} = finalValues;
-    finalValues.placeForSearch = placeForSearch.toLowerCase();
+    console.log(values, "val");
+    values.placeForSearch = values.placeForSearch.toLowerCase();
 
-    let formData = new FormData();
+    const booleanKeys = [
+      "extraBed",
+      "accomodateChildren",
+      "allowPets",
+      "isPrepaymentRequired",
+      "provideDormitoryForDriver",
+      "GST",
+    ];
 
-    for (let [key, value] of Object.entries(finalValues)) {
-      if (key === "photos") {
-        for (let index in finalValues.photos) {
-          formData.append(`photos[${index}]`, finalValues.photos[index]);
-        }
-      } else {
-        formData.append(key, value);
-      }
-    }
+    const transform = obj =>
+      booleanKeys.reduce(
+        (acc, key) => ({
+          ...acc,
+          [key]: obj[key] === "Yes",
+        }),
+        obj
+      );
 
-    const {data, status} = await registerHotels(formData);
+    const {data, status} = await registerHotels(transform(values));
     if (status === 400) setFieldError(data.property, data.msg);
     console.log(data);
   };
@@ -130,7 +135,7 @@ function ListPropertyPage() {
           extraBed: "No",
           noOfExtraBeds: 1,
           mainPhoto: "",
-          photos: "",
+          photos: [],
           freeCancellationAvailable: "None.(Guest cannot cancel once booked)",
           ifNotCancelledBeforeDate: "of the first day",
           checkIn: "00 : 00",
@@ -152,7 +157,7 @@ function ListPropertyPage() {
       {() => (
         <div>
           <Form>
-            <h1>Dynamic Form Fields in React</h1>
+            <h1>Dynamic Form Fields in react</h1>
             <Stepper
               steps={sections}
               activeStep={currentPage - 1}
