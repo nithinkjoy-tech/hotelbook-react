@@ -30,14 +30,35 @@ function Step3({saveAsDraft}) {
     loadImage();
   }, []);
 
+
+  let imageToBase64=(images)=>{
+    let imagesBase64=[]
+    for(let image of images){
+      const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        let imageBase64=reader.result
+        imagesBase64.push(imageBase64)
+        // setPrev(imageBase64);
+      }
+    };
+    reader.readAsDataURL(image);
+  }
+  setFieldValue("photos", imagesBase64);
+  console.log(imagesBase64)
+  }
+
   let handleImageChange = data => {
     const reader = new FileReader();
 
     reader.onload = () => {
       if (reader.readyState === 2) {
-        setPrev(reader.result);
-        localStorage.setItem("coverPhoto", JSON.stringify(reader.result));
-        
+        let imageBase64=reader.result
+        setPrev(imageBase64);
+        setFieldValue("mainPhoto", imageBase64);
+        console.log(imageBase64)
+        localStorage.setItem("coverPhoto", JSON.stringify(imageBase64));
       }
     };
     reader.readAsDataURL(data);
@@ -59,7 +80,6 @@ function Step3({saveAsDraft}) {
                   multiple={false}
                   onChange={event => {
                     let image = event.target.files[0];
-                    setFieldValue("mainPhoto", image);
                     handleImageChange(image);
                   }}
                 />
@@ -87,6 +107,7 @@ function Step3({saveAsDraft}) {
                   onChange={event => {
                     let images = event.target.files;
                     setFieldValue("photos", images);
+                    imageToBase64(images)
                     setNumberOfImages(images.length);
                     localStorage.setItem("numberOfImages",images.length)
                   }}

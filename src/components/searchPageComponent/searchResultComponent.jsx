@@ -1,5 +1,4 @@
 import React from "react";
-import slide1 from "../../images/slide1.jpg";
 import Rating from '../common/Rating'
 //wazirx bluewallet  
 function SearchResultComponent({hotels}) {    
@@ -23,7 +22,7 @@ function SearchResultComponent({hotels}) {
                   </figcaption>
                 </figure>
                 <div className="room-info"> 
-                  <h3 className="room-title">
+                  <h3 className="room-title"> 
                     <a href="#url">{hotel?.hotelName}</a>
                   </h3>
                   <ul className="mb-3">
@@ -71,4 +70,5 @@ function SearchResultComponent({hotels}) {
   );
 }
 
-export default SearchResultComponent;
+export default SearchResultComponent
+   

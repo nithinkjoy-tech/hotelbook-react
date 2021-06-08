@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react'
 import SearchComponent from '../components/common/SearchComponent'
 import {useHistory} from "react-router-dom";
-import SearchResultComponent from './../components/searchPageComponent/SearchResultComponent';
+import SearchResultComponent from '../components/searchPageComponent/searchResultComponent';
 // import HotelsComponent from '../components/searchPageComponent/SearchResultComponent';
 
 function SearchPage() {
@@ -14,7 +14,7 @@ function SearchPage() {
     if(!history.location.state) window.location="/"
 
     const {data,values}=history.location.state
-
+ 
     return (
         <div> 
             <SearchComponent initialValues={values} />
