@@ -51,6 +51,7 @@ function ImageUpload({onChange, label, multiple, text, numberOfImages}) {
             </label>
           </div>
           <p className="text-xs text-gray-500">PNG, JPG, JPEG up to 10MB</p>
+          <p className="text-xs text-gray-800">Recomended 16 : 9 aspect ratio image</p>
           {numberOfImages > 0?(
             <p
               style={{fontWeight: "900", fontSize: "20px", color: "#B42B85"}}

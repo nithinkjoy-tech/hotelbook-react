@@ -16,7 +16,7 @@ function SearchResultComponent({hotels}) {
                     <div>
                       <h4 className="top-text">
                         {hotel.hotelName}
-                        <Rating value={hotel?.rating} />
+                        <Rating value={hotel?.starRating} />
                       </h4>
                       <p>Book for Rs.{hotel?.startingRatePerDay} </p>
                     </div>
