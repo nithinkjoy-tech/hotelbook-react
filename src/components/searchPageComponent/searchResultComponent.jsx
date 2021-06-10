@@ -23,7 +23,7 @@ function SearchResultComponent({hotels}) {
                 </figure>
                 <div className="room-info"> 
                   <h3 className="room-title"> 
-                    <a href="#url">{hotel?.hotelName}</a>
+                    <a href="#url">{hotel?.hotelName}</a> 
                   </h3>
                   <ul className="mb-3">
                     <li key={hotel?.guests}>

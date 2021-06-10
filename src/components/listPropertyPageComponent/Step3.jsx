@@ -1,14 +1,10 @@
 import React, {useEffect, useState} from "react";
-import PropertyInputBox from "../common/PropertyInputBox";
-import PropertySelectBox from "./../common/PropertySelectBox";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import {useFormikContext, ErrorMessage} from "formik";
 import Error from "./../forms/Error";
 import SaveAsDraftButton from "./SaveAsDraftButton";
 import ImageUpload from "./ImageUpload";
 import {Delete} from "@material-ui/icons";
-// var pincodeDirectory = require('india-pincode-lookup');
 
 function Step3({saveAsDraft}) {
   const [prev, setPrev] = useState();
@@ -40,13 +36,12 @@ function Step3({saveAsDraft}) {
       if (reader.readyState === 2) {
         let imageBase64=reader.result
         imagesBase64.push(imageBase64)
-        // setPrev(imageBase64);
       }
     };
     reader.readAsDataURL(image);
   }
   setFieldValue("photos", imagesBase64);
-  console.log(imagesBase64)
+  console.log(imagesBase64.length,"lenn")
   }
 
   let handleImageChange = data => {

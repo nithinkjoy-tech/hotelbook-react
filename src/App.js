@@ -16,6 +16,7 @@ function App() {
     <React.Fragment>
       <ToastContainer
           position="top-center"
+          autoClose={5000000}
         />
       <NavBar />
       <Switch>

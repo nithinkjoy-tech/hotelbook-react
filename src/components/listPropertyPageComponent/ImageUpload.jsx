@@ -1,6 +1,7 @@
 import React, {useRef} from "react";
 
 function ImageUpload({onChange, label, multiple, text, numberOfImages}) {
+  // console.log(photos,"pt")
   const uploadInputRef = useRef(null);
 
   return (
@@ -52,7 +53,7 @@ function ImageUpload({onChange, label, multiple, text, numberOfImages}) {
           </div>
           <p className="text-xs text-gray-500">PNG, JPG, JPEG up to 10MB</p>
           <p className="text-xs text-gray-800">Recomended 16 : 9 aspect ratio image</p>
-          {numberOfImages > 0?(
+          {(numberOfImages > 0)?(
             <p
               style={{fontWeight: "900", fontSize: "20px", color: "#B42B85"}}
               className="text-xs text-1xl"

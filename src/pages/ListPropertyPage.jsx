@@ -7,8 +7,10 @@ import Step5 from "./../components/listPropertyPageComponent/Step5";
 import Stepper from "react-stepper-horizontal";
 import {Formik, Form} from "formik";
 import * as Yup from "yup";
+import {toast} from "react-toastify";
 import {displayNotification} from "./../services/notificationService";
 import {registerHotels} from "./../api/renter";
+let pincodeDirectory = require('india-pincode-lookup');
 
 const validationSchema = Yup.object().shape({
   hotelName: Yup.string().min(1).max(50).required(),
@@ -51,19 +53,21 @@ const validationSchema = Yup.object().shape({
   }),
   panCardNumber: Yup.string().required(),
   state: Yup.string().required(),
+  paymentAddress:Yup.string().required().min(8).max(255),
 });
 
-function ListPropertyPage() {
-  let initialValues;
-  const [currentPage, setCurrentPage] = useState(1);
 
+function ListPropertyPage() {
+  let draftValues;
+  const [currentPage, setCurrentPage] = useState(1);
+  
   const saveAsDraft = data => {
     localStorage.setItem("saveAsDraft", JSON.stringify(data));
     displayNotification("info", "Succesfully saved as draft");
   };
-
-  initialValues = JSON.parse(localStorage.getItem("saveAsDraft"));
-
+  
+  draftValues = JSON.parse(localStorage.getItem("saveAsDraft"));
+  
   const sections = [
     {title: "Basic Info", onClick: () => setCurrentPage(1)},
     {title: "Facilities and Services", onClick: () => setCurrentPage(2)},
@@ -71,9 +75,19 @@ function ListPropertyPage() {
     {title: "Policies", onClick: () => setCurrentPage(4)},
     {title: "Payments", onClick: () => setCurrentPage(5)},
   ];
+  
+  
+ const handleClick=(isValid)=>{
+    if(!isValid) displayNotification("error", "Please check your form. You missed something");
+  }
+  
 
   const handleSubmit = async (values, setFieldError) => {
-    console.log(values, "val");
+      if(pincodeDirectory.lookup(values.postalCode).length===0){
+        setFieldError("postalCode","No place with given postal code")
+        return displayNotification("error", "Please check your form. You missed something");
+    }
+
     values.placeForSearch = values.placeForSearch.toLowerCase();
 
     const booleanKeys = [
@@ -95,7 +109,8 @@ function ListPropertyPage() {
       );
 
     const {data, status} = await registerHotels(transform(values));
-    if (status === 400) setFieldError(data.property, data.msg);
+    if (status === 400) return setFieldError(data.property, data.msg);
+    toast.dismiss()
     console.log(data);
   };
 
@@ -120,7 +135,7 @@ function ListPropertyPage() {
   return (
     <Formik
       initialValues={
-        initialValues || {
+        draftValues || {
           hotelName: "",
           starRating: "",
           contactName: "",
@@ -151,11 +166,11 @@ function ListPropertyPage() {
           state: "",
         }
       }
+      
       validationSchema={validationSchema}
       onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
     >
-      {() => (
-        <div>
+      {({isValid}) => (
           <Form>
             <h1>Dynamic Form Fields in react</h1>
             <Stepper
@@ -232,45 +247,13 @@ function ListPropertyPage() {
                   <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
                     Back
                   </button>
-                  <button style={nextButtonStyle} type="submit" className="btn btn-success">
+                  <button style={nextButtonStyle} type="submit" onClick={()=>handleClick(isValid)} className="btn btn-success">
                     Submit
                   </button>
                 </div>
               </>
             )}
-
-            {/* <button style={nextButtonStyle} type="submit" className="btn btn-success">
-                Submit
-              </button> */}
-            {/*{currentPage === 4 && (
-          <>
-            <Step2 />
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>Back</button>
-              <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>Next</button> 
-            </div>
-          </>
-        )}
-        {currentPage === 5 && (
-          <>
-            <Step2 />
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>Back</button>
-              <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>Next</button> 
-            </div>
-          </>
-        )}
-
-        {currentPage === 6 && (
-          <>
-            <div style={{ display: 'flex',justifyContent: 'space-between' }}>
-              <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>Back</button>
-              <button onClick={handleSubmit}>Submit</button>
-            </div>
-          </>
-        )} */}
           </Form>
-        </div>
       )}
     </Formik>
   );

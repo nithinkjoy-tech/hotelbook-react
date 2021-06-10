@@ -6,10 +6,9 @@ import Error from "./../forms/Error";
 import SaveAsDraftButton from './SaveAsDraftButton';
 
 function Step4({saveAsDraft}) {
-  const {getFieldProps, values, setFieldValue} = useFormikContext();
-  //   console.log("ee",pincodeDirectory.lookup(5869))
+  const {getFieldProps, values} = useFormikContext();
 
-  let {value:freeCancellation, name} = getFieldProps("freeCancellationAvailable");
+  let {value:freeCancellation} = getFieldProps("freeCancellationAvailable");
   let time;
   let check_in_out=[]
   for(let i=0;i<24;i++){

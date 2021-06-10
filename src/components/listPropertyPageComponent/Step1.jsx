@@ -5,12 +5,10 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import {useFormikContext, ErrorMessage} from "formik";
 import Error from "./../forms/Error";
-import SaveAsDraftButton from './SaveAsDraftButton';
-// var pincodeDirectory = require('india-pincode-lookup');
+import SaveAsDraftButton from "./SaveAsDraftButton";
 
 function Step1({saveAsDraft}) {
   const {handleBlur, getFieldProps, values, setFieldValue} = useFormikContext();
-  //   console.log("ee",pincodeDirectory.lookup(5869))
 
   let {value, name} = getFieldProps("phoneNumber");
 
@@ -61,14 +59,18 @@ function Step1({saveAsDraft}) {
                     <PropertyInputBox label="City" type="text" name="city" />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <PropertyInputBox label="Place For Search" type="text" name="placeForSearch" />
+                    <PropertyInputBox
+                      label="Postal Code"
+                      type="text"
+                      name="postalCode"
+                    />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <PropertyInputBox label="Postal Code" type="text" name="postalCode" />
+                    <PropertyInputBox label="Place For Search" type="text" name="placeForSearch" />
                   </div>
                 </div>
               </div>
-               <SaveAsDraftButton values={values} saveAsDraft={saveAsDraft} />
+              <SaveAsDraftButton values={values} saveAsDraft={saveAsDraft} />
             </div>
           </div>
         </div>
