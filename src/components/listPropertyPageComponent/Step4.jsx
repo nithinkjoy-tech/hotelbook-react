@@ -1,11 +1,13 @@
-import React from "react";
-import PropertyInputBox from "../common/PropertyInputBox";
+import React,{useEffect} from "react";
 import PropertySelectBox from "./../common/PropertySelectBox";
-import {useFormikContext, ErrorMessage} from "formik";
-import Error from "./../forms/Error";
+import {useFormikContext} from "formik";
 import SaveAsDraftButton from './SaveAsDraftButton';
 
 function Step4({saveAsDraft}) {
+  useEffect(() => {
+    window.scrollTo(0, 0) 
+  }, [])
+
   const {getFieldProps, values} = useFormikContext();
 
   let {value:freeCancellation} = getFieldProps("freeCancellationAvailable");

@@ -10,7 +10,7 @@ import * as Yup from "yup";
 import {toast} from "react-toastify";
 import {displayNotification} from "./../services/notificationService";
 import {registerHotels} from "./../api/renter";
-let pincodeDirectory = require('india-pincode-lookup');
+let pincodeDirectory = require("india-pincode-lookup");
 
 const validationSchema = Yup.object().shape({
   hotelName: Yup.string().min(1).max(50).required(),
@@ -53,21 +53,20 @@ const validationSchema = Yup.object().shape({
   }),
   panCardNumber: Yup.string().required(),
   state: Yup.string().required(),
-  paymentAddress:Yup.string().required().min(8).max(255),
+  paymentAddress: Yup.string().required().min(8).max(255),
 });
-
 
 function ListPropertyPage() {
   let draftValues;
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const saveAsDraft = data => {
     localStorage.setItem("saveAsDraft", JSON.stringify(data));
     displayNotification("info", "Succesfully saved as draft");
   };
-  
+
   draftValues = JSON.parse(localStorage.getItem("saveAsDraft"));
-  
+
   const sections = [
     {title: "Basic Info", onClick: () => setCurrentPage(1)},
     {title: "Facilities and Services", onClick: () => setCurrentPage(2)},
@@ -75,17 +74,15 @@ function ListPropertyPage() {
     {title: "Policies", onClick: () => setCurrentPage(4)},
     {title: "Payments", onClick: () => setCurrentPage(5)},
   ];
-  
-  
- const handleClick=(isValid)=>{
-    if(!isValid) displayNotification("error", "Please check your form. You missed something");
-  }
-  
+
+  const handleClick = isValid => {
+    if (!isValid) displayNotification("error", "Please check your form. You missed something");
+  };
 
   const handleSubmit = async (values, setFieldError) => {
-      if(pincodeDirectory.lookup(values.postalCode).length===0){
-        setFieldError("postalCode","No place with given postal code")
-        return displayNotification("error", "Please check your form. You missed something");
+    if (pincodeDirectory.lookup(values.postalCode).length === 0) {
+      setFieldError("postalCode", "No place with given postal code");
+      return displayNotification("error", "Please check your form. You missed something");
     }
 
     values.placeForSearch = values.placeForSearch.toLowerCase();
@@ -100,17 +97,11 @@ function ListPropertyPage() {
     ];
 
     const transform = obj =>
-      booleanKeys.reduce(
-        (acc, key) => ({
-          ...acc,
-          [key]: obj[key] === "Yes",
-        }),
-        obj
-      );
+      booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === "Yes"}), obj);
 
     const {data, status} = await registerHotels(transform(values));
     if (status === 400) return setFieldError(data.property, data.msg);
-    toast.dismiss()
+    toast.dismiss();
     console.log(data);
   };
 
@@ -166,94 +157,98 @@ function ListPropertyPage() {
           state: "",
         }
       }
-      
       validationSchema={validationSchema}
       onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
     >
       {({isValid}) => (
-          <Form>
-            <h1>Dynamic Form Fields in react</h1>
-            <Stepper
-              steps={sections}
-              activeStep={currentPage - 1}
-              activeColor="green"
-              defaultBarColor="green"
-              completeColor="red"
-              completeBarColor="red"
-            />
+        <Form>
+          <h1>Dynamic Form Fields in react</h1>
+          <Stepper
+            steps={sections}
+            activeStep={currentPage - 1}
+            activeColor="green"
+            defaultBarColor="green"
+            completeColor="red"
+            completeBarColor="red"
+          />
 
-            {currentPage === 1 && (
-              <>
-                <Step1 saveAsDraft={saveAsDraft} />
-                <div style={{display: "flex", justifyContent: "space-between"}}>
-                  <button
-                    style={previousButtonStyle}
-                    disabled={currentPage === 1}
-                    className="btn btn-secondary"
-                    onClick={prev}
-                  >
-                    Back
-                  </button>
-                  <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
-                    Next
-                  </button>
-                </div>
-              </>
-            )}
+          {currentPage === 1 && (
+            <>
+              <Step1 saveAsDraft={saveAsDraft} />
+              <div style={{display: "flex", justifyContent: "space-between"}}>
+                <button
+                  style={previousButtonStyle}
+                  disabled={currentPage === 1}
+                  className="btn btn-secondary"
+                  onClick={prev}
+                >
+                  Back
+                </button>
+                <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
+                  Next
+                </button>
+              </div>
+            </>
+          )}
 
-            {currentPage === 2 && (
-              <>
-                <Step2 saveAsDraft={saveAsDraft} />
-                <div style={{display: "flex", justifyContent: "space-between"}}>
-                  <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
-                    Back
-                  </button>
-                  <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
-                    Next
-                  </button>
-                </div>
-              </>
-            )}
-            {currentPage === 3 && (
-              <>
-                <Step3 saveAsDraft={saveAsDraft} />
-                <div style={{display: "flex", justifyContent: "space-between"}}>
-                  <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
-                    Back
-                  </button>
-                  <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
-                    Next
-                  </button>
-                </div>
-              </>
-            )}
-            {currentPage === 4 && (
-              <>
-                <Step4 saveAsDraft={saveAsDraft} />
-                <div style={{display: "flex", justifyContent: "space-between"}}>
-                  <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
-                    Back
-                  </button>
-                  <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
-                    Next
-                  </button>
-                </div>
-              </>
-            )}
-            {currentPage === 5 && (
-              <>
-                <Step5 saveAsDraft={saveAsDraft} />
-                <div style={{display: "flex", justifyContent: "space-between"}}>
-                  <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
-                    Back
-                  </button>
-                  <button style={nextButtonStyle} type="submit" onClick={()=>handleClick(isValid)} className="btn btn-success">
-                    Submit
-                  </button>
-                </div>
-              </>
-            )}
-          </Form>
+          {currentPage === 2 && (
+            <>
+              <Step2 saveAsDraft={saveAsDraft} />
+              <div style={{display: "flex", justifyContent: "space-between"}}>
+                <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
+                  Back
+                </button>
+                <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
+                  Next
+                </button>
+              </div>
+            </>
+          )}
+          {currentPage === 3 && (
+            <>
+              <Step3 saveAsDraft={saveAsDraft} />
+              <div style={{display: "flex", justifyContent: "space-between"}}>
+                <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
+                  Back
+                </button>
+                <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
+                  Next
+                </button>
+              </div>
+            </>
+          )}
+          {currentPage === 4 && (
+            <>
+              <Step4 saveAsDraft={saveAsDraft} />
+              <div style={{display: "flex", justifyContent: "space-between"}}>
+                <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
+                  Back
+                </button>
+                <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
+                  Next
+                </button>
+              </div>
+            </>
+          )}
+          {currentPage === 5 && (
+            <>
+              <Step5 saveAsDraft={saveAsDraft} />
+              <div style={{display: "flex", justifyContent: "space-between"}}>
+                <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
+                  Back
+                </button>
+                <button
+                  style={nextButtonStyle}
+                  type="submit"
+                  onClick={() => handleClick(isValid)}
+                  className="btn btn-success"
+                >
+                  Submit
+                </button>
+              </div>
+            </>
+          )}
+        </Form>
       )}
     </Formik>
   );

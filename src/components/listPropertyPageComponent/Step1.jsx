@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import PropertyInputBox from "../common/PropertyInputBox";
 import PropertySelectBox from "./../common/PropertySelectBox";
 import PhoneInput from "react-phone-input-2";
@@ -8,6 +8,10 @@ import Error from "./../forms/Error";
 import SaveAsDraftButton from "./SaveAsDraftButton";
 
 function Step1({saveAsDraft}) {
+  useEffect(() => {
+    window.scrollTo(0, 0) 
+  }, [])
+
   const {handleBlur, getFieldProps, values, setFieldValue} = useFormikContext();
 
   let {value, name} = getFieldProps("phoneNumber");

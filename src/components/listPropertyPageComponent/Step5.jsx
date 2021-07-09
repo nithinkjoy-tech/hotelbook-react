@@ -1,10 +1,14 @@
-import React from "react";
+import React,{useEffect} from "react";
 import PropertyInputBox from "../common/PropertyInputBox";
 import PropertySelectBox from "./../common/PropertySelectBox";
 import {useFormikContext} from "formik";
 import SaveAsDraftButton from "./SaveAsDraftButton";
 
 function Step5({saveAsDraft}) {
+  useEffect(() => {
+    window.scrollTo(0, 0) 
+  }, [])
+
   const {getFieldProps, setFieldValue, values} = useFormikContext();
 
   let states = [

@@ -7,6 +7,10 @@ import ImageUpload from "./ImageUpload";
 import {Delete} from "@material-ui/icons";
 
 function Step3({saveAsDraft}) {
+  useEffect(() => {
+    window.scrollTo(0, 0) 
+  }, [])
+
   const [prev, setPrev] = useState();
   const [numberOfImages, setNumberOfImages] = useState(0);
   const {getFieldProps, values, setFieldValue} = useFormikContext();

@@ -6,7 +6,7 @@ function SearchResultComponent({hotels}) {
     <div className="best-rooms w3l-blog py-5">
       <div className="container py-lg-5 py-sm-4">
         <div className="ban-content-inf row">
-          {hotels.map(hotel => (
+          {hotels?.length>0?<span>{hotels.map(hotel => (
             <div key={hotel.hotelName} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
               <div className="maghny-grid">
                 <figure className="effect-lily">
@@ -15,7 +15,7 @@ function SearchResultComponent({hotels}) {
                     <div>  
                       <h4 className="top-text">
                         {hotel.hotelName} 
-                        <Rating value={hotel?.starRating} />
+                        <Rating value={hotel?.reviewScore} />
                       </h4>
                       <p>Book for Rs.{hotel?.startingRatePerDay} </p>
                     </div>
@@ -63,7 +63,7 @@ function SearchResultComponent({hotels}) {
                 </div>
               </div> 
             </div>
-          ))}
+          ))}</span>:<p>There is no place with given name</p>}
         </div>
       </div>
     </div>

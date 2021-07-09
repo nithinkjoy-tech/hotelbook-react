@@ -10,6 +10,7 @@ import Footer from "./components/common/Footer";
 import Step1 from './components/listPropertyPageComponent/Step1';
 import ListPropertyPage from './pages/ListPropertyPage';
 import {ToastContainer} from "react-toastify";
+import ListPropertyWelcomePage from './pages/ListPropertyWelcomePage';
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
         <Route path="/search" component={SearchPage} />
         <Route path="/signin" component={SigninPage} />
         <Route path="/signup" component={SignupPage} />
+        <Route path="/renter/welcome" component={ListPropertyWelcomePage} />
+        <Route path="/renter/dashboard" component={ListPropertyWelcomePage} />
         <Route path="/renter/signin" component={SigninPage} />
         <Route path="/renter/signup" component={SignupPage} />
         <Route path="/renter/listproperty" component={ListPropertyPage} />

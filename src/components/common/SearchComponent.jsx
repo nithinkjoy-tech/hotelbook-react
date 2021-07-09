@@ -47,7 +47,7 @@ function SearchComponent({initialValues}) {
       validationSchema={validationSchema}
       onSubmit={values => handleSubmit(values)}
     >
-      {({errors, touched, values, handleChange,handleBlur}) => (
+      {({errors, touched, values, handleChange, handleBlur}) => (
         <Form>
           <section className="w3l-availability-form" id="booking">
             <div className="w3l-availability-form-main py-5">
@@ -59,7 +59,7 @@ function SearchComponent({initialValues}) {
                       <div className="row book-form">
                         <div className="form-input col-md-4 col-sm-6 mt-3">
                           <InputBox
-                          handleBlur={handleBlur}
+                            handleBlur={handleBlur}
                             label={null}
                             placeholder="Where are you going?"
                             name="placeForSearch"
