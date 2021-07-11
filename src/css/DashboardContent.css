@@ -33,3 +33,23 @@ margin-bottom: 2%;
    cursor: pointer;
  }
 
+ .hidden_Item{
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+ }
+
+ /* .hidden_Item_box:hover{
+   text-decoration: none !important;
+ } */
+/* 
+ .hidden_Item_box{
+    border: none !important;
+    border-color: black !important;
+ } */
+
+ .hidden_Item_Button{
+   margin-left: 25px;
+ }
+ 
+
