@@ -1,20 +1,26 @@
 import React from "react";
 import Rating from '../common/Rating'
 //wazirx bluewallet  
-function SearchResultComponent({hotels}) {    
+function SearchResultComponent({hotels,user}) {  
+  console.log(user,"usr")
+  const handleHotelClick=(id)=>{
+    if(user==="renter") return window.location=`/renter/listproperty/${id}`
+    window.location=""
+  }
+
   return (
     <div className="best-rooms w3l-blog py-5">
       <div className="container py-lg-5 py-sm-4">
         <div className="ban-content-inf row">
           {hotels?.length>0?<span>{hotels.map(hotel => (
-            <div key={hotel.hotelName} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
+            <div onClick={()=>handleHotelClick(hotel._id)} key={hotel.hotelName} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
               <div className="maghny-grid">
                 <figure className="effect-lily">
                   <img className="img-fluid" style={{height:"260px"}} src={hotel.mainPhoto} alt="Room" />
                   <figcaption>
                     <div>  
                       <h4 className="top-text">
-                        {hotel.hotelName} 
+                        {hotel.hotelName}
                         <Rating value={hotel?.reviewScore} />
                       </h4>
                       <p>Book for Rs.{hotel?.startingRatePerDay} </p>

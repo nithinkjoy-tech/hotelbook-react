@@ -12,7 +12,7 @@ function PriceSection({hotelDetails}) {
                         <div className="csslider infinity" id="slider1">
                             <ul className="banner_slide_bg">
                                 <li>
-                                    <img className="img" src={require('../images/slide1.jpg')} alt="" />
+                                    <img className="img" src={require('../../images/slide1.jpg')} alt="" />
                                 </li>
                             </ul>
                         </div>

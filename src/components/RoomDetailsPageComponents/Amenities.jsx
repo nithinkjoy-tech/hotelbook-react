@@ -1,6 +1,6 @@
 import React from 'react'
 import facilities from "../../images/facilities.jpg";
-import '../css/room.css'
+import '../../css/room.css'
 
 const Amenities = (props) => {
     return ( 

@@ -45,7 +45,6 @@ function Step3({saveAsDraft}) {
     reader.readAsDataURL(image);
   }
   setFieldValue("photos", imagesBase64);
-  console.log(imagesBase64.length,"lenn")
   }
 
   let handleImageChange = data => {
@@ -56,7 +55,6 @@ function Step3({saveAsDraft}) {
         let imageBase64=reader.result
         setPrev(imageBase64);
         setFieldValue("mainPhoto", imageBase64);
-        console.log(imageBase64)
         localStorage.setItem("coverPhoto", JSON.stringify(imageBase64));
       }
     };
