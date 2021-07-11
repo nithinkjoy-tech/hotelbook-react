@@ -26,7 +26,7 @@ function App() {
       <Switch>
         <Route path="/search" component={SearchPage} />
         <Route path="/signin" component={SigninPage} />
-        <Route path="/guest/dashboard" component={GuestDashboard} />
+        <Route path="/dashboard" component={GuestDashboard} />
         <Route path="/signup" component={SignupPage} />
         <Route path="/hotel/roomdetails" component={RoomDetails} />
         <Route path="/renter/welcome" component={ListPropertyWelcomePage} />
