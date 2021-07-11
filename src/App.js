@@ -11,6 +11,7 @@ import Step1 from './components/listPropertyPageComponent/Step1';
 import ListPropertyPage from './pages/ListPropertyPage';
 import {ToastContainer} from "react-toastify";
 import ListPropertyWelcomePage from './pages/ListPropertyWelcomePage';
+import GuestDashboard from "./pages/GuestDashboard";
 import RenterDashboard from './pages/RenterDashboard';
 import RoomDetails from './pages/RoomDetails';
 
@@ -25,6 +26,7 @@ function App() {
       <Switch>
         <Route path="/search" component={SearchPage} />
         <Route path="/signin" component={SigninPage} />
+        <Route path="/guest/dashboard" component={GuestDashboard} />
         <Route path="/signup" component={SignupPage} />
         <Route path="/hotel/roomdetails" component={RoomDetails} />
         <Route path="/renter/welcome" component={ListPropertyWelcomePage} />
