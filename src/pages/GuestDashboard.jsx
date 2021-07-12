@@ -6,6 +6,7 @@ import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import '../../src/css/GuestDashboard.css'
 import Profile from '../components/common/Profile';
 import History from '../components/common/History';
+import Booked_Dashboard from './../components/common/Booked_Dashboard';
 
 
 function GuestDashboard() {
@@ -25,8 +26,8 @@ function GuestDashboard() {
                 </ul>
             </div>
             {/* <Profile title={"Profile"} description={"Basic info, for a faster booking experience"} details={data}/> */}
-
-            <History />
+               <Booked_Dashboard />
+            {/* <History /> */}
             {/* <div className="guestDashboard_details">
                <DashboardContent />
             </div> */}

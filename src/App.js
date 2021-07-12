@@ -14,6 +14,7 @@ import ListPropertyWelcomePage from './pages/ListPropertyWelcomePage';
 import GuestDashboard from "./pages/GuestDashboard";
 import RenterDashboard from './pages/RenterDashboard';
 import RoomDetails from './pages/RoomDetails';
+import SearchResultComponent from "./components/searchPageComponent/SearchResultComponent";
 
 function App() {
   return (
