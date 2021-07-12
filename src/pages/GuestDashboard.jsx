@@ -25,8 +25,8 @@ function GuestDashboard() {
                 </ul>
             </div>
             {/* <Profile title={"Profile"} description={"Basic info, for a faster booking experience"} details={data}/> */}
-            <History />
 
+            <History />
             {/* <div className="guestDashboard_details">
                <DashboardContent />
             </div> */}
