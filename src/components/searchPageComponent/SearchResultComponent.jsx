@@ -1,5 +1,7 @@
 import React from "react";
 import Rating from '../common/Rating'
+import {Add} from "@material-ui/icons"
+import { Link } from 'react-router-dom';
 //wazirx bluewallet  
 function SearchResultComponent({hotels,user}) {  
   console.log(user,"usr")
@@ -7,13 +9,13 @@ function SearchResultComponent({hotels,user}) {
     if(user==="renter") return window.location=`/renter/listproperty/${id}`
     window.location=""
   }
-
+ 
   return (
     <div className="best-rooms w3l-blog py-5">
       <div className="container py-lg-5 py-sm-4">
         <div className="ban-content-inf row">
           {hotels?.length>0?<span>{hotels.map(hotel => (
-            <div onClick={()=>handleHotelClick(hotel._id)} key={hotel.hotelName} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
+            <div key={hotel.hotelName} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
               <div className="maghny-grid">
                 <figure className="effect-lily">
                   <img className="img-fluid" style={{height:"260px"}} src={hotel.mainPhoto} alt="Room" />
@@ -41,9 +43,18 @@ function SearchResultComponent({hotels,user}) {
                     </li>
                   </ul>
                   <p>{hotel?.description}</p>
-                  <a href="booking.html" className="btn mt-sm-4 mt-3">
-                    Book Now
-                  </a>
+                <div style={{display:"flex",justifyContent:"space-between"}}>
+                <Link to={`/renter/listproperty/${hotel._id}`} >
+                    <span className="btn mt-sm-4 mt-3">
+                      Edit hotel
+                    </span>
+                  </Link>
+                  <Link to={`/renter/addroom/${hotel._id}`} >
+                    <span className="btn mt-sm-3">
+                      <i style={{fontSize:"1.5rem"}}>+</i> Add Rooms
+                    </span>
+                  </Link>
+                </div>
                   <div className="room-info-bottom">
                     <ul className="room-amenities">
                       <li>
@@ -62,7 +73,7 @@ function SearchResultComponent({hotels,user}) {
                         </a>
                       </li>
                     </ul>
-                    <a href="#" className="btn view">
+                    <a onClick={()=>handleHotelClick(hotel._id)} className="btn view">
                       Full Info →
                     </a>
                   </div>
