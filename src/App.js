@@ -7,14 +7,13 @@ import NavBar from "./components/common/NavBar.jsx";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import Footer from "./components/common/Footer";
-import Step1 from './components/listPropertyPageComponent/Step1';
 import ListPropertyPage from './pages/ListPropertyPage';
 import {ToastContainer} from "react-toastify";
 import ListPropertyWelcomePage from './pages/ListPropertyWelcomePage';
 import GuestDashboard from "./pages/GuestDashboard";
 import RenterDashboard from './pages/RenterDashboard';
 import RoomDetails from './pages/RoomDetails';
-import SearchResultComponent from "./components/searchPageComponent/SearchResultComponent";
+import AddRoom from './components/listPropertyPageComponent/AddRoom';
 
 function App() {
   return (
@@ -36,6 +35,7 @@ function App() {
         <Route path="/renter/signup" component={SignupPage} />
         <Route path="/renter/listproperty/:id" component={ListPropertyPage} />
         <Route path="/renter/listproperty" component={ListPropertyPage} />
+        <Route path="/renter/addroom/:hotelId" component={AddRoom} />
         <Route path="/" component={LandingPage} />
       </Switch>
       <Footer />
