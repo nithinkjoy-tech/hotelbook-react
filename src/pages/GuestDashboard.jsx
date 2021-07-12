@@ -4,7 +4,8 @@ import HistoryIcon from '@material-ui/icons/History';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import '../../src/css/GuestDashboard.css'
-import DashboardContent from './../components/common/DashboardContent';
+import Profile from '../components/common/Profile';
+import History from '../components/common/History';
 
 
 function GuestDashboard() {
@@ -23,7 +24,9 @@ function GuestDashboard() {
                     <li><ExitToAppIcon/><div className="Content">Logout</div></li>
                 </ul>
             </div>
-            <DashboardContent title={"Profile"} description={"Basic info, for a faster booking experience"} details={data}/>
+            {/* <Profile title={"Profile"} description={"Basic info, for a faster booking experience"} details={data}/> */}
+            <History />
+
             {/* <div className="guestDashboard_details">
                <DashboardContent />
             </div> */}

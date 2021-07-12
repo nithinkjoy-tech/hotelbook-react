@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from "react";
-import ReactLoading from 'react-loading';
+import ReactLoading from 'react-loading'
 import SearchResultComponent from "./../components/searchPageComponent/SearchResultComponent";
 import { getRenterHotels } from './../api/renter';
 
