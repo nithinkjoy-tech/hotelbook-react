@@ -10,18 +10,23 @@ import Booked_Dashboard from './../components/common/Booked_Dashboard';
 
 
 function GuestDashboard() {
+
+    // Dummy data for pass the profile component
     const data = {
         name : 'vishnu',
         phone:'1234567890',
         email : 'vishnusatheeshpulickal555@gmail.com'
     }
-    const [selectOption,setSelectOption] = useState('history')
+    const [selectOption,setSelectOption] = useState('profile');
+    const [activeProfileOption,setActiveProfileOption] = useState(false);
+    const [activeHistoryOption,setActiveHistoryOption] = useState(false);
+    const [activeBookedOption,setActiveBookedOption] = useState(false);
     return (
         <div className="guestDashboard">
             <div className="guestDashboard_menu">
                 <ul className="guestDashboard_menuItems">
-                    <li onClick={e => setSelectOption('profile')}><PersonIcon /><div className="Content">Profile</div></li>
-                    <li onClick={e => setSelectOption('history')}><HistoryIcon /><div className="Content">History</div></li>
+                    <li onClick={e => {setSelectOption('profile'); }} className={activeProfileOption && "active"}><PersonIcon /><div className="Content">Profile</div></li>
+                    <li onClick={e => {setSelectOption('history'); }} className={activeHistoryOption && "active"}><HistoryIcon /><div className="Content">History</div></li>
                     <li onClick={e => setSelectOption('booked')}><EventAvailableIcon/><div className="Content">Booked</div></li>
                     <li><ExitToAppIcon/><div className="Content">Logout</div></li>
                 </ul>
