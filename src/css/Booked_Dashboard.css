@@ -87,9 +87,18 @@
 
 .book-details{
 display: flex;
-flex-wrap: wrap;
+justify-content: space-between;
 }
 
 .pay{
     margin-right: 10px;
+    font-size: 18px;
+}
+
+.book-desc-more{
+       font-size: 15px;
+}
+
+.book-details-desc{
+  font-size: 18px;
 }

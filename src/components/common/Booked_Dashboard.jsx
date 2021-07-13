@@ -21,10 +21,19 @@ function Booked_Dashboard() {
           </p>
           <p className="book-desc">
             Address section
-            <h5 className="pay">Pay Rs. 5000</h5>
+            <h5 className="book-desc-more">Guests : </h5>
+            <h5 className="book-desc-more">Type : </h5>
           </p>
           <div className="book-details">
-            <h5>Hotel Booking ID : 5897458631</h5>
+            <div className="book-details-right">
+            <h5 className="book-details-desc">Hotel Booking ID : 5897458631</h5>
+            <h5 className="pay">Pay Rs. 5000</h5>
+            </div>
+            <div className="book-details-left">
+             <h5 className="book-details-desc">Booked In : 12/7/2021</h5>
+             <h5 className="book-details-desc">Check In : 24/7/2021</h5>
+            </div>
+            
           </div>
         </div>
       </article>
