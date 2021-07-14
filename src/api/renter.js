@@ -16,8 +16,13 @@ export function renterSignin(values){
     return apiClient.post("/renter/signin", values);
 }
 
+
 export function renterSignup(values){
     return apiClient.post("/renter/signup", values);
+}
+
+export function getHotelRooms(id){
+    return apiClient.get(`/renter/room?hotelId=${id}`);
 }
 
 export function addRoom(values){

@@ -8,11 +8,11 @@ function FormCheckBox({label,onChange,defaultChecked,...others}) {
         className="form-check-input"
         type="checkbox"
         onChange={onChange}
-        id="flexCheckDefault"
+        id={label}
         defaultChecked={defaultChecked}
         {...others}
       />
-      <label style={{cursor: "pointer"}} className="form-check-label">
+      <label style={{cursor: "pointer"}} htmlFor={label} className="form-check-label">
         {label}
       </label>
     </span>

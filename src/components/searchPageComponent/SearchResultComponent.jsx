@@ -1,12 +1,11 @@
-import React from "react";
+import React,{useState} from "react";
 import Rating from '../common/Rating'
-import {Add} from "@material-ui/icons"
 import { Link } from 'react-router-dom';
 //wazirx bluewallet  
 function SearchResultComponent({hotels,user}) {  
-  console.log(user,"usr")
+
   const handleHotelClick=(id)=>{
-    if(user==="renter") return window.location=`/renter/listproperty/${id}`
+    if(user==="renter") return window.location=`/renter/room/${id}`
     window.location=""
   }
  
@@ -15,9 +14,9 @@ function SearchResultComponent({hotels,user}) {
       <div className="container py-lg-5 py-sm-4">
         <div className="ban-content-inf row">
           {hotels?.length>0?<span>{hotels.map(hotel => (
-            <div key={hotel.hotelName} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
+            <div  key={hotel.hotelName} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
               <div className="maghny-grid">
-                <figure className="effect-lily">
+                <figure onClick={()=>handleHotelClick(hotel._id)} className="effect-lily">
                   <img className="img-fluid" style={{height:"260px"}} src={hotel.mainPhoto} alt="Room" />
                   <figcaption>
                     <div>  
@@ -31,7 +30,7 @@ function SearchResultComponent({hotels,user}) {
                 </figure>
                 <div className="room-info"> 
                   <h3 className="room-title"> 
-                    <a href="#url">{hotel?.hotelName}</a> 
+                    <a href="#url">{hotel?.city}</a> 
                   </h3>
                   <ul className="mb-3">
                     <li key={hotel?.guests}>

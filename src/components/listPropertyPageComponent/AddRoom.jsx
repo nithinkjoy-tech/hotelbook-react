@@ -1,10 +1,13 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import PropertyInputBox from "../common/PropertyInputBox";
 import PropertySelectBox from "./../common/PropertySelectBox";
 import "react-phone-input-2/lib/style.css";
 import * as Yup from "yup";
 import FormCheckBox from "./../common/FormCheckBox";
-import {Formik, Form} from "formik";
+import Error from "./../forms/Error";
+import ImageUpload from "./ImageUpload";
+import {Delete} from "@material-ui/icons";
+import {Formik, Form,ErrorMessage} from "formik";
 import {addRoom} from "../../api/renter";
 import {toast} from "react-toastify";
 
@@ -18,6 +21,8 @@ const validationSchema = Yup.object().shape({
   basePricePerNight: Yup.number().min(10).max(2500000).required(),
   numberOfGuestsInaRoom: Yup.number().min(1).max(50),
   facilities: Yup.array().required(),
+  mainPhoto: Yup.mixed().required(),
+  photos: Yup.array().nullable(),
 });
 
 function AddRoom({match}) {
@@ -27,9 +32,46 @@ function AddRoom({match}) {
     window.scrollTo(0, 0);
   }, []);
 
+  const [prev, setPrev] = useState();
+  const [numberOfImages, setNumberOfImages] = useState(0);
+
+  const handleDelete = (setFieldValue, getFieldProps) => {
+    let {name} = getFieldProps("mainPhoto");
+    setFieldValue(name, null);
+    setPrev(null);
+  };
+
+  let imageToBase64 = (images, setFieldValue) => {
+    let imagesBase64 = [];
+    for (let image of images) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          let imageBase64 = reader.result;
+          imagesBase64.push(imageBase64);
+        }
+      };
+      reader.readAsDataURL(image);
+    }
+    setFieldValue("photos", imagesBase64);
+  };
+
+  let handleImageChange = (data, setFieldValue) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        let imageBase64 = reader.result;
+        setPrev(imageBase64);
+        setFieldValue("mainPhoto", imageBase64);
+      }
+    };
+    reader.readAsDataURL(data);
+  };
+
   const handleSubmit = async (values, setFieldError) => {
     values["hotelId"] = hotelId;
-    // return console.log(values,"va")
     const {data, status} = await addRoom(values);
 
     if (status === 400 && data.property === "toast") return toast.error(data.msg);
@@ -48,11 +90,13 @@ function AddRoom({match}) {
     basePricePerNight: "",
     numberOfGuestsInaRoom: "",
     facilities: [],
+    mainPhoto: "",
+    photos: [],
   };
 
   let value = initialValues.facilities;
 
-  let checkBoxModified = (feature,setFieldValue) => {
+  let checkBoxModified = (feature, setFieldValue) => {
     if (value.includes(feature)) value = value.filter(val => feature !== val);
     else value.push(feature);
     setFieldValue("facilities", value);
@@ -74,7 +118,7 @@ function AddRoom({match}) {
       validationSchema={validationSchema}
       onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
     >
-      {({setFieldValue}) => (
+      {({setFieldValue, getFieldProps}) => (
         <Form>
           <div style={{marginTop: "60px"}}>
             <h1 style={{textAlign: "center", marginTop: "70px", marginBottom: "0"}}>Add room</h1>
@@ -160,7 +204,9 @@ function AddRoom({match}) {
                                                 key={feature}
                                                 defaultChecked={value?.includes(feature)}
                                                 label={feature}
-                                                onChange={() => checkBoxModified(feature,setFieldValue)}
+                                                onChange={() =>
+                                                  checkBoxModified(feature, setFieldValue)
+                                                }
                                               />
                                             ))}
                                           </div>
@@ -170,11 +216,64 @@ function AddRoom({match}) {
                                                 key={feature}
                                                 defaultChecked={value.includes(feature)}
                                                 label={feature}
-                                                onChange={() => checkBoxModified(feature,setFieldValue)}
+                                                onChange={() =>
+                                                  checkBoxModified(feature, setFieldValue)
+                                                }
                                               />
                                             ))}
                                           </div>
                                         </div>
+                                      </div>
+                                    </div>
+
+                                    <div style={{width: "80vw",marginTop:"3rem"}}>
+                                      <div className="col-span-6 sm:col-span-6">
+                                        <ImageUpload
+                                          label="Cover photo"
+                                          text="Upload an image"
+                                          multiple={false}
+                                          onChange={event => {
+                                            let image = event.target.files[0];
+                                            handleImageChange(image, setFieldValue);
+                                          }}
+                                        />
+                                          <ErrorMessage name="mainPhoto" component={Error} />
+                                      </div>
+                                      {prev && value ? (
+                                        <div>
+                                          <center>
+                                            <img className="image" src={prev} alt="hotel" />
+                                            <button
+                                              onClick={() =>
+                                                handleDelete(setFieldValue, getFieldProps)
+                                              }
+                                              className="btn btn-danger mt-2"
+                                              type="button"
+                                            >
+                                              <span>
+                                                <Delete /> Delete
+                                              </span>
+                                            </button>
+                                          </center>
+                                        </div>
+                                      ) : (
+                                        <div></div>
+                                      )}
+                                      <div className="px-4 py-5 bg-white sm:p-6">
+                                        <ImageUpload
+                                          text="Upload multiple images"
+                                          label="Other photos"
+                                          multiple={true}
+                                          onChange={event => {
+                                            let images = event.target.files;
+                                            console.log(setFieldValue, "sfv");
+                                            setFieldValue("photos", images);
+                                            imageToBase64(images, setFieldValue);
+                                            setNumberOfImages(images.length);
+                                            // localStorage.setItem("numberOfRoomImages", images.length);
+                                          }}
+                                          numberOfImages={numberOfImages}
+                                        />
                                       </div>
                                     </div>
                                   </div>
@@ -186,6 +285,7 @@ function AddRoom({match}) {
                         <button
                           style={{float: "right", marginRight: "4rem", marginBottom: "2rem"}}
                           className="btn btn-primary"
+                          type="submit"
                         >
                           Save Room
                         </button>
