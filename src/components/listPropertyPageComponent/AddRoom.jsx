@@ -166,10 +166,7 @@ function AddRoom({match}) {
                           <div className="col-span-6 sm:col-span-3">
                             <PropertyInputBox
                               label="Number of Rooms of this Type"
-                              type="number"
                               name="numberOfRoomsOfThisType"
-                              min="1"
-                              max="9999"
                             />
                           </div>
                           <div className="col-span-6 sm:col-span-3">
@@ -183,23 +180,19 @@ function AddRoom({match}) {
                           <div className="col-span-6 sm:col-span-3">
                             <PropertyInputBox
                               label="Number of Beds"
-                              type="number"
                               name="numberOfBeds"
                             />
                           </div>
                           <div className="col-span-6 sm:col-span-3">
                             <PropertyInputBox
                               label="Base Price Per Night (INR)"
-                              type="number"
+                              type="text"
                               name="basePricePerNight"
-                              min="10"
-                              max="2500000"
                             />
                           </div>
                           <div className="col-span-6 sm:col-span-3">
                             <PropertyInputBox
                               label="Number of Guests in a Room"
-                              type="number"
                               name="numberOfGuestsInaRoom"
                             />
                           </div>
