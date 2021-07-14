@@ -23,7 +23,7 @@ function Profile({ title, description, name, details }) {
           <EditIcon onClick={e => setNameField(true)} className="edit_Icon" />
         </div>
        {nameField && <div className="hidden_Item">
-          <TextField id="outlined-basic" label="Enter Name Here" variant="outlined" onChange={ e => setChangeName(e.target.value)} />
+          <input type="text" className="name_Box" placeholder="Enter Name Here" onChange={ e => setChangeName(e.target.value)} />
           <div className="hidden_Item_Button">
           <Button variant="contained" color="primary" size="small" startIcon={<SaveIcon />}>Save</Button>
           </div>
@@ -35,7 +35,7 @@ function Profile({ title, description, name, details }) {
           <EditIcon onClick={ e => setPhoneField(true)} className="edit_Icon" />
         </div>
        {phoneField && <div className="hidden_Item">
-          <TextField id="outlined-basic" label="Enter Mobile Here" variant="outlined" onChange={ e => setChangePhone(e.target.value)} />
+       <input type="text" className="name_Box" placeholder="Enter Mobile Here" onChange={ e => setChangePhone(e.target.value)} />
           <div className="hidden_Item_Button">
           <Button variant="contained" color="primary" size="small" startIcon={<SaveIcon />}>Save</Button>
           </div>
