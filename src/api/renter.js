@@ -16,7 +16,6 @@ export function renterSignin(values){
     return apiClient.post("/renter/signin", values);
 }
 
-
 export function renterSignup(values){
     return apiClient.post("/renter/signup", values);
 }
@@ -25,10 +24,18 @@ export function getHotelRooms(id){
     return apiClient.get(`/renter/room?hotelId=${id}`);
 }
 
+export function getRenterRoomById(id){
+    return apiClient.get(`/renter/room/${id}`);
+}
+
 export function addRoom(values){
     return apiClient.post("/renter/room", values);
 }
 
-export function editHotelbyId(values,id){
+export function editHotelById(values,id){
     return apiClient.put(`/renter/hotel/${id}`,values);
+}
+
+export function editRoomById(values,id){
+    return apiClient.put(`/renter/room/${id}`,values);
 }

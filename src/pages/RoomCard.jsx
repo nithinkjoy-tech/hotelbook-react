@@ -9,17 +9,19 @@ function RoomCard({match}) {
   const [rooms, setRooms] = useState();
 
   const getRooms = async () => {
-    console.log("called");
     const {data} = await getHotelRooms(hotelId);
     console.log(data, "dt");
     setRooms(data);
   };
 
+  const editRoom=(roomId)=>{
+    window.location=`/renter/editroom/${roomId}`
+  }
+
   useEffect(() => {
     getRooms();
   }, []);
 
-  
 
   return (
     <div>
@@ -42,7 +44,7 @@ function RoomCard({match}) {
                 <p className="room_card__description">{room?.kindOfBed}</p>
                 <p className="room_card__description">{room?.numberOfBeds}</p>
                 <h3 className="room_card__price">{room?.basePricePerNight}</h3>
-                <button className="room_card__btn">Edit Room</button>
+                <button onClick={()=>editRoom(room?._id)} className="room_card__btn">Edit Room</button>
               </div>
             </div>
           ))

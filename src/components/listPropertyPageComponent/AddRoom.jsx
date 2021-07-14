@@ -8,7 +8,7 @@ import Error from "./../forms/Error";
 import ImageUpload from "./ImageUpload";
 import {Delete} from "@material-ui/icons";
 import {Formik, Form,ErrorMessage} from "formik";
-import {addRoom} from "../../api/renter";
+import {addRoom,getRenterRoomById,editRoomById} from "../../api/renter";
 import {toast} from "react-toastify";
 
 const validationSchema = Yup.object().shape({
@@ -26,10 +26,34 @@ const validationSchema = Yup.object().shape({
 });
 
 function AddRoom({match}) {
-  let hotelId = match.params.hotelId;
+  let roomId = match.params.roomId;
+
+  const [initialValues,setInitialValues]=useState({
+    roomType: "",
+    numberOfRoomsOfThisType: "",
+    kindOfBed: "Single bed",
+    numberOfBeds: "",
+    basePricePerNight: "",
+    numberOfGuestsInaRoom: "",
+    facilities: [],
+    mainPhoto: "",
+    photos: [],
+    hotelId:null
+  })
+
+  async function getRoom(id) {
+    const {data} = await getRenterRoomById(id);
+    setInitialValues(data);
+
+    setPrev(data.mainPhoto)
+    setNumberOfImages(data.photos.length)
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (roomId) {
+      getRoom(roomId);
+    }
   }, []);
 
   const [prev, setPrev] = useState();
@@ -71,35 +95,32 @@ function AddRoom({match}) {
   };
 
   const handleSubmit = async (values, setFieldError) => {
-    values["hotelId"] = hotelId;
-    const {data, status} = await addRoom(values);
-
-    if (status === 400 && data.property === "toast") return toast.error(data.msg);
-    if (status === 400) return setFieldError(data.property, data.msg);
-    toast.info("Successfully added room");
+    values["hotelId"] = match.params.hotelId||initialValues.hotelId;
+    let isEdited=false
+    if (roomId) {
+      const {data, status} = await editRoomById(values, roomId);
+      if (status === 400) return setFieldError(data.property, data.msg);
+      isEdited=true
+    } else {
+      const {data, status} = await addRoom(values);
+      if (status === 400 && data.property === "toast") return toast.error(data.msg);
+      if (status === 400) return setFieldError(data.property, data.msg);
+    }
+    toast.dismiss();
+    if(isEdited) toast.info("Successfully modified details")
+    else toast.info("Successfully added room");
     setTimeout(() => {
       window.location = "/renter/dashboard";
     }, 1000);
   };
 
-  let initialValues = {
-    roomType: "",
-    numberOfRoomsOfThisType: "",
-    kindOfBed: "Single bed",
-    numberOfBeds: "",
-    basePricePerNight: "",
-    numberOfGuestsInaRoom: "",
-    facilities: [],
-    mainPhoto: "",
-    photos: [],
-  };
+  
 
-  let value = initialValues.facilities;
 
-  let checkBoxModified = (feature, setFieldValue) => {
+  let checkBoxModified = (feature, setFieldValue,{value,name}) => {
     if (value.includes(feature)) value = value.filter(val => feature !== val);
     else value.push(feature);
-    setFieldValue("facilities", value);
+    setFieldValue(name, value);
   };
 
   let leftFeature = [
@@ -112,11 +133,15 @@ function AddRoom({match}) {
   ];
   let rightFeature = ["Restaurant", "Room service", "Bar", "Hot tub/jacuzzi", "Swimming pool"];
 
+  if(roomId&&!initialValues?.roomType) return null
+
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
+      enableReinitialize
     >
       {({setFieldValue, getFieldProps}) => (
         <Form>
@@ -202,10 +227,10 @@ function AddRoom({match}) {
                                             {leftFeature.map(feature => (
                                               <FormCheckBox
                                                 key={feature}
-                                                defaultChecked={value?.includes(feature)}
+                                                defaultChecked={getFieldProps("facilities").value.includes(feature)}
                                                 label={feature}
                                                 onChange={() =>
-                                                  checkBoxModified(feature, setFieldValue)
+                                                  checkBoxModified(feature, setFieldValue,getFieldProps("facilities"))
                                                 }
                                               />
                                             ))}
@@ -214,10 +239,10 @@ function AddRoom({match}) {
                                             {rightFeature.map(feature => (
                                               <FormCheckBox
                                                 key={feature}
-                                                defaultChecked={value.includes(feature)}
+                                                defaultChecked={getFieldProps("facilities").value.includes(feature)}
                                                 label={feature}
                                                 onChange={() =>
-                                                  checkBoxModified(feature, setFieldValue)
+                                                  checkBoxModified(feature, setFieldValue,getFieldProps("facilities"))
                                                 }
                                               />
                                             ))}
@@ -239,7 +264,7 @@ function AddRoom({match}) {
                                         />
                                           <ErrorMessage name="mainPhoto" component={Error} />
                                       </div>
-                                      {prev && value ? (
+                                      {prev ? (
                                         <div>
                                           <center>
                                             <img className="image" src={prev} alt="hotel" />
@@ -266,11 +291,9 @@ function AddRoom({match}) {
                                           multiple={true}
                                           onChange={event => {
                                             let images = event.target.files;
-                                            console.log(setFieldValue, "sfv");
                                             setFieldValue("photos", images);
                                             imageToBase64(images, setFieldValue);
                                             setNumberOfImages(images.length);
-                                            // localStorage.setItem("numberOfRoomImages", images.length);
                                           }}
                                           numberOfImages={numberOfImages}
                                         />

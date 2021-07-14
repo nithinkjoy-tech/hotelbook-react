@@ -35,10 +35,10 @@ function App() {
         <Route path="/renter/signin" component={SigninPage} />
         <Route path="/renter/signup" component={SignupPage} />
         <Route path="/renter/room/:hotelId" component={RoomCard} />
-        {/* <Route path="/renter/rooma" component={RoomDetails} /> */}
         <Route path="/renter/listproperty/:id" component={ListPropertyPage} />
         <Route path="/renter/listproperty" component={ListPropertyPage} />
         <Route path="/renter/addroom/:hotelId" component={AddRoom} />
+        <Route path="/renter/editroom/:roomId" component={AddRoom} />
         <Route path="/" component={LandingPage} />
       </Switch>
       <Footer />
