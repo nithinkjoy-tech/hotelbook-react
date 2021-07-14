@@ -2,7 +2,7 @@ import React from "react";
 
 const Rating = ({value}) => {
   return (
-    <ul>
+    <ul style={{display:'flex'}}>
       <li>
         <i
           className={

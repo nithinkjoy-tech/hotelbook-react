@@ -4,9 +4,9 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 // import '../../css/GuestDashboard.css'
-import "../../css/DashboardContent.css";
+import "../../css/Profile.css";
 
-function DashboardContent({ title, description, name, details }) {
+function Profile({ title, description, name, details }) {
     const [nameField,setNameField] = useState(false);
     const [phoneField,setPhoneField] = useState(false);
     const [changeName,setChangeName] = useState('');
@@ -50,4 +50,4 @@ function DashboardContent({ title, description, name, details }) {
   );
 }
 
-export default DashboardContent;
+export default Profile;
