@@ -24,7 +24,7 @@ function SearchResultComponent({hotels,user}) {
                         {hotel.hotelName}
                         <Rating value={hotel?.reviewScore} />
                       </h4>
-                      <p>Book for Rs.{hotel?.startingRatePerDay} </p>
+                      
                     </div>
                   </figcaption>
                 </figure>
@@ -42,17 +42,18 @@ function SearchResultComponent({hotels,user}) {
                     </li>
                   </ul>
                   <p>{hotel?.description}</p>
+                  <p style={{color:"purple",fontWeight:"bold"}} >Book for Rs.{hotel?.startingRatePerDay} </p>
                 <div style={{display:"flex",justifyContent:"space-between"}}>
-                <Link to={`/renter/listproperty/${hotel._id}`} >
+                {user==="renter"?<Link to={`/renter/listproperty/${hotel._id}`} >
                     <span className="btn mt-sm-4 mt-3">
                       Edit hotel
                     </span>
-                  </Link>
-                  <Link to={`/renter/addroom/${hotel._id}`} >
+                  </Link>:<div></div>}
+                  {user==="renter"?<Link to={`/renter/addroom/${hotel._id}`} >
                     <span className="btn mt-sm-3">
                       <i style={{fontSize:"1.5rem"}}>+</i> Add Rooms
                     </span>
-                  </Link>
+                  </Link>:<div></div>}
                 </div>
                   <div className="room-info-bottom">
                     <ul className="room-amenities">

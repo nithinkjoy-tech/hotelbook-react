@@ -44,7 +44,7 @@ body {
   margin-top: 0.6rem;
 }
 .room_card__price::before {
-  content: "$";
+  content: "Rs ";
   font-size: 1rem;
   position: relative;
   top: -0.3rem;
