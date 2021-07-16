@@ -55,10 +55,10 @@ function RenterDashboard() {
 
   return (
     <div>
+      <div style={{height:"35px"}} ></div>
       <SearchResultComponent user="renter" hotels={hotels} />
       <div className="d-flex justify-content-center">
       <ReactPaginate
-        // ref={pagination}
         pageCount={Math.ceil(hotelsCount / pageSize)}
         pageRangeDisplayed={10}
         marginPagesDisplayed={1}

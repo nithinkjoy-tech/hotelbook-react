@@ -9,15 +9,12 @@ function SearchResultComponent({hotels,user}) {
     window.location=""
   }
 
-  
-
-
   return (
-    <div className="best-rooms w3l-blog py-5">
-      <div className="container py-lg-5 py-sm-4">
+    <div className="best-rooms w3l-blog">
+      <div className="container py-sm-4">
         <div className="ban-content-inf row">
           {hotels?.length>0?<>{hotels.map(hotel => (
-          <div  className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
+          <div key={hotel._id} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
               <div className="maghny-grid">
                 <figure onClick={()=>handleHotelClick(hotel._id)} className="effect-lily">
                   <img className="img-fluid" style={{height:"260px"}} src={hotel.mainPhoto} alt="Room" />

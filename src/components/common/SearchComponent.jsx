@@ -33,8 +33,8 @@ function SearchComponent({initialValues}) {
     values["pageSize"]=9
     const {data} = await getHotels(values);
     let {hotelsCount,hotels}=data
-
-    history.push("/search", {data:hotels, hotelsCount,values});
+    let forcePage=0
+    history.push("/search", {data:hotels, hotelsCount,values,forcePage});
   };
 
   return (

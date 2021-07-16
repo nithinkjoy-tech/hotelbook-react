@@ -6,12 +6,13 @@ import SearchResultComponent from "../components/searchPageComponent/SearchResul
 import ReactPaginate from 'react-paginate';
 import "bootstrap/scss/bootstrap.scss";
 import { getHotels } from './../api/admin';
+import FilterComponent from './../components/searchPageComponent/FilterComponent';
 
 function SearchPage() {
 
   const [didPaginate,setDidPaginate]=useState()
-  const pagination = useRef();
 
+  const pagination = useRef();
   const history = useHistory();
 
   let pageSize=9
@@ -32,11 +33,11 @@ function SearchPage() {
 
 
   if (!history.location.state) window.location = "/";
-  let {data,hotelsCount, values} = history.location.state;
-
+  let {data,hotelsCount, values,forcePage} = history.location.state;
   return (
     <div>
       <SearchComponent initialValues={values} />
+      <FilterComponent/>
       <SearchResultComponent hotels={data} />
       <div className="d-flex justify-content-center">
       <ReactPaginate
@@ -45,6 +46,7 @@ function SearchPage() {
         pageRangeDisplayed={10}
         marginPagesDisplayed={1}
         onPageChange={handlePageChange}
+        forcePage={forcePage}
         containerClassName="pagination"
         activeClassName="active"
         pageLinkClassName="page-link"
