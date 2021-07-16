@@ -25,11 +25,16 @@ const validationSchema = Yup.object().shape({
 });
 
 function SearchComponent({initialValues}) {
+  // console.log(pageNumber,pageSize,"pnps")
   const history = useHistory();
 
   const handleSubmit = async values => {
+    values["pageNumber"]=0
+    values["pageSize"]=1
     const {data} = await getHotels(values);
-    history.push("/search", {data, values});
+    let {hotelsCount,hotels}=data
+
+    history.push("/search", {data:hotels, hotelsCount,values});
   };
 
   return (

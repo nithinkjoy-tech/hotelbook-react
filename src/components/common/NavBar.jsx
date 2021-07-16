@@ -5,7 +5,6 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import logo from "../../images/HotelBook.png"
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
   { name: 'List Your Property', href: '/renter/welcome', current: false },
 //   { name: 'Projects', href: '#', current: false },
 //   { name: 'Calendar', href: '#', current: false },

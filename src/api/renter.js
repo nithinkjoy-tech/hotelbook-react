@@ -1,7 +1,7 @@
 import apiClient from "./httpService";
 
-export function getRenterHotels(){
-    return apiClient.get("/renter/hotel");
+export function getRenterHotels(values){
+    return apiClient.get("/renter/hotel",values);
 }
 
 export function getRenterHotelsbyId(id){

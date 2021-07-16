@@ -2,20 +2,35 @@ import React, {useEffect,useState} from "react";
 import ReactLoading from 'react-loading'
 import SearchResultComponent from "./../components/searchPageComponent/SearchResultComponent";
 import { getRenterHotels } from './../api/renter';
+import ReactPaginate from 'react-paginate';
 
 function RenterDashboard() {
   const [hotels,setHotels]=useState()
   const [isLoading,setIsLoading]=useState(true)
+  const [hotelsCount,setHotelsCount]=useState()
 
   async function getHotels() {
-    const {data}=await getRenterHotels()
-    setHotels(data)
+    let values={pageNumber:0,pageSize:2}
+    const {data}=await getRenterHotels(values)
+    let {hotelsCount,hotels}=data
+    console.log(hotelsCount,"count")
+    setHotels(hotels)
+    setHotelsCount(hotelsCount)
     setIsLoading(false)
   }
 
   useEffect(() => {
     getHotels()
   },[]);
+
+  const handlePageChange = async({selected}) => {
+    let values={pageNumber:selected,pageSize:2}
+    let {data} = await getRenterHotels(values); 
+    let {hotelsCount,hotels}=data
+    setHotels(hotels)
+    setHotelsCount(hotelsCount)
+    setIsLoading(false)
+  }; 
 
   if(isLoading){
     return (
@@ -33,6 +48,27 @@ function RenterDashboard() {
   return (
     <div>
       <SearchResultComponent user="renter" hotels={hotels} />
+      <div className="d-flex justify-content-center">
+      <ReactPaginate
+        // ref={pagination}
+        pageCount={Math.ceil(hotelsCount / 1)}
+        pageRangeDisplayed={10}
+        marginPagesDisplayed={1}
+        onPageChange={handlePageChange}
+        containerClassName="pagination"
+        activeClassName="active"
+        pageLinkClassName="page-link"
+        breakLinkClassName="page-link"
+        nextLinkClassName="page-link"
+        previousLinkClassName="page-link"
+        pageClassName="page-item"
+        breakClassName="page-item"
+        nextClassName="page-item"
+        previousClassName="page-item"
+        previousLabel="Previous"
+        nextLabel="Next"
+      />
+      </div>
     </div> 
   );
 }
