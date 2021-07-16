@@ -95,7 +95,7 @@ function ListPropertyPage({match}) {
     tradeName: "",
     GSTIN: "",
     panCardNumber: "",
-    state: "",
+    state: "Andhra Pradesh",
   });
 
   async function getHotels(id) {
@@ -161,6 +161,9 @@ function ListPropertyPage({match}) {
     if(isEdited) toast.info("Successfully modified details")
     else
     toast.info("Successfully added hotel")
+    localStorage.removeItem("coverPhoto");
+    localStorage.removeItem("numberOfImages");
+    localStorage.removeItem("saveAsDraft");
     setTimeout(() => {
       window.location="/renter/dashboard"
     }, 1000);

@@ -30,7 +30,7 @@ function SearchComponent({initialValues}) {
 
   const handleSubmit = async values => {
     values["pageNumber"]=0
-    values["pageSize"]=1
+    values["pageSize"]=9
     const {data} = await getHotels(values);
     let {hotelsCount,hotels}=data
 

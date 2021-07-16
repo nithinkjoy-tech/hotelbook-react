@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect} from "react";
 import Rating from '../common/Rating'
 import { Link } from 'react-router-dom';
 //wazirx bluewallet  
@@ -8,13 +8,16 @@ function SearchResultComponent({hotels,user}) {
     if(user==="renter") return window.location=`/renter/room/${id}`
     window.location=""
   }
- 
+
+  
+
+
   return (
     <div className="best-rooms w3l-blog py-5">
       <div className="container py-lg-5 py-sm-4">
         <div className="ban-content-inf row">
+          {hotels?.length>0?<>{hotels.map(hotel => (
           <div  className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
-          {hotels?.length>0?<span>{hotels.map(hotel => (
               <div className="maghny-grid">
                 <figure onClick={()=>handleHotelClick(hotel._id)} className="effect-lily">
                   <img className="img-fluid" style={{height:"260px"}} src={hotel.mainPhoto} alt="Room" />
@@ -79,8 +82,8 @@ function SearchResultComponent({hotels,user}) {
                   </div>
                 </div>
               </div> 
-          ))}</span>:<p>There is no place with given name</p>}
-          </div>
+              </div>
+          ))}</>:<p>There is no place with given name</p>}
         </div>
       </div>
     </div>

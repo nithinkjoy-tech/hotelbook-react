@@ -9,25 +9,26 @@ import { getHotels } from './../api/admin';
 
 function SearchPage() {
 
-  // const [pageNumber,setPageNumber]=useState(1)
+  const [didPaginate,setDidPaginate]=useState()
   const pagination = useRef();
-  console.log(pagination,"pref")
 
   const history = useHistory();
+
+  let pageSize=9
 
   const handlePageChange = async({selected}) => {
     let values=history.location.state.values
     values["pageNumber"]=selected
-    values["pageSize"]=1
+    values["pageSize"]=pageSize
     let {data} = await getHotels(values); 
     let {hotelsCount,hotels}=data
-
+    didPaginate===true?setDidPaginate("Yes"):setDidPaginate(true)
     history.push("/search", {data:hotels, hotelsCount,values}); 
   }; 
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [didPaginate]);
 
 
   if (!history.location.state) window.location = "/";
@@ -40,7 +41,7 @@ function SearchPage() {
       <div className="d-flex justify-content-center">
       <ReactPaginate
         ref={pagination}
-        pageCount={Math.ceil(hotelsCount / 1)}
+        pageCount={Math.ceil(hotelsCount / pageSize)}
         pageRangeDisplayed={10}
         marginPagesDisplayed={1}
         onPageChange={handlePageChange}

@@ -8,9 +8,12 @@ function RenterDashboard() {
   const [hotels,setHotels]=useState()
   const [isLoading,setIsLoading]=useState(true)
   const [hotelsCount,setHotelsCount]=useState()
+  const [didPaginate,setDidPaginate]=useState()
+
+  let pageSize=9
 
   async function getHotels() {
-    let values={pageNumber:0,pageSize:2}
+    let values={pageNumber:0,pageSize}
     const {data}=await getRenterHotels(values)
     let {hotelsCount,hotels}=data
     console.log(hotelsCount,"count")
@@ -23,13 +26,18 @@ function RenterDashboard() {
     getHotels()
   },[]);
 
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[didPaginate])
+
   const handlePageChange = async({selected}) => {
-    let values={pageNumber:selected,pageSize:2}
+    let values={pageNumber:selected,pageSize}
     let {data} = await getRenterHotels(values); 
     let {hotelsCount,hotels}=data
     setHotels(hotels)
     setHotelsCount(hotelsCount)
     setIsLoading(false)
+    didPaginate===true?setDidPaginate("Yes"):setDidPaginate(true)
   }; 
 
   if(isLoading){
@@ -51,7 +59,7 @@ function RenterDashboard() {
       <div className="d-flex justify-content-center">
       <ReactPaginate
         // ref={pagination}
-        pageCount={Math.ceil(hotelsCount / 1)}
+        pageCount={Math.ceil(hotelsCount / pageSize)}
         pageRangeDisplayed={10}
         marginPagesDisplayed={1}
         onPageChange={handlePageChange}

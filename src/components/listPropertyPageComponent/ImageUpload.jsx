@@ -10,7 +10,7 @@ function ImageUpload({onChange, label, multiple, text, numberOfImages}) {
         <input
           ref={uploadInputRef}
           multiple
-          accept="image/*"
+          accept="image/gif, image/jpeg, image/png, image/jpg"
           id="file-upload"
           onChange={onChange}
           name="file-upload"
@@ -19,7 +19,7 @@ function ImageUpload({onChange, label, multiple, text, numberOfImages}) {
         />
       ) : (
         <input
-          accept="image/*"
+          accept="image/gif, image/jpeg, image/png, image/jpg"
           ref={uploadInputRef}
           id="file-upload"
           onChange={onChange}
