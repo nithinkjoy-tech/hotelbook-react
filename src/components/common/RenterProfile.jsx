@@ -2,8 +2,7 @@ import React,{useState} from "react";
 import EditIcon from "@material-ui/icons/Edit";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
-// import '../../css/GuestDashboard.css'
-import "../../css/Profile.css";
+import "../../css/RenterProfile.css";
 
 function Profile({ title, description, name, details }) {
     const [nameField,setNameField] = useState(false);

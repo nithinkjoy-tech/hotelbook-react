@@ -8,6 +8,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import HotelIcon from '@material-ui/icons/Hotel';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import RenterProfile from '../components/common/RenterProfile';
 
 function RenterDashboard() {
   const [hotels,setHotels]=useState()
@@ -23,6 +24,13 @@ function RenterDashboard() {
   useEffect(() => {
     getHotels()
   },[]);
+
+   // Dummy data for pass the profile component
+   const data = {
+    name : 'vishnu',
+    phone:'1234567890',
+    email : 'vishnusatheeshpulickal555@gmail.com'
+}
 
   if(isLoading){
     return (
@@ -47,6 +55,7 @@ function RenterDashboard() {
                     <li><ExitToAppIcon/><div className="Content">Logout</div></li>
                 </ul>
             </div>
+            <RenterProfile title={"Profile"} description={"Basic info, for a faster booking experience"} details={data}/>
       {/* <SearchResultComponent user="renter" hotels={hotels} /> */}
     </div> 
   );
