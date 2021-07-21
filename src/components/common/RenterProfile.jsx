@@ -10,10 +10,10 @@ function Profile({ title, description, name, details }) {
     const [changeName,setChangeName] = useState('');
     const [changePhone,setChangePhone] = useState('');
   return (
-    <div className="guestDashboard_details">
+    <div className="renterDashboard_details">
       <h3>{title}</h3>
       <h5>{description}</h5>
-      <div className="guestDashboard_details_contents">
+      <div className="renterDashboard_details_contents">
         <div className="item">
           <p>
             Name : <span className="contents">{details.name}</span>

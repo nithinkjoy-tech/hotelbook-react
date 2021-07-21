@@ -2,6 +2,7 @@ import React, {useEffect,useState} from "react";
 import ReactLoading from 'react-loading'
 import SearchResultComponent from "./../components/searchPageComponent/SearchResultComponent";
 import { getRenterHotels } from './../api/renter';
+import Logout from '../components/common/Logout'
 import '../../src/css/RenterDashboard.css'
 
 import PersonIcon from '@material-ui/icons/Person';
@@ -9,6 +10,7 @@ import HotelIcon from '@material-ui/icons/Hotel';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import RenterProfile from '../components/common/RenterProfile';
+import RenterBook from '../components/common/RenterBook';
 
 function RenterDashboard() {
   const [hotels,setHotels]=useState()
@@ -47,15 +49,17 @@ function RenterDashboard() {
 
   return (
     <div className="renterDashboard">
-      <div className="guestDashboard_menu">
-                <ul className="guestDashboard_menuItems">
+      <div className="renterDashboard_menu">
+                <ul className="renterDashboard_menuItems">
                     <li onClick={e => {setSelectOption('profile'); }}><PersonIcon /><div className="Content">Profile</div></li>
                     <li onClick={e => {setSelectOption('hotels'); }}><HotelIcon /><div className="Content">Hotels</div></li>
                     <li onClick={e => setSelectOption('booked')}><EventAvailableIcon/><div className="Content">Booked</div></li>
-                    <li><ExitToAppIcon/><div className="Content">Logout</div></li>
+                    <li onClick={e => setSelectOption('logout')}><ExitToAppIcon/><div className="Content">Logout</div></li>
                 </ul>
             </div>
-            <RenterProfile title={"Profile"} description={"Basic info, for a faster booking experience"} details={data}/>
+            {(()=>{ if(selectOption === 'profile') return (<RenterProfile title={"Profile"} description={"Basic info, for a faster booking experience"} details={data} />)
+              else if(selectOption === 'booked') return (<RenterBook />)
+              else if(selectOption === 'logout') return (<Logout />)})()}
       {/* <SearchResultComponent user="renter" hotels={hotels} /> */}
     </div> 
   );

@@ -1,4 +1,4 @@
-.guestDashboard_details{
+.renterDashboard_details{
     width: 70%;
     margin-top: 10%;
     margin-left: 20px;
@@ -10,12 +10,12 @@
   margin-bottom: 2%;
   }
   
-  .guestDashboard_details_contents{
+  .renterDashboard_details_contents{
     padding-top: 20px;
     margin-left: 30px;
   }
   
-  .guestDashboard_details_contents > p{
+  .renterDashboard_details_contents > p{
     padding:8px 10px;
   }
   
