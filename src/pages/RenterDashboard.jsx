@@ -11,6 +11,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import RenterProfile from '../components/common/RenterProfile';
 import RenterBook from '../components/common/RenterBook';
+import RenterHotelsSection from './../components/common/RenterHotelsSection';
 
 function RenterDashboard() {
   const [hotels,setHotels]=useState()
@@ -59,6 +60,7 @@ function RenterDashboard() {
             </div>
             {(()=>{ if(selectOption === 'profile') return (<RenterProfile title={"Profile"} description={"Basic info, for a faster booking experience"} details={data} />)
               else if(selectOption === 'booked') return (<RenterBook />)
+              else if(selectOption === 'hotels') return (<RenterHotelsSection />)
               else if(selectOption === 'logout') return (<Logout />)})()}
       {/* <SearchResultComponent user="renter" hotels={hotels} /> */}
     </div> 
