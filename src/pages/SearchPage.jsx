@@ -11,9 +11,9 @@ import FilterComponent from './../components/searchPageComponent/FilterComponent
 function SearchPage() {
 
   const [didPaginate,setDidPaginate]=useState()
-
-  const pagination = useRef();
+ 
   const history = useHistory();
+  const pagination = useRef();
 
   let pageSize=9
 
@@ -37,7 +37,7 @@ function SearchPage() {
   return (
     <div>
       <SearchComponent initialValues={values} />
-      <FilterComponent/>
+      <FilterComponent values={history.location.state.values} />
       <SearchResultComponent hotels={data} />
       <div className="d-flex justify-content-center">
       <ReactPaginate

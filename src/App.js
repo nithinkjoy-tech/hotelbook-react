@@ -16,6 +16,7 @@ import RoomDetails from './pages/RoomDetails';
 import AddRoom from './components/listPropertyPageComponent/AddRoom';
 import RoomCard from './pages/RoomCard';
 import RenterRoute from './components/common/RenterRoute';
+import RoomDescription from './components/RoomDetailsPageComponents/RoomDescription';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/dashboard" component={GuestDashboard} />
         <Route path="/signup" component={SignupPage} />
         <Route path="/hotel/roomdetails" component={RoomDetails} />
+        <Route path="/hotel/roomdescription" component={RoomDescription} />
         <Route path="/renter/welcome" component={ListPropertyWelcomePage} />
         <Route path="/renter/signin" component={SigninPage} />
         <Route path="/renter/signup" component={SignupPage} />

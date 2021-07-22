@@ -124,9 +124,9 @@ function AddRoom({match}) {
   };
 
   let leftFeature = [
-    "Free Wifi",
-    "Garden",
-    "Water park",
+    "Air Conditioning",
+    "Smart TV",
+    "Television",
     "Spa and wellness centre",
     "Terrace",
     "Fitness centre",
