@@ -1,23 +1,22 @@
-import React from "react";
+import React,{useEffect} from "react";
 import Rating from '../common/Rating'
-import {Add} from "@material-ui/icons"
 import { Link } from 'react-router-dom';
 //wazirx bluewallet  
 function SearchResultComponent({hotels,user}) {  
-  console.log(user,"usr")
+
   const handleHotelClick=(id)=>{
-    if(user==="renter") return window.location=`/renter/listproperty/${id}`
+    if(user==="renter") return window.location=`/renter/room/${id}`
     window.location=""
   }
- 
+
   return (
-    <div className="best-rooms w3l-blog py-5">
-      <div className="container py-lg-5 py-sm-4">
+    <div className="best-rooms w3l-blog">
+      <div className="container py-sm-4">
         <div className="ban-content-inf row">
-          {hotels?.length>0?<span>{hotels.map(hotel => (
-            <div key={hotel.hotelName} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
+          {hotels?.length>0?<>{hotels.map(hotel => (
+          <div key={hotel._id} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
               <div className="maghny-grid">
-                <figure className="effect-lily">
+                <figure onClick={()=>handleHotelClick(hotel._id)} className="effect-lily">
                   <img className="img-fluid" style={{height:"260px"}} src={hotel.mainPhoto} alt="Room" />
                   <figcaption>
                     <div>  
@@ -25,13 +24,13 @@ function SearchResultComponent({hotels,user}) {
                         {hotel.hotelName}
                         <Rating value={hotel?.reviewScore} />
                       </h4>
-                      <p>Book for Rs.{hotel?.startingRatePerDay} </p>
+                      
                     </div>
                   </figcaption>
                 </figure>
                 <div className="room-info"> 
                   <h3 className="room-title"> 
-                    <a href="#url">{hotel?.hotelName}</a> 
+                    <a href="#url">{hotel?.city}</a> 
                   </h3>
                   <ul className="mb-3">
                     <li key={hotel?.guests}>
@@ -43,17 +42,18 @@ function SearchResultComponent({hotels,user}) {
                     </li>
                   </ul>
                   <p>{hotel?.description}</p>
+                  <p style={{color:"purple",fontWeight:"bold"}} >Book for Rs.{hotel?.startingRatePerDay} </p>
                 <div style={{display:"flex",justifyContent:"space-between"}}>
-                <Link to={`/renter/listproperty/${hotel._id}`} >
+                {user==="renter"?<Link to={`/renter/listproperty/${hotel._id}`} >
                     <span className="btn mt-sm-4 mt-3">
                       Edit hotel
                     </span>
-                  </Link>
-                  <Link to={`/renter/addroom/${hotel._id}`} >
+                  </Link>:<div></div>}
+                  {user==="renter"?<Link to={`/renter/addroom/${hotel._id}`} >
                     <span className="btn mt-sm-3">
                       <i style={{fontSize:"1.5rem"}}>+</i> Add Rooms
                     </span>
-                  </Link>
+                  </Link>:<div></div>}
                 </div>
                   <div className="room-info-bottom">
                     <ul className="room-amenities">
@@ -79,8 +79,8 @@ function SearchResultComponent({hotels,user}) {
                   </div>
                 </div>
               </div> 
-            </div>
-          ))}</span>:<p>There is no place with given name</p>}
+              </div>
+          ))}</>:<p>There is no place with given name</p>}
         </div>
       </div>
     </div>

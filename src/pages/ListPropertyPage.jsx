@@ -9,7 +9,7 @@ import {Formik, Form} from "formik";
 import * as Yup from "yup";
 import {toast} from "react-toastify";
 import {displayNotification} from "./../services/notificationService";
-import {registerHotels, getRenterHotelsbyId, editHotelbyId} from "./../api/renter";
+import {registerHotels, getRenterHotelsbyId, editHotelById} from "./../api/renter";
 let pincodeDirectory = require("india-pincode-lookup");
 
 const validationSchema = Yup.object().shape({
@@ -95,9 +95,8 @@ function ListPropertyPage({match}) {
     tradeName: "",
     GSTIN: "",
     panCardNumber: "",
-    state: "",
+    state: "Andhra Pradesh",
   });
-  const [hotel, setHotel] = useState();
 
   async function getHotels(id) {
     const {data} = await getRenterHotelsbyId(id);
@@ -108,7 +107,6 @@ function ListPropertyPage({match}) {
 
     localStorage.setItem("coverPhoto", JSON.stringify(data.mainPhoto));
     localStorage.setItem("numberOfImages", data.photos.length);
-    // TODO: do api call, modify backend code for images
   }
 
   useEffect(() => {
@@ -152,7 +150,7 @@ function ListPropertyPage({match}) {
 
     let isEdited=false
     if (hotelId) {
-      const {data, status} = await editHotelbyId(transform(values), hotelId);
+      const {data, status} = await editHotelById(transform(values), hotelId);
       if (status === 400) return setFieldError(data.property, data.msg);
       isEdited=true
     } else {
@@ -163,6 +161,9 @@ function ListPropertyPage({match}) {
     if(isEdited) toast.info("Successfully modified details")
     else
     toast.info("Successfully added hotel")
+    localStorage.removeItem("coverPhoto");
+    localStorage.removeItem("numberOfImages");
+    localStorage.removeItem("saveAsDraft");
     setTimeout(() => {
       window.location="/renter/dashboard"
     }, 1000);

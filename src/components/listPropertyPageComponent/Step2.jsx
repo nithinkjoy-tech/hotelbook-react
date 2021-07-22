@@ -30,6 +30,7 @@ function Step2({saveAsDraft}) {
   ];
   let rightFeature = ["Restaurant", "Room service", "Bar", "Hot tub/jacuzzi", "Swimming pool"];
 
+
   return (
     <div style={{marginLeft: "7.75vw", width: "85%"}} className="md:grid md:grid-cols-1 md:gap-6">
       <div className="mt-10 sm:mt-0">

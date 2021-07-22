@@ -10,7 +10,6 @@ const apiClient = create({
 apiClient.addAsyncRequestTransform(async (request) => {
     try {
         const authtoken = localStorage.getItem(tokenKey);
-        console.log(jwtDecode(authtoken))
         if(jwtDecode(authtoken)){
             request.headers["x-auth-token"] = authtoken;
         }

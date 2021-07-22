@@ -1,11 +1,14 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import PropertyInputBox from "../common/PropertyInputBox";
 import PropertySelectBox from "./../common/PropertySelectBox";
 import "react-phone-input-2/lib/style.css";
 import * as Yup from "yup";
 import FormCheckBox from "./../common/FormCheckBox";
-import {Formik, Form} from "formik";
-import {addRoom} from "../../api/renter";
+import Error from "./../forms/Error";
+import ImageUpload from "./ImageUpload";
+import {Delete} from "@material-ui/icons";
+import {Formik, Form,ErrorMessage} from "formik";
+import {addRoom,getRenterRoomById,editRoomById} from "../../api/renter";
 import {toast} from "react-toastify";
 
 const validationSchema = Yup.object().shape({
@@ -18,29 +21,14 @@ const validationSchema = Yup.object().shape({
   basePricePerNight: Yup.number().min(10).max(2500000).required(),
   numberOfGuestsInaRoom: Yup.number().min(1).max(50),
   facilities: Yup.array().required(),
+  mainPhoto: Yup.mixed().required(),
+  photos: Yup.array().nullable(),
 });
 
 function AddRoom({match}) {
-  let hotelId = match.params.hotelId;
+  let roomId = match.params.roomId;
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const handleSubmit = async (values, setFieldError) => {
-    values["hotelId"] = hotelId;
-    // return console.log(values,"va")
-    const {data, status} = await addRoom(values);
-
-    if (status === 400 && data.property === "toast") return toast.error(data.msg);
-    if (status === 400) return setFieldError(data.property, data.msg);
-    toast.info("Successfully added room");
-    setTimeout(() => {
-      window.location = "/renter/dashboard";
-    }, 1000);
-  };
-
-  let initialValues = {
+  const [initialValues,setInitialValues]=useState({
     roomType: "",
     numberOfRoomsOfThisType: "",
     kindOfBed: "Single bed",
@@ -48,33 +36,114 @@ function AddRoom({match}) {
     basePricePerNight: "",
     numberOfGuestsInaRoom: "",
     facilities: [],
+    mainPhoto: "",
+    photos: [],
+    hotelId:null
+  })
+
+  async function getRoom(id) {
+    const {data} = await getRenterRoomById(id);
+    setInitialValues(data);
+
+    setPrev(data.mainPhoto)
+    setNumberOfImages(data.photos.length)
+  }
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (roomId) {
+      getRoom(roomId);
+    }
+  }, []);
+
+  const [prev, setPrev] = useState();
+  const [numberOfImages, setNumberOfImages] = useState(0);
+
+  const handleDelete = (setFieldValue, getFieldProps) => {
+    let {name} = getFieldProps("mainPhoto");
+    setFieldValue(name, null);
+    setPrev(null);
   };
 
-  let value = initialValues.facilities;
+  let imageToBase64 = (images, setFieldValue) => {
+    let imagesBase64 = [];
+    for (let image of images) {
+      const reader = new FileReader();
 
-  let checkBoxModified = (feature,setFieldValue) => {
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          let imageBase64 = reader.result;
+          imagesBase64.push(imageBase64);
+        }
+      };
+      reader.readAsDataURL(image);
+    }
+    setFieldValue("photos", imagesBase64);
+  };
+
+  let handleImageChange = (data, setFieldValue) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        let imageBase64 = reader.result;
+        setPrev(imageBase64);
+        setFieldValue("mainPhoto", imageBase64);
+      }
+    };
+    reader.readAsDataURL(data);
+  };
+
+  const handleSubmit = async (values, setFieldError) => {
+    values["hotelId"] = match.params.hotelId||initialValues.hotelId;
+    let isEdited=false
+    if (roomId) {
+      const {data, status} = await editRoomById(values, roomId);
+      if (status === 400) return setFieldError(data.property, data.msg);
+      isEdited=true
+    } else {
+      const {data, status} = await addRoom(values);
+      if (status === 400 && data.property === "toast") return toast.error(data.msg);
+      if (status === 400) return setFieldError(data.property, data.msg);
+    }
+    toast.dismiss();
+    if(isEdited) toast.info("Successfully modified details")
+    else toast.info("Successfully added room");
+    setTimeout(() => {
+      window.location = "/renter/dashboard";
+    }, 1000);
+  };
+
+  
+
+
+  let checkBoxModified = (feature, setFieldValue,{value,name}) => {
     if (value.includes(feature)) value = value.filter(val => feature !== val);
     else value.push(feature);
-    setFieldValue("facilities", value);
+    setFieldValue(name, value);
   };
 
   let leftFeature = [
-    "Free Wifi",
-    "Garden",
-    "Water park",
+    "Air Conditioning",
+    "Smart TV",
+    "Television",
     "Spa and wellness centre",
     "Terrace",
     "Fitness centre",
   ];
   let rightFeature = ["Restaurant", "Room service", "Bar", "Hot tub/jacuzzi", "Swimming pool"];
 
+  if(roomId&&!initialValues?.roomType) return null
+
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
+      enableReinitialize
     >
-      {({setFieldValue}) => (
+      {({setFieldValue, getFieldProps}) => (
         <Form>
           <div style={{marginTop: "60px"}}>
             <h1 style={{textAlign: "center", marginTop: "70px", marginBottom: "0"}}>Add room</h1>
@@ -97,10 +166,7 @@ function AddRoom({match}) {
                           <div className="col-span-6 sm:col-span-3">
                             <PropertyInputBox
                               label="Number of Rooms of this Type"
-                              type="number"
                               name="numberOfRoomsOfThisType"
-                              min="1"
-                              max="9999"
                             />
                           </div>
                           <div className="col-span-6 sm:col-span-3">
@@ -114,23 +180,19 @@ function AddRoom({match}) {
                           <div className="col-span-6 sm:col-span-3">
                             <PropertyInputBox
                               label="Number of Beds"
-                              type="number"
                               name="numberOfBeds"
                             />
                           </div>
                           <div className="col-span-6 sm:col-span-3">
                             <PropertyInputBox
                               label="Base Price Per Night (INR)"
-                              type="number"
+                              type="text"
                               name="basePricePerNight"
-                              min="10"
-                              max="2500000"
                             />
                           </div>
                           <div className="col-span-6 sm:col-span-3">
                             <PropertyInputBox
                               label="Number of Guests in a Room"
-                              type="number"
                               name="numberOfGuestsInaRoom"
                             />
                           </div>
@@ -158,9 +220,11 @@ function AddRoom({match}) {
                                             {leftFeature.map(feature => (
                                               <FormCheckBox
                                                 key={feature}
-                                                defaultChecked={value?.includes(feature)}
+                                                defaultChecked={getFieldProps("facilities").value.includes(feature)}
                                                 label={feature}
-                                                onChange={() => checkBoxModified(feature,setFieldValue)}
+                                                onChange={() =>
+                                                  checkBoxModified(feature, setFieldValue,getFieldProps("facilities"))
+                                                }
                                               />
                                             ))}
                                           </div>
@@ -168,13 +232,64 @@ function AddRoom({match}) {
                                             {rightFeature.map(feature => (
                                               <FormCheckBox
                                                 key={feature}
-                                                defaultChecked={value.includes(feature)}
+                                                defaultChecked={getFieldProps("facilities").value.includes(feature)}
                                                 label={feature}
-                                                onChange={() => checkBoxModified(feature,setFieldValue)}
+                                                onChange={() =>
+                                                  checkBoxModified(feature, setFieldValue,getFieldProps("facilities"))
+                                                }
                                               />
                                             ))}
                                           </div>
                                         </div>
+                                      </div>
+                                    </div>
+
+                                    <div style={{width: "80vw",marginTop:"3rem"}}>
+                                      <div className="col-span-6 sm:col-span-6">
+                                        <ImageUpload
+                                          label="Cover photo"
+                                          text="Upload an image"
+                                          multiple={false}
+                                          onChange={event => {
+                                            let image = event.target.files[0];
+                                            handleImageChange(image, setFieldValue);
+                                          }}
+                                        />
+                                          <ErrorMessage name="mainPhoto" component={Error} />
+                                      </div>
+                                      {prev ? (
+                                        <div>
+                                          <center>
+                                            <img className="image" src={prev} alt="hotel" />
+                                            <button
+                                              onClick={() =>
+                                                handleDelete(setFieldValue, getFieldProps)
+                                              }
+                                              className="btn btn-danger mt-2"
+                                              type="button"
+                                            >
+                                              <span>
+                                                <Delete /> Delete
+                                              </span>
+                                            </button>
+                                          </center>
+                                        </div>
+                                      ) : (
+                                        <div></div>
+                                      )}
+                                      <div className="px-4 py-5 bg-white sm:p-6">
+                                        <ImageUpload
+                                          text="Upload multiple images"
+                                          label="Other photos"
+                                          multiple={true}
+                                          onChange={event => {
+                                            let images = event.target.files;
+                                            setFieldValue("photos", images);
+                                            imageToBase64(images, setFieldValue);
+                                            setNumberOfImages(images.length);
+                                          }}
+                                          numberOfImages={numberOfImages}
+                                        />
                                       </div>
                                     </div>
                                   </div>
@@ -186,6 +301,7 @@ function AddRoom({match}) {
                         <button
                           style={{float: "right", marginRight: "4rem", marginBottom: "2rem"}}
                           className="btn btn-primary"
+                          type="submit"
                         >
                           Save Room
                         </button>

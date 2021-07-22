@@ -16,6 +16,7 @@ function Step3({saveAsDraft}) {
   const {getFieldProps, values, setFieldValue} = useFormikContext();
 
   let {value,name} = getFieldProps("mainPhoto");
+
   const handleDelete = () => {
     setFieldValue(name, null);
     setPrev(null);
