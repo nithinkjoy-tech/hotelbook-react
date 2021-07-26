@@ -2,7 +2,17 @@ import React, {useEffect,useState} from "react";
 import ReactLoading from 'react-loading'
 import SearchResultComponent from "./../components/searchPageComponent/SearchResultComponent";
 import { getRenterHotels } from './../api/renter';
+import Logout from '../components/common/Logout'
+import '../../src/css/RenterDashboard.css'
 import ReactPaginate from 'react-paginate';
+
+import PersonIcon from '@material-ui/icons/Person';
+import HotelIcon from '@material-ui/icons/Hotel';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import RenterProfile from '../components/common/RenterProfile';
+import RenterBook from '../components/common/RenterBook';
+import RenterHotelsSection from './../components/common/RenterHotelsSection';
 
 function RenterDashboard() {
   const [hotels,setHotels]=useState()
@@ -26,20 +36,6 @@ function RenterDashboard() {
     getHotels()
   },[]);
 
-  useEffect(()=>{
-    window.scrollTo(0, 0);
-  },[didPaginate])
-
-  const handlePageChange = async({selected}) => {
-    let values={pageNumber:selected,pageSize}
-    let {data} = await getRenterHotels(values); 
-    let {hotelsCount,hotels}=data
-    setHotels(hotels)
-    setHotelsCount(hotelsCount)
-    setIsLoading(false)
-    didPaginate===true?setDidPaginate("Yes"):setDidPaginate(true)
-  }; 
-
   if(isLoading){
     return (
       <center>
@@ -55,28 +51,7 @@ function RenterDashboard() {
 
   return (
     <div>
-      <div style={{height:"35px"}} ></div>
       <SearchResultComponent user="renter" hotels={hotels} />
-      <div className="d-flex justify-content-center">
-      <ReactPaginate
-        pageCount={Math.ceil(hotelsCount / pageSize)}
-        pageRangeDisplayed={10}
-        marginPagesDisplayed={1}
-        onPageChange={handlePageChange}
-        containerClassName="pagination"
-        activeClassName="active"
-        pageLinkClassName="page-link"
-        breakLinkClassName="page-link"
-        nextLinkClassName="page-link"
-        previousLinkClassName="page-link"
-        pageClassName="page-item"
-        breakClassName="page-item"
-        nextClassName="page-item"
-        previousClassName="page-item"
-        previousLabel="Previous"
-        nextLabel="Next"
-      />
-      </div>
     </div> 
   );
 }
