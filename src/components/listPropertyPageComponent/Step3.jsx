@@ -23,8 +23,10 @@ function Step3({saveAsDraft}) {
   };
 
   const loadImage = () => {
-    setPrev(JSON.parse(localStorage.getItem("coverPhoto")))
-    setNumberOfImages(localStorage.getItem("numberOfImages"))
+    if(JSON.parse(localStorage.getItem("saveAsDraft"))?.photos?.length>0){
+      setPrev(JSON.parse(localStorage.getItem("coverPhoto")))
+      setNumberOfImages(localStorage.getItem("numberOfImages"))
+    }
   };
 
   useEffect(() => {

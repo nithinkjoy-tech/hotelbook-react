@@ -1,15 +1,16 @@
 import React from "react";
 import "../../css/room.css";
-import room1 from "../../images/room1.jpg";
-import room2 from "../../images/room2.jpg";
-import mumbai from "../../images/mumbai.jpg";
-import munnar from "../../images/munnar.jpg";
-import AwesomeSlider from "react-awesome-slider";
-import "react-awesome-slider/dist/styles.css";
-import withAutoplay from "react-awesome-slider/dist/autoplay";
-const AutoplaySlider = withAutoplay(AwesomeSlider);
+import ImageGallery from 'react-image-gallery';
+import "react-image-gallery/styles/css/image-gallery.css";
+// import withAutoplay from "react-awesome-slider/dist/autoplay";
+// const AutoplaySlider = withAutoplay(AwesomeSlider);
 
-function PriceSection({hotelDetails}) {
+function PriceandImageSection({hotelDetails}) {
+  // console.log(props,"pts")
+  // hotelDetails.photos.map(photo=>photo.split(";base64,").pop())
+
+  let images=hotelDetails.photos.map(photo=>({original:photo}))
+  
   const style = {
     "--slider-transition-duration": "200ms",
     "--organic-arrow-thickness": "4px",
@@ -28,13 +29,8 @@ function PriceSection({hotelDetails}) {
     <section className="room-single-block" style={{marginTop: "30px"}}>
       <div className="content-with-slider">
         <div className="container">
-          <div className="content-photo-1 d-grid">
-            <AutoplaySlider style={style} play={true} cancelOnInteraction={false}>
-              <div data-src={room1} />
-              <div data-src={room2} />
-              <div data-src={mumbai} />
-              <div data-src={munnar} />
-            </AutoplaySlider>
+          <div className="content-photo-1 d-grid">          
+            <ImageGallery items={images} />
             <div className="content-photo-right">
               <div className="content-photo-left text-center">
                 <h4>erferg</h4>
@@ -59,4 +55,4 @@ function PriceSection({hotelDetails}) {
   );
 }
 
-export default PriceSection;
+export default PriceandImageSection;

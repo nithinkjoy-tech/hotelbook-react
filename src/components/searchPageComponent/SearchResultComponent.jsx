@@ -6,13 +6,13 @@ function SearchResultComponent({hotels,user}) {
 
   const handleHotelClick=(id)=>{
     if(user==="renter") return window.location=`/renter/room/${id}`
-    window.location=""
+    window.location=`/hoteldetails/${id}`
   }
 
   return (
     <div className="best-rooms w3l-blog">
       <div className="container py-sm-4">
-        <div className="ban-content-inf row">
+      <div className="ban-content-inf row">
           {hotels?.length>0?<>{hotels.map(hotel => (
           <div key={hotel._id} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
               <div className="maghny-grid">
@@ -24,7 +24,6 @@ function SearchResultComponent({hotels,user}) {
                         {hotel.hotelName}
                         <Rating value={hotel?.reviewScore} />
                       </h4>
-                      
                     </div>
                   </figcaption>
                 </figure>

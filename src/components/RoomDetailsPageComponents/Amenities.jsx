@@ -2,7 +2,7 @@ import React from "react";
 import facilities from "../../images/facilities.jpg";
 import "../../css/room.css";
 
-const Amenities = props => {
+const Amenities = ({mainPhoto}) => {
   return (
     <section className="w3l-roomsingleblock1 py-5">
       <div className="container py-sm-4">
@@ -20,7 +20,7 @@ const Amenities = props => {
             </ul>
           </div>
           <div className="col-lg-5 mt-lg-0 mt-4">
-            <img src={facilities} alt="" className="img-fluid" />
+            <img src={mainPhoto} alt="" className="img-fluid" style={{border: "1px solid #B42B86"}} />
           </div>
         </div>
       </div>
