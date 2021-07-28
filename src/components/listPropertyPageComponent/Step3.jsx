@@ -6,7 +6,7 @@ import SaveAsDraftButton from "./SaveAsDraftButton";
 import ImageUpload from "./ImageUpload";
 import {Delete} from "@material-ui/icons";
 
-function Step3({saveAsDraft}) {
+function Step3({saveAsDraft,preview,count}) {
   useEffect(() => {
     window.scrollTo(0, 0) 
   }, [])
@@ -16,6 +16,9 @@ function Step3({saveAsDraft}) {
   const {getFieldProps, values, setFieldValue} = useFormikContext();
 
   let {value,name} = getFieldProps("mainPhoto");
+  // console.log(value,"vll")
+  // setPrev(value)
+  // if(prev) setPrev(prev)
 
   const handleDelete = () => {
     setFieldValue(name, null);
@@ -27,6 +30,8 @@ function Step3({saveAsDraft}) {
       setPrev(JSON.parse(localStorage.getItem("coverPhoto")))
       setNumberOfImages(localStorage.getItem("numberOfImages"))
     }
+    if(preview) setPrev(preview)
+    if(count) setNumberOfImages(count)
   };
 
   useEffect(() => {

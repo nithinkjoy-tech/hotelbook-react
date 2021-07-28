@@ -108,8 +108,8 @@ function ListPropertyPage({match}) {
       booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === true ? "Yes" : "No"}), obj);
     setInitialValues(transform(data));
 
-    localStorage.setItem("coverPhoto", JSON.stringify(data.mainPhoto));
-    localStorage.setItem("numberOfImages", data.photos.length);
+    // localStorage.setItem("coverPhoto", JSON.stringify(data.mainPhoto));
+    // localStorage.setItem("numberOfImages", data.photos.length);
   }
 
   useEffect(() => {
@@ -242,7 +242,7 @@ function ListPropertyPage({match}) {
           )}
           {currentPage === 3 && (
             <>
-              <Step3 saveAsDraft={saveAsDraft} />
+              <Step3 saveAsDraft={saveAsDraft} preview={initialValues.mainPhoto} count={initialValues.photos.length} />
               <div style={{display: "flex", justifyContent: "space-between"}}>
                 <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
                   Back
