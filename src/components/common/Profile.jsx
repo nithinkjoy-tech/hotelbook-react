@@ -1,15 +1,96 @@
-import React,{useState} from "react";
+import React, {useState,useEffect} from "react";
 import EditIcon from "@material-ui/icons/Edit";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 // import '../../css/GuestDashboard.css'
-import "../../css/Profile.css";
+import ReactLoading from 'react-loading'
 
-function Profile({ title, description, name, details }) {
-    const [nameField,setNameField] = useState(false);
-    const [phoneField,setPhoneField] = useState(false);
-    const [changeName,setChangeName] = useState('');
-    const [changePhone,setChangePhone] = useState('');
+import "../../css/Profile.css";
+import {editUserData,getGuest} from "./../../api/guest";
+import {displayNotification} from "./../../services/notificationService";
+import * as Yup from "yup";
+
+const nameSchema = Yup.object().shape({
+  name: Yup.string().min(2).max(50).required("Name is required").label("Name"),
+});
+
+const usernameSchema = Yup.object().shape({
+  username: Yup.string()
+    .required("Username is required")
+    .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/, "Invalid Username")
+    .label("Username"),
+});
+
+function Profile({title, description, name}) {
+  const [nameField, setNameField] = useState(false);
+  const [usernameField, setUsernameField] = useState(false);
+  const [changeName, setChangeName] = useState("");
+  const [changeUsername, setChangeUsername] = useState("");
+  const [details,setDetails] = useState()
+  const [isLoading,setIsLoading]=useState(true)
+
+  const getGuestDetails=async()=>{
+    const {data,status}=await getGuest()
+    if(status!==200) return displayNotification("error","Something error occured")
+    setDetails(data)
+    setIsLoading(false)
+  }
+
+  useEffect(()=>{
+    getGuestDetails()
+  },[])
+
+  const handleNameChange = () => {
+    // console.log(changeName);
+    nameSchema
+      .validate({
+        name: changeName,
+      })
+      .then(async () => {
+        console.log("here");
+        const {data, status} = await editUserData({name: changeName});
+        if (status !== 200)
+          return displayNotification("error", data?.msg || "Something unexpected happened");
+        displayNotification("success", "Name successfully updated");
+        console.log(data,"gg")
+        setDetails(data)
+        setNameField(false)
+      })
+      .catch(error => {
+        displayNotification("error", error.errors.toString());
+      });
+  };
+
+  const handleUsernameChange = async () => { 
+    usernameSchema
+      .validate({
+        username: changeUsername,
+      })
+      .then(async () => {
+        const {data, status} = await editUserData({username: changeUsername});
+        if (status !== 200)
+          return displayNotification("error", data?.msg || "Something unexpected happened");
+        displayNotification("success", "Username successfully updated");
+        setDetails(data)
+        setUsernameField(false)
+      })
+      .catch(error => {
+        displayNotification("error", error.errors.toString());
+      });
+  };
+
+  if(isLoading) 
+    return (
+      <center>
+          <ReactLoading
+            type={"bars"}
+            color={"#F39636"}
+            height={"10%"}
+            width={"50%"}
+          />
+        </center>
+    )
+
   return (
     <div className="guestDashboard_details">
       <h3>{title}</h3>
@@ -21,24 +102,54 @@ function Profile({ title, description, name, details }) {
           </p>{" "}
           <EditIcon onClick={e => setNameField(true)} className="edit_Icon" />
         </div>
-       {nameField && <div className="hidden_Item">
-          <input type="text" className="name_Box" placeholder="Enter Name Here" onChange={ e => setChangeName(e.target.value)} />
-          <div className="hidden_Item_Button">
-          <Button variant="contained" color="primary" size="small" startIcon={<SaveIcon />}>Save</Button>
+        {nameField && (
+          <div className="hidden_Item">
+            <input
+              type="text"
+              className="name_Box"
+              placeholder="Enter Name Here"
+              onChange={e => setChangeName(e.target.value)}
+            />
+            <div className="hidden_Item_Button">
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => handleNameChange()}
+                startIcon={<SaveIcon />}
+              >
+                Save
+              </Button>
+            </div>
           </div>
-        </div> } 
+        )}
         <div className="item">
           <p>
-            Phone : <span className="contents">{details.phone}</span>
+            Username : <span className="contents">{details.username}</span>
           </p>{" "}
-          <EditIcon onClick={ e => setPhoneField(true)} className="edit_Icon" />
+          <EditIcon onClick={e => setUsernameField(true)} className="edit_Icon" />
         </div>
-       {phoneField && <div className="hidden_Item">
-       <input type="text" className="name_Box" placeholder="Enter Mobile Here" onChange={ e => setChangePhone(e.target.value)} />
-          <div className="hidden_Item_Button">
-          <Button variant="contained" color="primary" size="small" startIcon={<SaveIcon />}>Save</Button>
+        {usernameField && (
+          <div className="hidden_Item">
+            <input
+              type="text"
+              className="name_Box"
+              placeholder="Enter new Username Here"
+              onChange={e => setChangeUsername(e.target.value)}
+            />
+            <div className="hidden_Item_Button">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleUsernameChange()}
+                size="small"
+                startIcon={<SaveIcon />}
+              >
+                Save
+              </Button>
+            </div>
           </div>
-        </div> } 
+        )}
         <div className="item">
           <p>
             Email : <span className="contents">{details.email}</span>
