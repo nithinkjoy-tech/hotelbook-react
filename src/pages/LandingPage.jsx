@@ -4,6 +4,8 @@ import Carousel from '../components/common/Carousel';
 import Places from '../components/landingPageComponent/Places';
 import SearchResultComponent from '../components/searchPageComponent/SearchResultComponent';
 
+import Table from '../components/common/Table';
+
 
 
 function LandingPage() {
@@ -13,6 +15,7 @@ function LandingPage() {
             <Carousel/> 
             <SearchComponent initialValues={null} />
             <Places />
+            <Table /> 
         </div> 
     )
 }
