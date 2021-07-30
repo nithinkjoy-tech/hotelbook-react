@@ -12,9 +12,16 @@ const customStyles = {
   },
 };
 
-function ModalComponent({modalIsOpen, setIsOpen, children}) {
+function ModalComponent({modalIsOpen, setIsOpen, children,handleSubmit}) {
   function closeModal() {
     setIsOpen(false);
+  }
+
+  const postReview=()=>{
+    // console.log("rv")
+    // console.log(handleSubmit,"hs")
+    handleSubmit();
+
   }
 
   return (
@@ -28,8 +35,8 @@ function ModalComponent({modalIsOpen, setIsOpen, children}) {
       >
         {children}
         <center>
-          <button style={{marginTop: "10px"}} onClick={closeModal} className="btn btn-success">
-            Done
+          <button style={{marginTop: "10px"}} type="submit" onClick={postReview} className="btn btn-success">
+            Post review
           </button>
         </center>
       </Modal>
