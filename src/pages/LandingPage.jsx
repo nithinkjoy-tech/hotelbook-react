@@ -6,7 +6,6 @@ import SearchResultComponent from '../components/searchPageComponent/SearchResul
 
 
 function LandingPage() {
-
     return (
         <div> 
             <Carousel/> 
