@@ -1,0 +1,12 @@
+.features{
+    display: flex;
+    justify-content:space-around;
+}
+
+.features_list{
+    margin-left:2%;
+}
+
+.persons{
+    display: flex;
+}
