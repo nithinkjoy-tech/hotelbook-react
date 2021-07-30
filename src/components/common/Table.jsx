@@ -21,6 +21,10 @@ function Table() {
             <img src={pic1} alt="room image" style={{ width: "30%" }} />
             <div className="features_list">
               <p>Features</p>
+              <p>Features</p>
+              <p>Features</p>
+              <p>Features</p>
+              <p>Features</p>
             </div>
           </td>
           <td><div className="persons"><PersonIcon /></div></td>
