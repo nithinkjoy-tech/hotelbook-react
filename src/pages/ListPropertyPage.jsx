@@ -51,7 +51,10 @@ const validationSchema = Yup.object().shape({
     is: "Yes",
     then: Yup.string().required("GSTIN is required"),
   }),
-  panCardNumber: Yup.string().required(),
+  panCardNumber: Yup.string()
+    .required()
+    .length(10)
+    .matches(/^[a-z0-9]+$/i, "Only alphanumeric characters accepted (0-9, A-Z)"),
   state: Yup.string().required(),
   paymentAddress: Yup.string().required().min(8).max(255),
 });
@@ -102,11 +105,11 @@ function ListPropertyPage({match}) {
     const {data} = await getRenterHotelsbyId(id);
     console.log(data, "dt");
     const transform = obj =>
-      booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === true?"Yes":"No"}), obj);
+      booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === true ? "Yes" : "No"}), obj);
     setInitialValues(transform(data));
 
-    localStorage.setItem("coverPhoto", JSON.stringify(data.mainPhoto));
-    localStorage.setItem("numberOfImages", data.photos.length);
+    // localStorage.setItem("coverPhoto", JSON.stringify(data.mainPhoto));
+    // localStorage.setItem("numberOfImages", data.photos.length);
   }
 
   useEffect(() => {
@@ -148,24 +151,23 @@ function ListPropertyPage({match}) {
     const transform = obj =>
       booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === "Yes"}), obj);
 
-    let isEdited=false
+    let isEdited = false;
     if (hotelId) {
       const {data, status} = await editHotelById(transform(values), hotelId);
       if (status === 400) return setFieldError(data.property, data.msg);
-      isEdited=true
+      isEdited = true;
     } else {
       const {data, status} = await registerHotels(transform(values));
       if (status === 400) return setFieldError(data.property, data.msg);
     }
     toast.dismiss();
-    if(isEdited) toast.info("Successfully modified details")
-    else
-    toast.info("Successfully added hotel")
+    if (isEdited) toast.info("Successfully modified details");
+    else toast.info("Successfully added hotel");
     localStorage.removeItem("coverPhoto");
     localStorage.removeItem("numberOfImages");
     localStorage.removeItem("saveAsDraft");
     setTimeout(() => {
-      window.location="/renter/dashboard"
+      window.location = "/renter/dashboard";
     }, 1000);
   };
 
@@ -240,7 +242,7 @@ function ListPropertyPage({match}) {
           )}
           {currentPage === 3 && (
             <>
-              <Step3 saveAsDraft={saveAsDraft} />
+              <Step3 saveAsDraft={saveAsDraft} preview={initialValues.mainPhoto} count={initialValues.photos.length} />
               <div style={{display: "flex", justifyContent: "space-between"}}>
                 <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
                   Back

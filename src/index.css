@@ -15,6 +15,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+.row__card {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col__card {
+  /* background: tomato;
+  height: 50px;
+  color: white; */
+  /* padding:0 20px; */
+  margin:0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+ 
 .room-requirement-button {
   margin-left: 15px;
   margin-right: 15px;

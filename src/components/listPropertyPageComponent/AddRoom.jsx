@@ -123,15 +123,26 @@ function AddRoom({match}) {
     setFieldValue(name, value);
   };
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
   let leftFeature = [
     "Air Conditioning",
-    "Smart TV",
-    "Television",
-    "Spa and wellness centre",
-    "Terrace",
-    "Fitness centre",
+    "TV",
+    "Towels",
+    "Shower",
+    "Geyser/Water Heater",
+    "Toiletries",
+    "Sanitizers"
   ];
-  let rightFeature = ["Restaurant", "Room service", "Bar", "Hot tub/jacuzzi", "Swimming pool"];
+  let rightFeature = ["Western Toilet Seat", "Room service", "Dustbins", "Hot tub/jacuzzi", "Toilet Paper","Hot & Cold Water"];
 
   if(roomId&&!initialValues?.roomType) return null
 
