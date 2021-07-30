@@ -1,6 +1,10 @@
 .features{
     display: flex;
-    justify-content:space-around;
+    /* justify-content:space-around; */
+}
+
+.columns {
+    flex: 50%;
 }
 
 .features_list{

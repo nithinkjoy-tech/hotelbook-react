@@ -1,18 +1,44 @@
-import { ImportContactsTwoTone } from '@material-ui/icons';
-import React from 'react';
-import PriceSection from '../components/RoomDetailsPageComponents/PriceSection';
-import RoomDescription from '../components/RoomDetailsPageComponents/RoomDescription';
-import Amenities from './../components/RoomDetailsPageComponents/Amenities';
+import React, {useState, useEffect} from "react";
+import ImageGallery from "react-image-gallery";
+import {getRoombyId} from "../api/guest";
+import {displayNotification} from "../services/notificationService";
 
+function RoomDetails({match}) {
+  const roomId = match.params.roomId;
+  
 
-const RoomDetails = () => {
-    return ( 
-        <React.Fragment>
-            <PriceSection />
-            {/* <RoomDescription description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris rutrum, dolor volutpat malesuada vulputate, diam libero tristique augue, et euismod dolor eros vitae ligula. Praesent cursus mi non nibh convallis, eget pharetra velit ornare. Fusce vel malesuada ex. Proin vitae leo rhoncus, dictum nulla molestie, condimentum libero. Etiam id mollis ipsum. Quisque tincidunt sagittis nisl, suscipit ullamcorper dolor ullamcorper eget. Cras non tortor id erat tempus interdum.'}/> */}
-            <Amenities />
-        </React.Fragment>
-     );
+  const [images, setImages] = useState([]);
+
+  const getRoomDetails = async () => {
+    const {data, status} = await getRoombyId(roomId);
+    console.log(data, "dt");
+    let images;
+    if (status !== 200) return displayNotification("error", "Something went wrong");
+    images = data.photos.map(photo => ({original: photo}));
+    // rooms.map(room => {
+    //   room._id == roomId && ;
+    // });
+    // images.unshift(data.mainPhoto)
+    setImages(images);
+    // console.log(images,"igs")
+    // if(images.length>0)
+    // setOpen(true)
+    // window.location =`/hotel/roomdetails/`
+  };
+
+  useEffect(() => {
+    getRoomDetails();
+  }, []);
+
+  if (!roomId) return window.location = "/";
+
+  if(images.length===0) return null
+console.log(images,"llo")
+  return (
+    <div>
+      <ImageGallery items={images} />
+    </div>
+  );
 }
- 
+
 export default RoomDetails;

@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-
+import ImageGallery from 'react-image-gallery';
 const customStyles = {
   content: {
     top: "50%",
@@ -17,11 +17,9 @@ function ModalComponent({modalIsOpen, setIsOpen, children,handleSubmit}) {
     setIsOpen(false);
   }
 
-  const postReview=()=>{
-    // console.log("rv")
-    // console.log(handleSubmit,"hs")
-    handleSubmit();
-
+  const buttonClick=()=>{
+    if(handleSubmit) handleSubmit();
+    closeModal();
   }
 
   return (
@@ -34,11 +32,11 @@ function ModalComponent({modalIsOpen, setIsOpen, children,handleSubmit}) {
         ariaHideApp={false}
       >
         {children}
-        <center>
-          <button style={{marginTop: "10px"}} type="submit" onClick={postReview} className="btn btn-success">
+        {handleSubmit?<center>
+          <button style={{marginTop: "10px"}} type="submit" onClick={buttonClick} className="btn btn-success">
             Post review
           </button>
-        </center>
+        </center>:null}
       </Modal>
     </div>
   );
