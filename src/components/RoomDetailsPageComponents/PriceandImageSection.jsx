@@ -22,8 +22,8 @@ function PriceandImageSection({hotelDetails}) {
                     <p> Per night starting rate</p>
                   </div>
                   <div className="book-btn px-2">
-                    <a href="booking.html" className="btn btn-style btn-secondary mt-3">
-                      Book Now
+                    <a onClick={()=>window.scrollTo(0, 720)} className="btn btn-secondary mt-3">
+                      <span style={{color: 'black'}} >Book Now</span>
                     </a>
                   </div>
                 </div>

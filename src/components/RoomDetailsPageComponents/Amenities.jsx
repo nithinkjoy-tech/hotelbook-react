@@ -11,7 +11,7 @@ const Amenities = ({mainPhoto, facilities}) => {
             <h3 className="title-small">Amenities provided</h3>
             <ul className="w3l-right-book mt-4">
               {facilities.map(facility => (
-                <li>
+                <li key={facility} >
                   <span className="fa fa-check" aria-hidden="true" />
                   {facility}
                 </li>

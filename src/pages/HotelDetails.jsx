@@ -6,6 +6,7 @@ import Amenities from "../components/RoomDetailsPageComponents/Amenities";
 import Reviews from "../components/RoomDetailsPageComponents/Reviews";
 import {getHotel,getRoomsbyId} from "./../api/guest";
 import Table from './../components/common/Table';
+import { displayNotification } from './../services/notificationService';
 
 const HotelDetails = ({match}) => {
   const hotelId = match.params.hotelId;
@@ -22,9 +23,13 @@ const HotelDetails = ({match}) => {
     let {data, status} = await getHotel(hotelId);
     console.log(data, status, "dt");
     setHotel(data);
-    let {data:roomData, status:reqStatus} = await getRoomsbyId({roomIds:data.hotelRooms});
+    let selectedDayRange=JSON.parse(localStorage.getItem("selectedDays"))
+    console.log(selectedDayRange,"sdrg")
+    let {data:roomData, status:reqStatus} = await getRoomsbyId({roomIds:data.hotelRooms,selectedDayRange});
     console.log(roomData,"dtnj"); 
     setRooms(roomData) 
+    let numberOfDays = Number(localStorage.getItem("numberOfDays"))
+    if(numberOfDays===0) displayNotification("info","Select date of your stay for clear details")
     // getRoomsbyId(data.hotelRooms)  
   };
 

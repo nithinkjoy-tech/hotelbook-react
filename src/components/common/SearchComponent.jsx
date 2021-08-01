@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
     from: dateValidator,
     to: dateValidator,
   }),
-  rooms: Yup.number().min(1).max(9999).required(),
+  // rooms: Yup.number().min(1).max(9999).required(),
 });
 
 function SearchComponent({initialValues}) {
@@ -29,10 +29,12 @@ function SearchComponent({initialValues}) {
   const history = useHistory();
 
   const handleSubmit = async values => {
+    localStorage.setItem("selectedDays",JSON.stringify(values.selectedDayRange))
     values["pageNumber"]=0
     values["pageSize"]=9
     const {data} = await getHotels(values);
-    let {hotelsCount,hotels}=data
+    let {hotelsCount,hotels,numberOfDays}=data
+    localStorage.setItem("numberOfDays",numberOfDays)
     let forcePage=0
     history.push("/search", {data:hotels, hotelsCount,values,forcePage});
   };
@@ -46,7 +48,7 @@ function SearchComponent({initialValues}) {
             from: null,
             to: null,
           },
-          rooms: 1,
+          // rooms: 1,
         }
       }
       validationSchema={validationSchema}
@@ -74,16 +76,16 @@ function SearchComponent({initialValues}) {
                             values={values}
                           />
                         </div>
-                        <div className="form-input col-md-2 col-sm-6 mt-3 ">
+                        <div className="form-input col-md-4 col-sm-6 mt-3 ">
                           <Calendar
                             name="selectedDayRange"
                             onChange={handleChange}
                             selectedDayRange={values.selectedDayRange}
                           />
                         </div>
-                        <div className="form-input col-md-3 col-sm-6 mt-3">
+                        {/* <div className="form-input col-md-3 col-sm-6 mt-3">
                           <RoomRequirement name="rooms" rooms={values.rooms} />
-                        </div>
+                        </div> */}
 
                         <div className="bottom-btn col-md-2 col-sm-6 mt-3">
                           <button

@@ -1,8 +1,15 @@
 import React,{useEffect} from "react";
 import Rating from '../common/Rating'
 import { Link } from 'react-router-dom';
-//wazirx bluewallet  
+import { displayNotification,dismissNotification } from './../../services/notificationService';
+
 function SearchResultComponent({hotels,user}) {  
+
+  if(!user){
+    let numberOfDays = Number(localStorage.getItem("numberOfDays"))
+    if(numberOfDays===0) displayNotification("info","Select date of your stay for clear details")
+    else dismissNotification()
+  }
 
   const handleHotelClick=(id)=>{
     if(user==="renter") return window.location=`/renter/room/${id}`

@@ -19,12 +19,12 @@ const Calendar = ({selectedDayRange, name}) => {
             }${selectedDayRange?.to?.day ? " - " + selectedDayRange?.to?.day + "/" : ""}${
               selectedDayRange?.to?.month ? selectedDayRange?.to?.month + "/" : ""
             }${selectedDayRange?.to?.year ? selectedDayRange?.to?.year +"📅": ""}`
-          : "Select a date           📅"
+          : "📅  Check-in - Check-out"
       }
       style={{
         cursor: "pointer",
       }}
-      className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+      className="border-0 px-28 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
     />
   );
 

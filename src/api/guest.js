@@ -8,8 +8,8 @@ export function getHotel(id){
     return apiClient.get(`/guest/book/${id}`);
 }
 
-export function getRoomsbyId(hotelRoomIds){
-    return apiClient.get(`/guest/room`,hotelRoomIds);
+export function getRoomsbyId(data){
+    return apiClient.get(`/guest/room`,data);
 }
 
 export function getRoombyId(roomId){

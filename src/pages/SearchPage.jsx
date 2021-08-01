@@ -22,7 +22,8 @@ function SearchPage() {
     values["pageNumber"]=selected
     values["pageSize"]=pageSize
     let {data} = await getHotels(values); 
-    let {hotelsCount,hotels}=data
+    let {hotelsCount,hotels,numberOfDays}=data
+    localStorage.setItem("numberOfDays",numberOfDays)
     didPaginate===true?setDidPaginate("Yes"):setDidPaginate(true)
     history.push("/search", {data:hotels, hotelsCount,values}); 
   }; 
