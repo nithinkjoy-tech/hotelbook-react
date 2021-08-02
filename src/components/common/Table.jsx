@@ -7,6 +7,8 @@ import {getRoombyId} from "../../api/guest";
 import ModalComponent from "./ModalComponent";
 import {displayNotification} from "./../../services/notificationService";
 import _ from "lodash";
+import { bookHotel } from './../../api/guest';
+import {getCurrentUser} from "../../services/authService";
 
 function Table({rooms}) {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -28,8 +30,52 @@ function Table({rooms}) {
   let selectedDays = JSON.parse(localStorage.getItem("selectedDays"));
 
   // const object = {};
+  const handleBooking=async()=>{
+    if(!getCurrentUser()?.isGuest) return window.location=`/signin?redirecturl=${window.location.href}`
+    console.log(object);
+    if(_.isEmpty(object)) return displayNotification("error","Please select rooms for booking")
+    let roomsArray=[]
+    for(let [key, value] of Object.entries(object)){
+      console.log(key,"key")
+      console.log(object,"obj")
+      roomsArray.push({roomId:key,noOfRooms:value})
+    }
+
+    let finalData={
+      roomDetails:roomsArray,
+      selectedDayRange:JSON.parse(localStorage.getItem("selectedDays")),
+    }
+    console.log(finalData,"dtt")
+    const {data,status}=await bookHotel(finalData)
+    if(status !== 200) return displayNotification("error", data)
+    displayNotification("success", data)
+    // setTimeout(() => {
+    //   window.location="/dashboard"
+    // },1000)
+    // {
+//   "roomDetails":[{"roomId": "60995ece56a3f64368509ce9",
+//         "noOfRooms":3
+//       },
+//       {
+//         "roomId":"60995ee156a3f64368509cea",
+//         "noOfRooms":2
+//       }],
+//   "selectedDate":{"from":{
+//   "day":19,
+//   "month":5,
+//   "year":2021
+// },
+// "to":{
+//   "day":29,
+//   "month":5,
+//   "year":2021
+// }}
+// }
+  }
+
   const handleSelect = selected => {
     // let object={...object}
+    
     console.log(object,"ob")
     let key=selected.slice(0, 24)
     let value=Number(selected.slice(24, selected.length))
@@ -41,6 +87,13 @@ function Table({rooms}) {
     let values=[]
     let datas=[]
     console.log(object,"ob1")
+    for (let [key, value] of Object.entries(object)) {
+      console.log(value,typeof value,"cc")
+      if(Number(value)===0) {
+        setObject(_.omit(object, [key.toString()]));
+      }
+    }
+
     for (let [key, value] of Object.entries(object)) {
       let data=_.filter(rooms, { '_id': key})[0]
       values.push(Number(value))
@@ -176,7 +229,7 @@ function Table({rooms}) {
             <td style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}} >
               <div>Total Booking details</div>
               <div>
-                <button className="btn btn-primary">Book Now</button>
+                <button onClick={handleBooking} className="btn btn-primary">Book Now</button>
               </div>
             </td>
             <td className="tdalign">Beds:<span>{beds}</span></td> 

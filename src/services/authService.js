@@ -5,7 +5,7 @@ function logout(){
     localStorage.removeItem(tokenKey)
 }
 
-function getCurrentUser(){
+export const getCurrentUser=()=>{
     try {
         const jwt = localStorage.getItem(tokenKey);
         console.log(jwtDecode(jwt),"jtt")

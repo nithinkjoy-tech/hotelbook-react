@@ -31,14 +31,26 @@ function SigninPage({location}) {
   }
 
   const handleSubmit = async (values, setFieldError) => {
+    if (location.search) {
+      const {data, status} = await guestSignin(values);
+      if (status === 400) setFieldError("userId", data);
+      else {
+        let url=new URLSearchParams(location.search).get('redirecturl')
+        setAuthToken(data);
+        return window.location = url;
+      }
+    }
+
     if (location.pathname === "/signin") {
       const {data, status} = await guestSignin(values);
       if (status === 400) setFieldError("userId", data);
       else {
+        console.log(location)
         setAuthToken(data);
         window.location = "/dashboard";
       }
     }
+
     if (location.pathname === "/renter/signin") {
       const {data, status} = await renterSignin(values);
       if (status === 400) setFieldError("userId", data);

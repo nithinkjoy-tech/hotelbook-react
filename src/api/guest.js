@@ -32,6 +32,10 @@ export function editUserData(values){
     return apiClient.put("/guest/signup", values);
 }
 
+export function bookHotel(values){
+    return apiClient.post("/guest/book", values);
+}
+
 export function changePassword(values){
     return apiClient.post("/guest/changePassword", values);
 }
