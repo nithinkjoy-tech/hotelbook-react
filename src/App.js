@@ -18,6 +18,8 @@ import RoomCard from './pages/RoomCard';
 import RenterRoute from './components/common/RenterRoute';
 import RoomDescription from './components/RoomDetailsPageComponents/RoomDescription';
 import RoomDetails from './pages/RoomDetails';
+import BookedRoomDetails from './components/RoomDetailsPageComponents/BookedRoomDetails';
+import RenterBook from './components/common/RenterBook';
 
 function App() {
   return (
@@ -32,11 +34,13 @@ function App() {
         <Route path="/signin" component={SigninPage} />
         <Route path="/dashboard" component={GuestDashboard} />
         <Route path="/signup" component={SignupPage} />
+        <Route path="/bookedroomdetails" component={BookedRoomDetails} />
         <Route path="/hoteldetails/:hotelId" component={HotelDetails} />
         <Route path="/hotel/roomdetails/:roomId" component={RoomDetails} />
         <Route path="/renter/welcome" component={ListPropertyWelcomePage} />
         <Route path="/renter/signin" component={SigninPage} />
         <Route path="/renter/signup" component={SignupPage} />
+        <Route path="/renter/prof" component={RenterBook} />
         <RenterRoute path="/renter/dashboard" component={RenterDashboard} />
         <RenterRoute path="/renter/room/:hotelId" component={RoomCard} />
         <RenterRoute path="/renter/listproperty/:id" component={ListPropertyPage} />

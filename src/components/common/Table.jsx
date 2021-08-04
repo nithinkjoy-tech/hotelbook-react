@@ -30,7 +30,7 @@ function Table({rooms}) {
   let selectedDays = JSON.parse(localStorage.getItem("selectedDays"));
 
   // const object = {};
-  const handleBooking=async()=>{
+  const handleBooking=async(hotelId)=>{
     if(!getCurrentUser()?.isGuest) return window.location=`/signin?redirecturl=${window.location.href}`
     console.log(object);
     if(_.isEmpty(object)) return displayNotification("error","Please select rooms for booking")
@@ -44,6 +44,7 @@ function Table({rooms}) {
     let finalData={
       roomDetails:roomsArray,
       selectedDayRange:JSON.parse(localStorage.getItem("selectedDays")),
+      hotelId
     }
     console.log(finalData,"dtt")
     const {data,status}=await bookHotel(finalData)
@@ -229,7 +230,7 @@ function Table({rooms}) {
             <td style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}} >
               <div>Total Booking details</div>
               <div>
-                <button onClick={handleBooking} className="btn btn-primary">Book Now</button>
+                <button onClick={()=>handleBooking(rooms[0].hotelId)} className="btn btn-primary">Book Now</button>
               </div>
             </td>
             <td className="tdalign">Beds:<span>{beds}</span></td> 

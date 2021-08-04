@@ -50,7 +50,7 @@ function Profile({title, description, name}) {
         console.log("here");
         const {data, status} = await editUserData({name: changeName});
         if (status !== 200)
-          return displayNotification("error", data?.msg || "Something unexpected happened");
+          return displayNotification("error", data || "Something unexpected happened");
         displayNotification("success", "Name successfully updated");
         console.log(data,"gg")
         setDetails(data)

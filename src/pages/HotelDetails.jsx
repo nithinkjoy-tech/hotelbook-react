@@ -8,7 +8,7 @@ import {getHotel,getRoomsbyId} from "./../api/guest";
 import Table from './../components/common/Table';
 import { displayNotification } from './../services/notificationService';
 
-const HotelDetails = ({match}) => {
+const HotelDetails = ({match,location}) => {
   const hotelId = match.params.hotelId;
 
   const [hotel, setHotel] = useState();
@@ -29,7 +29,7 @@ const HotelDetails = ({match}) => {
     console.log(roomData,"dtnj"); 
     setRooms(roomData) 
     let numberOfDays = Number(localStorage.getItem("numberOfDays"))
-    if(numberOfDays===0) displayNotification("info","Select date of your stay for clear details")
+    if(numberOfDays===0&&(!location?.search)) displayNotification("info","Select date of your stay for clear details")
     // getRoomsbyId(data.hotelRooms)  
   };
 

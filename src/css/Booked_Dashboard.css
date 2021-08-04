@@ -15,6 +15,7 @@
 .book,
 .book-box {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   margin-bottom: 10px;
@@ -63,7 +64,13 @@
   font-size: clamp(1.4em, 2.1vw, 2.1em);
   font-family: "Roboto Slab", Helvetica, Arial, sans-serif;
   font-weight: bold;
+  color:#003580;
 }
+
+.book-title:hover {
+  color: #BC5B01; 
+}
+
 .book-title a {
   text-decoration: none;
   color: inherit;

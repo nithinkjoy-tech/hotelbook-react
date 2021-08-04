@@ -12,6 +12,10 @@ export function getRoomsbyId(data){
     return apiClient.get(`/guest/room`,data);
 }
 
+export function getBookedRoomsbyId(data){
+    return apiClient.get(`/guest/bookings/guest`,data);
+}
+
 export function getRoombyId(roomId){
     return apiClient.get(`/guest/room/${roomId}`);
 }
@@ -36,8 +40,16 @@ export function bookHotel(values){
     return apiClient.post("/guest/book", values);
 }
 
-export function changePassword(values){
+export function getBookings(isStayCompleted){
+    return apiClient.get("/guest/bookings",isStayCompleted);
+}
+
+export function guestChangePassword(values){
     return apiClient.post("/guest/changePassword", values);
+}
+
+export function addReview(hotelId,values){
+    return apiClient.post(`/guest/review/${hotelId}`, values);
 }
 
 

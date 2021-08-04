@@ -39,3 +39,19 @@ export function editHotelById(values,id){
 export function editRoomById(values,id){
     return apiClient.put(`/renter/room/${id}`,values);
 }
+
+export function renterChangePassword(values){
+    return apiClient.post("/renter/changePassword", values);
+}
+
+export function getRenter(values){
+    return apiClient.get("/renter/signin", values);
+}
+
+export function getBookings(isStayCompleted){
+    return apiClient.get("/renter/bookings",isStayCompleted);
+}
+
+export function editRenterData(values){
+    return apiClient.put("/renter/signup", values);
+}

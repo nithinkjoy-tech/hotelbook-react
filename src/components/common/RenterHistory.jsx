@@ -9,21 +9,20 @@ import "../../css/Booked_Dashboard.css";
 import {useHistory} from "react-router-dom";
 import Rating from "./Rating";
 import {getBookings, addReview} from "../../api/guest";
-import {displayNotification} from "./../../services/notificationService";
+import {displayNotification} from "../../services/notificationService";
 
 const reviewSchema = Yup.object().shape({
   review: Yup.string().min(2).max(100000).required(),
   rating: Yup.number().required().oneOf([1, 2, 3, 4, 5]),
 });
 
-function History() {
+function RenterHistory() {
   const history = useHistory();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [bookings, setBookings] = useState();
   const [hotelId, setHotelId] = useState();
   const [ratingValue, setRatingValue] = useState();
   const [reviewValue, setReviewValue] = useState();
-
   
 
   const getAllBookings = async () => {
@@ -190,4 +189,4 @@ function History() {
   );
 }
 
-export default History;
+export default RenterHistory;
