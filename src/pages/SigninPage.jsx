@@ -5,7 +5,7 @@ import {guestSignin} from "../api/guest";
 import {renterSignin} from "../api/renter";
 import {adminSignin} from "../api/admin";
 import * as Yup from "yup";
-import { setAuthToken } from './../services/authService';
+import {setAuthToken} from "./../services/authService";
 
 const validationSchema = Yup.object().shape({
   userId: Yup.string().required("Email or Username is required").label("Email or Username"),
@@ -14,11 +14,11 @@ const validationSchema = Yup.object().shape({
 
 function SigninPage({location}) {
   const [passwordType, setPasswordType] = useState("password");
-  
+
   let bgcolor = "";
   let traycolor = "";
   if (location.pathname === "/signin") {
-    traycolor=""
+    traycolor = "";
     bgcolor = "";
   }
   if (location.pathname === "/renter/signin") {
@@ -31,20 +31,41 @@ function SigninPage({location}) {
   }
 
   const handleSubmit = async (values, setFieldError) => {
+    if (location.search) {
+      const {data, status} = await guestSignin(values);
+      if (status === 400) setFieldError("userId", data);
+      else {
+        let url=new URLSearchParams(location.search).get('redirecturl')
+        setAuthToken(data);
+        return window.location = url;
+      }
+    }
+
     if (location.pathname === "/signin") {
       const {data, status} = await guestSignin(values);
       if (status === 400) setFieldError("userId", data);
-      else setAuthToken(data)
+      else {
+        console.log(location)
+        setAuthToken(data);
+        window.location = "/dashboard";
+      }
     }
+
     if (location.pathname === "/renter/signin") {
       const {data, status} = await renterSignin(values);
       if (status === 400) setFieldError("userId", data);
-      else setAuthToken(data)
+      else {
+        setAuthToken(data);
+        window.location = "/renter/dashboard";
+      }
     }
     if (location.pathname === "/admin/signin") {
       const {data, status} = await adminSignin(values);
       if (status === 400) setFieldError("userId", data);
-      else setAuthToken(data)
+      else {
+        setAuthToken(data);
+        window.location = "/admin/dashboard";
+      }
     }
   };
 

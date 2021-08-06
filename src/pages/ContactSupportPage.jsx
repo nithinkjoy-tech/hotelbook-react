@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../src/css/room.css'
 
 const SupportPage = () => {
     return (  

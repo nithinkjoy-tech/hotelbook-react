@@ -2,7 +2,7 @@ import React from "react";
 import {ErrorMessage} from "formik";
 import Error from "./../forms/Error";
 
-function InputBox({label, type, placeholder, handleChange, handleBlur, values, name}) {
+function InputBox({label, type, placeholder, handleChange, handleBlur, values, name,multiline}) {
   return (
     <div>
       {label&&<label
@@ -20,6 +20,7 @@ function InputBox({label, type, placeholder, handleChange, handleBlur, values, n
         onChange={handleChange}
         value={values[name]}
         autoComplete="off"
+        multiline={multiline}
       />
       <ErrorMessage name={name} component={Error} />
     </div>

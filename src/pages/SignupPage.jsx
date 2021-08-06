@@ -5,6 +5,7 @@ import {guestSignup} from "../api/guest";
 import {renterSignup} from "../api/renter";
 import {adminSignup} from "../api/admin";
 import * as Yup from "yup";
+import {setAuthToken} from "./../services/authService";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(2).max(50).required("Name is required").label("Name"),
@@ -17,20 +18,20 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
 });
 
-function SigninPage({location}) {
+function SignupPage({location}) {
   const [passwordType, setPasswordType] = useState("password");
 
   let pagecolor = "";
   let traycolor = "";
-  if (location.pathname === "/signin") {
+  if (location.pathname === "/signup") {
     traycolor = "white";
     pagecolor = "white";
   }
-  if (location.pathname === "/renter/signin") {
+  if (location.pathname === "/renter/sigup") {
     traycolor = "";
     pagecolor = "#fc5c65";
   }
-  if (location.pathname === "/admin/signin") {
+  if (location.pathname === "/admin/signup") {
     traycolor = "";
     pagecolor = "#fc5c65";
   }
@@ -40,19 +41,30 @@ function SigninPage({location}) {
       const {data, status} = await guestSignup(values);
       console.log(data.property, data.msg, status);
       if (status === 400) setFieldError(data.property, data.msg);
-      else console.log("signup success");
+      else {
+        setAuthToken(data)
+        window.location = "/dashboard";
+      }
     }
+
     if (location.pathname === "/renter/signup") {
       const {data, status} = await renterSignup(values);
       console.log(data.property, data.msg, status);
       if (status === 400) setFieldError(data.property, data.msg);
-      else console.log("signup success");
+      else {
+        setAuthToken(data)
+        window.location = "/renter/dashboard";
+      }
     }
+
     if (location.pathname === "/admin/signup") {
       const {data, status} = await adminSignup(values);
       console.log(data.property, data.msg, status);
       if (status === 400) setFieldError(data.property, data.msg);
-      else console.log("signup success");
+      else {
+        setAuthToken(data)
+        window.location = "/admin/dashboard";
+      }
     }
   };
 
@@ -201,4 +213,4 @@ function SigninPage({location}) {
   );
 }
 
-export default SigninPage;
+export default SignupPage;

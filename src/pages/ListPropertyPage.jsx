@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Step1 from "./../components/listPropertyPageComponent/Step1";
 import Step2 from "./../components/listPropertyPageComponent/Step2";
 import Step3 from "./../components/listPropertyPageComponent/Step3";
@@ -9,7 +9,7 @@ import {Formik, Form} from "formik";
 import * as Yup from "yup";
 import {toast} from "react-toastify";
 import {displayNotification} from "./../services/notificationService";
-import {registerHotels} from "./../api/renter";
+import {registerHotels, getRenterHotelsbyId, editHotelById} from "./../api/renter";
 let pincodeDirectory = require("india-pincode-lookup");
 
 const validationSchema = Yup.object().shape({
@@ -51,12 +51,73 @@ const validationSchema = Yup.object().shape({
     is: "Yes",
     then: Yup.string().required("GSTIN is required"),
   }),
-  panCardNumber: Yup.string().required(),
+  panCardNumber: Yup.string()
+    .required()
+    .length(10)
+    .matches(/^[a-z0-9]+$/i, "Only alphanumeric characters accepted (0-9, A-Z)"),
   state: Yup.string().required(),
   paymentAddress: Yup.string().required().min(8).max(255),
 });
 
-function ListPropertyPage() {
+const booleanKeys = [
+  "extraBed",
+  "accomodateChildren",
+  "allowPets",
+  "isPrepaymentRequired",
+  "provideDormitoryForDriver",
+  "GST",
+];
+
+function ListPropertyPage({match}) {
+  let hotelId = match.params.id;
+  const [initialValues, setInitialValues] = useState({
+    hotelName: "",
+    starRating: "",
+    contactName: "",
+    phoneNumber: "",
+    address: "",
+    city: "",
+    placeForSearch: "",
+    postalCode: "",
+    parking: "No",
+    breakfast: "No",
+    facilities: [],
+    extraBed: "No",
+    noOfExtraBeds: 1,
+    mainPhoto: "",
+    photos: [],
+    freeCancellationAvailable: "None.(Guest cannot cancel once booked)",
+    ifNotCancelledBeforeDate: "of the first day",
+    checkIn: "00 : 00",
+    checkOut: "00 : 00",
+    accomodateChildren: "No",
+    allowPets: "No",
+    provideDormitoryForDriver: "No",
+    isPrepaymentRequired: "No",
+    GST: "No",
+    tradeName: "",
+    GSTIN: "",
+    panCardNumber: "",
+    state: "Andhra Pradesh",
+  });
+
+  async function getHotels(id) {
+    const {data} = await getRenterHotelsbyId(id);
+    console.log(data, "dt");
+    const transform = obj =>
+      booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === true ? "Yes" : "No"}), obj);
+    setInitialValues(transform(data));
+
+    // localStorage.setItem("coverPhoto", JSON.stringify(data.mainPhoto));
+    // localStorage.setItem("numberOfImages", data.photos.length);
+  }
+
+  useEffect(() => {
+    if (hotelId) {
+      getHotels(hotelId);
+    }
+  }, []);
+
   let draftValues;
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -87,22 +148,27 @@ function ListPropertyPage() {
 
     values.placeForSearch = values.placeForSearch.toLowerCase();
 
-    const booleanKeys = [
-      "extraBed",
-      "accomodateChildren",
-      "allowPets",
-      "isPrepaymentRequired",
-      "provideDormitoryForDriver",
-      "GST",
-    ];
-
     const transform = obj =>
       booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === "Yes"}), obj);
 
-    const {data, status} = await registerHotels(transform(values));
-    if (status === 400) return setFieldError(data.property, data.msg);
+    let isEdited = false;
+    if (hotelId) {
+      const {data, status} = await editHotelById(transform(values), hotelId);
+      if (status === 400) return setFieldError(data.property, data.msg);
+      isEdited = true;
+    } else {
+      const {data, status} = await registerHotels(transform(values));
+      if (status === 400) return setFieldError(data.property, data.msg);
+    }
     toast.dismiss();
-    console.log(data);
+    if (isEdited) toast.info("Successfully modified details");
+    else toast.info("Successfully added hotel");
+    localStorage.removeItem("coverPhoto");
+    localStorage.removeItem("numberOfImages");
+    localStorage.removeItem("saveAsDraft");
+    setTimeout(() => {
+      window.location = "/renter/dashboard";
+    }, 1000);
   };
 
   const buttonStyle = {
@@ -125,40 +191,10 @@ function ListPropertyPage() {
 
   return (
     <Formik
-      initialValues={
-        draftValues || {
-          hotelName: "",
-          starRating: "",
-          contactName: "",
-          phoneNumber: "",
-          address: "",
-          city: "",
-          placeForSearch: "",
-          postalCode: "",
-          parking: "No",
-          breakfast: "No",
-          facilities: [],
-          extraBed: "No",
-          noOfExtraBeds: 1,
-          mainPhoto: "",
-          photos: [],
-          freeCancellationAvailable: "None.(Guest cannot cancel once booked)",
-          ifNotCancelledBeforeDate: "of the first day",
-          checkIn: "00 : 00",
-          checkOut: "00 : 00",
-          accomodateChildren: "No",
-          allowPets: "No",
-          provideDormitoryForDriver: "No",
-          isPrepaymentRequired: "No",
-          GST: "No",
-          tradeName: "",
-          GSTIN: "",
-          panCardNumber: "",
-          state: "",
-        }
-      }
+      initialValues={draftValues || initialValues}
       validationSchema={validationSchema}
       onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
+      enableReinitialize
     >
       {({isValid}) => (
         <Form>
@@ -206,7 +242,7 @@ function ListPropertyPage() {
           )}
           {currentPage === 3 && (
             <>
-              <Step3 saveAsDraft={saveAsDraft} />
+              <Step3 saveAsDraft={saveAsDraft} preview={initialValues.mainPhoto} count={initialValues.photos.length} />
               <div style={{display: "flex", justifyContent: "space-between"}}>
                 <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
                   Back

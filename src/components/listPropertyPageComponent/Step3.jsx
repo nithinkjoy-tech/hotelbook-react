@@ -6,7 +6,7 @@ import SaveAsDraftButton from "./SaveAsDraftButton";
 import ImageUpload from "./ImageUpload";
 import {Delete} from "@material-ui/icons";
 
-function Step3({saveAsDraft}) {
+function Step3({saveAsDraft,preview,count}) {
   useEffect(() => {
     window.scrollTo(0, 0) 
   }, [])
@@ -16,14 +16,22 @@ function Step3({saveAsDraft}) {
   const {getFieldProps, values, setFieldValue} = useFormikContext();
 
   let {value,name} = getFieldProps("mainPhoto");
+  // console.log(value,"vll")
+  // setPrev(value)
+  // if(prev) setPrev(prev)
+
   const handleDelete = () => {
     setFieldValue(name, null);
     setPrev(null);
   };
 
   const loadImage = () => {
-    setPrev(JSON.parse(localStorage.getItem("coverPhoto")))
-    setNumberOfImages(localStorage.getItem("numberOfImages"))
+    if(JSON.parse(localStorage.getItem("saveAsDraft"))?.photos?.length>0){
+      setPrev(JSON.parse(localStorage.getItem("coverPhoto")))
+      setNumberOfImages(localStorage.getItem("numberOfImages"))
+    }
+    if(preview) setPrev(preview)
+    if(count) setNumberOfImages(count)
   };
 
   useEffect(() => {
@@ -45,7 +53,6 @@ function Step3({saveAsDraft}) {
     reader.readAsDataURL(image);
   }
   setFieldValue("photos", imagesBase64);
-  console.log(imagesBase64.length,"lenn")
   }
 
   let handleImageChange = data => {
@@ -56,7 +63,6 @@ function Step3({saveAsDraft}) {
         let imageBase64=reader.result
         setPrev(imageBase64);
         setFieldValue("mainPhoto", imageBase64);
-        console.log(imageBase64)
         localStorage.setItem("coverPhoto", JSON.stringify(imageBase64));
       }
     };

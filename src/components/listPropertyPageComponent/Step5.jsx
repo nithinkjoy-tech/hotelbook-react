@@ -108,7 +108,7 @@ function Step5({saveAsDraft}) {
                       type="button"
                       onClick={() => setPaymentAddress()}
                     >
-                      click to copy payment address same as hotel address
+                      copy payment address same as payment address
                     </button>
                   </div>
                 </div>

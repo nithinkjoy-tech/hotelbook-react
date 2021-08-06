@@ -11,3 +11,7 @@ export function adminSignin(values){
 export function adminSignup(values){
     return apiClient.post("/admin/signup", values);
 }
+
+export function adminChangePassword(values){
+    return apiClient.post("/admin/changePassword", values);
+}
