@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import SearchComponent from "../components/common/SearchComponent";
 import {useHistory} from "react-router-dom";
 import SearchResultComponent from "../components/searchPageComponent/SearchResultComponent";
-// import HotelsComponent from '../components/searchPageComponent/SearchResultComponent';
+// import HotelsComponent from '../components/SearchPageComponent/SearchResultComponent';
 
 function SearchPage() {
   useEffect(() => {
