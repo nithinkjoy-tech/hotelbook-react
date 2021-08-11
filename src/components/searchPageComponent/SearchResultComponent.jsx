@@ -4,6 +4,12 @@ import { Link } from 'react-router-dom';
 import { displayNotification,dismissNotification } from './../../services/notificationService';
 
 function SearchResultComponent({hotels,user}) {  
+  let className
+  if(user==="renter") {
+    className ="renter-flex"
+  }else{
+    className ="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4"
+  }
 
   if(!user){
     let numberOfDays = Number(localStorage.getItem("numberOfDays"))
@@ -17,16 +23,17 @@ function SearchResultComponent({hotels,user}) {
   }
 
   return (
-    <div className="best-rooms w3l-blog">
+    <div style={{marginTop:user==="renter"?"10%":"none"}} >
+      <div className="best-rooms w3l-blog">
       <div className="container py-sm-4">
-      <div className="ban-content-inf row">
+      <div className="ban-content-inf row" style={{width:"100%"}}>
           {hotels?.length>0?<>{hotels.map(hotel => (
-          <div key={hotel._id} className="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4">
+          <div key={hotel._id} className={className} style={{marginTop:"15px"}} >
               <div className="maghny-grid">
                 <figure onClick={()=>handleHotelClick(hotel._id)} className="effect-lily">
                   <img className="img-fluid" style={{height:"260px"}} src={hotel.mainPhoto} alt="Room" />
                   <figcaption>
-                    <div>  
+                    <div>
                       <h4 className="top-text">
                         {hotel.hotelName}
                         <Rating value={hotel?.reviewScore} />
@@ -47,7 +54,8 @@ function SearchResultComponent({hotels,user}) {
                       <span className="fa fa-bed"></span> {hotel?.roomSize}sqft
                     </li>
                   </ul>
-                  <p>{hotel?.description}</p>
+                  {/* <p>{hotel?.description}</p> */}
+                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit itaque fuga consequatur molestias quo, eaque animi tempore facilis quae autem vitae est repellendus.</p>
                   <p style={{color:"purple",fontWeight:"bold"}} >Book for Rs.{hotel?.startingRatePerDay} </p>
                 <div style={{display:"flex",justifyContent:"space-between"}}>
                 {user==="renter"?<Link to={`/renter/listproperty/${hotel._id}`} >
@@ -87,8 +95,10 @@ function SearchResultComponent({hotels,user}) {
               </div> 
               </div>
           ))}</>:<p>There is no place with given name</p>}
+          <div style={{width:"50%"}} ></div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

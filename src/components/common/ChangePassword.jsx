@@ -19,6 +19,7 @@ function ChangePassword({title,location}) {
 
   const handleSubmit = async (values, setFieldError, resetForm) => {
     if(location.pathname ==="/dashboard"){
+      console.log("here")
       const {data, status} = await guestChangePassword(values);
       if (status !== 200) setFieldError(data.property, data.msg);
       else {

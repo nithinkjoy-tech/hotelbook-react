@@ -111,3 +111,21 @@ code {
   color:#80388C;
   font-weight: 900;
 }
+
+.renter-flex {
+  flex:50%;
+}
+
+.renter-flex:last-child {
+  flex:100%;
+}
+
+.hotel {
+  display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.hotel > div {
+  flex:50%
+}

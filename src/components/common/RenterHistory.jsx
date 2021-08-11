@@ -8,12 +8,25 @@ import InputBox from "./InputBox";
 import "../../css/Booked_Dashboard.css";
 import {useHistory} from "react-router-dom";
 import Rating from "./Rating";
-import {getBookings, addReview} from "../../api/guest";
+import {getBookings} from "../../api/renter";
 import {displayNotification} from "../../services/notificationService";
+import PropertySelectBox from './PropertySelectBox';
+import Calendar from './../landingPageComponent/Calendar';
 
-const reviewSchema = Yup.object().shape({
-  review: Yup.string().min(2).max(100000).required(),
-  rating: Yup.number().required().oneOf([1, 2, 3, 4, 5]),
+const dateValidator = Yup.object()
+  .shape({
+    day: Yup.number().min(1).max(31).required(),
+    month: Yup.number().min(1).max(12).required(),
+    year: Yup.number().min(2021).max(3000).required(),
+  })
+  .nullable();
+
+const validationSchema = Yup.object().shape({
+  selectedOption: Yup.string().required().oneOf(["Booked","Checkin","Checkout"]),
+  selectedDayRange: Yup.object().shape({
+    from: dateValidator,
+    to: dateValidator,
+  }),
 });
 
 function RenterHistory() {
@@ -23,57 +36,125 @@ function RenterHistory() {
   const [hotelId, setHotelId] = useState();
   const [ratingValue, setRatingValue] = useState();
   const [reviewValue, setReviewValue] = useState();
-  
 
-  const getAllBookings = async () => {
-    const {data, status} = await getBookings({isStayCompleted: true});
-    if (status !== 200) return displayNotification("error", data);
-    // console.log(data,"dtt")
-    setBookings(data);
-  };
+  // const getAllBookings = async () => {
+  //   const {data, status} = await getBookings({isStayCompleted: true});
+  //   if (status !== 200) return displayNotification("error", data);
+  //   // console.log(data,"dtt")
+  //   setBookings(data);
+  // };
 
-  const onReviewClick = (hotelId) => {
-    setIsOpen(true);
-    setHotelId(hotelId);
+  // const onReviewClick = (hotelId) => {
+  //   setIsOpen(true);
+  //   setHotelId(hotelId);
     
-  };
+  // };
 
-  const setValues=(getFieldProps)=>{
-    const {value:ratingValue}=getFieldProps("rating")
-  if(ratingValue) setRatingValue(ratingValue)
-  const {value:reviewValue}=getFieldProps("review")
-  if(reviewValue) setReviewValue(reviewValue)
-  }
+  // const setValues=(getFieldProps)=>{
+  //   const {value:ratingValue}=getFieldProps("rating")
+  // if(ratingValue) setRatingValue(ratingValue)
+  // const {value:reviewValue}=getFieldProps("review")
+  // if(reviewValue) setReviewValue(reviewValue)
+  // }
 
-  const diffBetweenDays = (startingDate, endingDate) => {
-    const diffInMs = new Date(endingDate) - new Date(startingDate);
-    return diffInMs / (1000 * 60 * 60 * 24);
-  };
+  // const diffBetweenDays = (startingDate, endingDate) => {
+  //   const diffInMs = new Date(endingDate) - new Date(startingDate);
+  //   return diffInMs / (1000 * 60 * 60 * 24);
+  // };
 
-  const handleDetails = (roomDetails, startingDate, endingDate) => {
-    let result = diffBetweenDays(startingDate, endingDate);
-    history.push("/bookedroomdetails", {data: roomDetails, days: result});
-  };
+  // const handleDetails = (roomDetails, startingDate, endingDate) => {
+  //   let result = diffBetweenDays(startingDate, endingDate);
+  //   history.push("/bookedroomdetails", {data: roomDetails, days: result});
+  // };
 
-  useEffect(() => {
-    getAllBookings();
-  }, []);
+  // useEffect(() => {
+  //   getAllBookings();
+  // }, []);
 
   const handleSubmit = async (values,resetForm) => {
     console.log(values, "val");
-    const {data,status}=await addReview(hotelId, values)
-    if(status !== 200) return displayNotification("error",data)
-    displayNotification("success","Review Posted Successfully")
-    resetForm({values: ""});
+    // const {data,status}=await addReview(hotelId, values)
+    // if(status !== 200) return displayNotification("error",data)
+    // displayNotification("success","Review Posted Successfully")
+    // resetForm({values: ""});
   };
 
-  if (!bookings) return null;
+  // if (!bookings) return null;
 
   return (
     <div className="history">
       <h3>History</h3>
       <h5>Caption about History</h5>
-      {bookings.map(booking => (
+
+      <Formik
+      initialValues={
+        {
+          selectedOption: "",
+          selectedDayRange: {
+            from: null,
+            to: null,
+          },
+          // rooms: 1,
+        }
+      }
+      validationSchema={validationSchema}
+      onSubmit={values => handleSubmit(values)}
+    >
+      {({errors, touched, values, handleChange, handleBlur}) => (
+        <Form>
+          <section className="w3l-availability-form" style={{marginTop:0}} id="booking">
+            <div className="w3l-availability-form-main">
+              <div className="container">
+                <div className="forms-top">
+                  <div className="form-right">
+                    <div className="mt-6 form-inner-cont">
+                      {/* <h3 className="title-small">Check Availability</h3> */}
+                      <div className="row book-form">
+                        <div className="form-input col-md-4 col-sm-6 mt-3">
+                        <div className="col-span-6 sm:col-span-3">
+                    <PropertySelectBox
+                      label=""
+                      name="starRating"
+                      options={["All","Booked","Checkin","Checkout"]}
+                    />
+                  </div>
+                        </div>
+                        <div className="form-input col-md-4 col-sm-6 mt-3 ">
+                          <Calendar
+                            name="selectedDayRange"
+                            onChange={handleChange}
+                            selectedDayRange={values.selectedDayRange}
+                          />
+                        </div>
+                        {/* <div className="form-input col-md-3 col-sm-6 mt-3">
+                          <RoomRequirement name="rooms" rooms={values.rooms} />
+                        </div> */}
+
+                        <div className="bottom-btn col-md-2 col-sm-6 mt-3">
+                          <button
+                            type="submit"
+                            className="btn btn-style btn-primary py-3 w-100 px-2"
+                          >
+                            Search
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </Form>
+      )}
+    </Formik>
+
+
+
+
+
+
+      {/* {bookings.map(booking => (
         <article className="book">
           <div className="book-box">
             <img src={booking?.mainPhoto} width="1500" height="1368" alt="" />
@@ -101,7 +182,6 @@ function RenterHistory() {
             </p>
             <div className="book-details">
               <div className="book-details-right">
-                {/* <h5 className="book-details-desc">Hotel Booking ID : 5897458631</h5> */}
                 <h5 className="pay">
                   Total: Rs.{" "}
                   {booking?.totalPrice *
@@ -136,8 +216,8 @@ function RenterHistory() {
             </div>
           </div>
         </article>
-      ))}
-      <Formik
+      ))} */}
+      {/* <Formik
         initialValues={{
           rating: "",
           review: "",
@@ -184,7 +264,7 @@ function RenterHistory() {
             </Form>
           </ModalComponent>
         )}
-      </Formik>
+      </Formik> */}
     </div>
   );
 }

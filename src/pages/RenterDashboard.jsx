@@ -19,6 +19,7 @@ import HotelIcon from '@material-ui/icons/Hotel';
 import RenterProfile from '../components/common/RenterProfile';
 import RenterBook from '../components/common/RenterBook';
 import RenterHotelsSection from '../components/common/RenterHistory';
+import RenterHotels from './../components/common/RenterHotels';
 
 function RenterDashboard() {
   const [selectOption,setSelectOption] = useState('profile');
@@ -41,7 +42,7 @@ function RenterDashboard() {
             {(() => { if (selectOption === 'profile') return (<RenterProfile title={"Profile"} description={"Basic info, for a faster booking experience"}/>)
              else if (selectOption === 'history') return (<RenterHistory />)
              else if (selectOption === 'booked') return (<RenterBook />)
-             else if (selectOption === 'hotels') return (<RenterBook />)
+             else if (selectOption === 'hotels') return (<RenterHotels />)
              else if (selectOption === 'password') return (<ChangePassword title="Change Password" />)
              else if(selectOption === 'logout') return (<Logout />)
              })()}

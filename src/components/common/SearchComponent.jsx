@@ -81,6 +81,7 @@ function SearchComponent({initialValues}) {
                             name="selectedDayRange"
                             onChange={handleChange}
                             selectedDayRange={values.selectedDayRange}
+                            minimumDate={true}
                           />
                         </div>
                         {/* <div className="form-input col-md-3 col-sm-6 mt-3">

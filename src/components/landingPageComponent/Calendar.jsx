@@ -3,7 +3,7 @@ import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import DatePicker, {utils} from "@hassanmojab/react-modern-calendar-datepicker";
 import {useFormikContext} from "formik";
      
-const Calendar = ({selectedDayRange, name}) => {
+const Calendar = ({selectedDayRange, name,minimumDate}) => {
   const formik = useFormikContext();
   const field = formik.getFieldProps(name);
 
@@ -37,7 +37,7 @@ const Calendar = ({selectedDayRange, name}) => {
       }}
       inputPlaceholder="Select days"
       shouldHighlightWeekends
-      minimumDate={utils().getToday()}
+      minimumDate={minimumDate?utils().getToday():""}
     />
   );
 };
