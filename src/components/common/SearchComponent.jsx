@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import {Formik, Form} from "formik";
 import InputBox from "./InputBox";
 import {getHotels} from "../../api/guest";
+import PropertySelectBox from './PropertySelectBox';
 
 const dateValidator = Yup.object()
   .shape({
@@ -64,18 +65,11 @@ function SearchComponent({initialValues}) {
                     <div className="mt-6 form-inner-cont">
                       <h3 className="title-small">Check Availability</h3>
                       <div className="row book-form">
-                        <div className="form-input col-md-4 col-sm-6 mt-3">
-                          <InputBox
-                            handleBlur={handleBlur}
-                            label={null}
-                            placeholder="Where are you going?"
-                            name="placeForSearch"
-                            error={errors}
-                            touched={touched}
-                            handleChange={handleChange}
-                            values={values}
-                          />
-                        </div>
+                        <PropertySelectBox
+                          label="Breakfast"
+                          name="breakfast"
+                          options={["Kukke", "Yes, Free", "Yes, Paid"]}
+                        />
                         <div className="form-input col-md-4 col-sm-6 mt-3 ">
                           <Calendar
                             name="selectedDayRange"

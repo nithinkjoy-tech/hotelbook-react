@@ -5,8 +5,7 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import logo from "../../images/HotelBook.png"
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', current: false },
-  { name: 'List Your Property', href: '/renter/welcome', current: false },
+  { name: 'Dashboard', href: '/dashboard', current: false }
 //   { name: 'Calendar', href: '#', current: false },
 ]
 
@@ -16,6 +15,7 @@ function classNames(...classes) {
 
 export default function NavBar() {
 
+  
   const [login,setLogin]=useState(false)
 
   return (
