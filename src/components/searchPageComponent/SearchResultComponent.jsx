@@ -5,7 +5,7 @@ import { displayNotification,dismissNotification } from './../../services/notifi
 
 function SearchResultComponent({hotels,user}) {  
   let className
-  if(user==="renter") {
+  if(user==="admin") {
     className ="renter-flex"
   }else{
     className ="maghny-gd-1 col-lg-4 col-md-6 mt-md-5 mt-4"
@@ -18,12 +18,12 @@ function SearchResultComponent({hotels,user}) {
   }
 
   const handleHotelClick=(id)=>{
-    if(user==="renter") return window.location=`/renter/room/${id}`
+    if(user==="admin") return window.location=`/admin/room/${id}`
     window.location=`/hoteldetails/${id}`
   }
 
   return (
-    <div style={{marginTop:user==="renter"?"10%":"none"}} >
+    <div style={{marginTop:user==="admin"?"10%":"none"}} >
       <div className="best-rooms w3l-blog">
       <div className="container py-sm-4">
       <div className="ban-content-inf row" style={{width:"100%"}}>
@@ -58,12 +58,12 @@ function SearchResultComponent({hotels,user}) {
                   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit itaque fuga consequatur molestias quo, eaque animi tempore facilis quae autem vitae est repellendus.</p>
                   <p style={{color:"purple",fontWeight:"bold"}} >Book for Rs.{hotel?.startingRatePerDay} </p>
                 <div style={{display:"flex",justifyContent:"space-between"}}>
-                {user==="renter"?<Link to={`/renter/listproperty/${hotel._id}`} >
+                {user==="admin"?<Link to={`/admin/listproperty/${hotel._id}`} >
                     <span className="btn mt-sm-4 mt-3">
                       Edit hotel
                     </span>
                   </Link>:<div></div>}
-                  {user==="renter"?<Link to={`/renter/addroom/${hotel._id}`} >
+                  {user==="admin"?<Link to={`/admin/addroom/${hotel._id}`} >
                     <span className="btn mt-sm-3">
                       <i style={{fontSize:"1.5rem"}}>+</i> Add Rooms
                     </span>

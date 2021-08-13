@@ -29,7 +29,7 @@ const HotelDetails = ({match,location}) => {
     console.log(roomData,"dtnj"); 
     setRooms(roomData) 
     let numberOfDays = Number(localStorage.getItem("numberOfDays"))
-    if(numberOfDays===0&&(!location?.search)) displayNotification("info","Select date of your stay for clear details")
+    if(numberOfDays===0||!numberOfDays) displayNotification("info","Select date of your stay for clear details")
     // getRoomsbyId(data.hotelRooms)  
   };
 

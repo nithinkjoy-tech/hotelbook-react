@@ -1,9 +1,9 @@
 import React,{useState, useEffect} from 'react';
 import ReactLoading from 'react-loading'
-import SearchResultComponent from "../../components/searchPageComponent/SearchResultComponent";
-import { getRenterHotels } from '../../api/renter';
+import SearchResultComponent from "../searchPageComponent/SearchResultComponent";
+import { getAdminHotels } from '../../api/admin';
 
-function RenterHotels() {
+function AdminHotels() {
     const [hotels,setHotels]=useState()
   const [isLoading,setIsLoading]=useState(true)
   const [hotelsCount,setHotelsCount]=useState()
@@ -13,7 +13,7 @@ function RenterHotels() {
 
   async function getHotels() {
     let values={pageNumber:0,pageSize}
-    const {data}=await getRenterHotels(values)
+    const {data}=await getAdminHotels(values)
     let {hotelsCount,hotels}=data
     console.log(hotelsCount,"count")
     setHotels(hotels)
@@ -40,9 +40,9 @@ function RenterHotels() {
 
   return (
     <div>
-      <SearchResultComponent user="renter" hotels={hotels} />
+      <SearchResultComponent user="admin" hotels={hotels} />
     </div> 
   );
 }
 
-export default RenterHotels
+export default AdminHotels

@@ -4,9 +4,9 @@ import {useHistory} from "react-router-dom";
 import Rating from "./Rating";
 import Img from "../../images/room1.jpg";
 import {getBookings} from "../../api/guest";
-import {displayNotification} from "./../../services/notificationService";
+import {displayNotification} from "../../services/notificationService";
 
-function RenterBook() {
+function AdminBook() {
   const history = useHistory();
   const [bookings, setBookings] = useState();
 
@@ -99,4 +99,4 @@ function RenterBook() {
   );
 }
 
-export default RenterBook;
+export default AdminBook;

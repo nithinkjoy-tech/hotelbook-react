@@ -14,12 +14,11 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string().oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
 });
 
-function ChangePassword({title,location}) {
+function ChangePassword({title}) {
   const [passwordType, setPasswordType] = useState("password");
-
+  
   const handleSubmit = async (values, setFieldError, resetForm) => {
-    if(location.pathname ==="/dashboard"){
-      console.log("here")
+    if(window.location.pathname ==="/dashboard"){
       const {data, status} = await guestChangePassword(values);
       if (status !== 200) setFieldError(data.property, data.msg);
       else {
@@ -29,7 +28,7 @@ function ChangePassword({title,location}) {
       }
     }
 
-    if(location.pathname ==="/renter/dashboard"){
+    if(window.location.pathname ==="/renter/dashboard"){
       const {data, status} = await renterChangePassword(values);
       if (status !== 200) setFieldError(data.property, data.msg);
       else {
@@ -39,7 +38,7 @@ function ChangePassword({title,location}) {
       }
     }
 
-    if(location.pathname ==="/admin/dashboard"){
+    if(window.location.pathname ==="/admin/dashboard"){
       const {data, status} = await adminChangePassword(values);
       if (status !== 200) setFieldError(data.property, data.msg);
       else {

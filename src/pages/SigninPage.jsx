@@ -59,6 +59,7 @@ function SigninPage({location}) {
         window.location = "/renter/dashboard";
       }
     }
+    
     if (location.pathname === "/admin/signin") {
       const {data, status} = await adminSignin(values);
       if (status === 400) setFieldError("userId", data);

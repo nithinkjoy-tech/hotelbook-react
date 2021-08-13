@@ -9,7 +9,7 @@ import {Formik, Form} from "formik";
 import * as Yup from "yup";
 import {toast} from "react-toastify";
 import {displayNotification} from "./../services/notificationService";
-import {registerHotels, getRenterHotelsbyId, editHotelById} from "./../api/renter";
+import {registerHotels, getAdminHotelsbyId, editHotelById} from "./../api/admin";
 let pincodeDirectory = require("india-pincode-lookup");
 
 const validationSchema = Yup.object().shape({
@@ -102,7 +102,7 @@ function ListPropertyPage({match}) {
   });
 
   async function getHotels(id) {
-    const {data} = await getRenterHotelsbyId(id);
+    const {data} = await getAdminHotelsbyId(id);
     console.log(data, "dt");
     const transform = obj =>
       booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === true ? "Yes" : "No"}), obj);
@@ -167,7 +167,7 @@ function ListPropertyPage({match}) {
     localStorage.removeItem("numberOfImages");
     localStorage.removeItem("saveAsDraft");
     setTimeout(() => {
-      window.location = "/renter/dashboard";
+      window.location = "/admin/dashboard";
     }, 1000);
   };
 

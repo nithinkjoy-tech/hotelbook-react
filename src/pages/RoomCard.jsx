@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import slide1 from "../images/slide1.jpg";
-import {getHotelRooms} from "./../api/renter";
+import {getHotelRooms} from "./../api/admin";
 import "../css/Card.css";
 import { Link } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ function RoomCard({match}) {
   };
 
   const editRoom=(roomId)=>{
-    window.location=`/renter/editroom/${roomId}`
+    window.location=`/admin/editroom/${roomId}`
   }
 
   useEffect(() => {
@@ -27,7 +27,7 @@ function RoomCard({match}) {
     <div>
       <h1 style={{marginTop: "70px", textAlign: "center"}}>Rooms</h1>
       <Link 
-        to={`/renter/addroom/${hotelId}`}
+        to={`/admin/addroom/${hotelId}`}
         className="btn btn-primary btn-lg btn-block"
         style={{marginBottom: "2rem", marginLeft: "5rem"}}
       >

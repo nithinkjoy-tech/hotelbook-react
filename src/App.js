@@ -11,7 +11,7 @@ import ListPropertyPage from './pages/ListPropertyPage';
 import {ToastContainer} from "react-toastify";
 import ListPropertyWelcomePage from './pages/ListPropertyWelcomePage';
 import GuestDashboard from "./pages/GuestDashboard";
-import RenterDashboard from './pages/RenterDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import HotelDetails from './pages/HotelDetails';
 import AddRoom from './components/listPropertyPageComponent/AddRoom';
 import RoomCard from './pages/RoomCard';
@@ -19,7 +19,7 @@ import RenterRoute from './components/common/RenterRoute';
 import RoomDescription from './components/RoomDetailsPageComponents/RoomDescription';
 import RoomDetails from './pages/RoomDetails';
 import BookedRoomDetails from './components/RoomDetailsPageComponents/BookedRoomDetails';
-import RenterBook from './components/common/RenterBook';
+import AdminBook from './components/common/AdminBook';
 
 function App() {
   return (
@@ -40,13 +40,20 @@ function App() {
         <Route path="/renter/welcome" component={ListPropertyWelcomePage} />
         <Route path="/renter/signin" component={SigninPage} />
         <Route path="/renter/signup" component={SignupPage} />
-        <Route path="/renter/prof" component={RenterBook} />
-        <RenterRoute path="/renter/dashboard" component={RenterDashboard} />
-        <RenterRoute path="/renter/room/:hotelId" component={RoomCard} />
+        <Route path="/renter/prof" component={AdminBook} />
+        {/* <RenterRoute path="/renter/dashboard" component={RenterDashboard} /> */}
+        {/* <RenterRoute path="/renter/room/:hotelId" component={RoomCard} />
         <RenterRoute path="/renter/listproperty/:id" component={ListPropertyPage} />
         <RenterRoute path="/renter/listproperty" component={ListPropertyPage} />
         <RenterRoute path="/renter/addroom/:hotelId" component={AddRoom} />
-        <RenterRoute path="/renter/editroom/:roomId" component={AddRoom} />
+        <RenterRoute path="/renter/editroom/:roomId" component={AddRoom} /> */}
+        <Route path="/admin/signin" component={SigninPage} />
+        <Route path="/admin/dashboard" component={AdminDashboard} />
+        <Route path="/admin/room/:hotelId" component={RoomCard} />
+        <Route path="/admin/listproperty/:id" component={ListPropertyPage} />
+        <Route path="/admin/listproperty" component={ListPropertyPage} />
+        <Route path="/admin/addroom/:hotelId" component={AddRoom} />
+        <Route path="/admin/editroom/:roomId" component={AddRoom} />
         <Route path="/" component={LandingPage} />
       </Switch>
       <Footer />

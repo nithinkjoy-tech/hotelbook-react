@@ -1,7 +1,7 @@
 import React, {useEffect,useState} from "react";
 import ReactLoading from 'react-loading'
-import SearchResultComponent from "./../components/searchPageComponent/SearchResultComponent";
-import { getRenterHotels } from './../api/renter';
+import SearchResultComponent from "../components/searchPageComponent/SearchResultComponent";
+import { getAdminHotels } from '../api/admin';
 import Logout from '../components/common/Logout'
 import '../../src/css/RenterDashboard.css'
 import ReactPaginate from 'react-paginate';
@@ -12,16 +12,16 @@ import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import {Lock} from '@material-ui/icons';
 import {HotelRounded} from '@material-ui/icons';
 import '../../src/css/GuestDashboard.css'
-import RenterHistory from '../components/common/RenterHistory';
-import Booked_Dashboard from './../components/common/Booked_Dashboard'; 
-import ChangePassword from './../components/common/ChangePassword';
+// import AdminHistory from '../components/common/AdminHistory';
+import Booked_Dashboard from '../components/common/Booked_Dashboard'; 
+import ChangePassword from '../components/common/ChangePassword';
 import HotelIcon from '@material-ui/icons/Hotel';
-import RenterProfile from '../components/common/RenterProfile';
-import RenterBook from '../components/common/RenterBook';
-import RenterHotelsSection from '../components/common/RenterHistory';
-import RenterHotels from './../components/common/RenterHotels';
+import AdminProfile from '../components/common/AdminProfile';
+import AdminBook from '../components/common/AdminBook';
+// import AdminHotelsSection from '../components/common/AdminHistory';
+import AdminHotels from './../components/common/AdminHotels';
 
-function RenterDashboard() {
+function AdminDashboard() {
   const [selectOption,setSelectOption] = useState('profile');
     const [activeProfileOption,setActiveProfileOption] = useState(false);
     const [activeHistoryOption,setActiveHistoryOption] = useState(false);
@@ -31,18 +31,18 @@ function RenterDashboard() {
             <div className="guestDashboard_menu">
                 <ul className="guestDashboard_menuItems">
                     <li onClick={e => {setSelectOption('profile'); }} className={activeProfileOption && "active"}><PersonIcon /><div className="Content">Profile</div></li>
-                    <li onClick={e => {setSelectOption('history'); }} className={activeHistoryOption && "active"}><HistoryIcon /><div className="Content">History</div></li>
-                    <li onClick={e => setSelectOption('booked')}><EventAvailableIcon/><div className="Content">Booked</div></li>
+                    {/* <li onClick={e => {setSelectOption('history'); }} className={activeHistoryOption && "active"}><HistoryIcon /><div className="Content">History</div></li> */}
+                    {/* <li onClick={e => setSelectOption('booked')}><EventAvailableIcon/><div className="Content">Booked</div></li> */}
                     <li onClick={e => setSelectOption('hotels')}><HotelRounded/><div className="Content">Hotels</div></li>
                     <li onClick={e => setSelectOption('password')}><Lock/><div className="Content">Password</div></li>
                     <li onClick={e => setSelectOption('logout')}><ExitToAppIcon/><div className="Content">Logout</div></li>
                 </ul>
             </div>
            
-            {(() => { if (selectOption === 'profile') return (<RenterProfile title={"Profile"} description={"Basic info, for a faster booking experience"}/>)
-             else if (selectOption === 'history') return (<RenterHistory />)
-             else if (selectOption === 'booked') return (<RenterBook />)
-             else if (selectOption === 'hotels') return (<RenterHotels />)
+            {(() => { if (selectOption === 'profile') return (<AdminProfile title={"Profile"} description={"Basic info, for a faster booking experience"}/>)
+            //  else if (selectOption === 'history') return (<AdminHistory />)
+             else if (selectOption === 'booked') return (<AdminBook />)
+             else if (selectOption === 'hotels') return (<AdminHotels />)
              else if (selectOption === 'password') return (<ChangePassword title="Change Password" />)
              else if(selectOption === 'logout') return (<Logout />)
              })()}
@@ -54,4 +54,4 @@ function RenterDashboard() {
     )
 }
 
-export default RenterDashboard;
+export default AdminDashboard;

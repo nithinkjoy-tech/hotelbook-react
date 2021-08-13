@@ -8,7 +8,7 @@ import Error from "./../forms/Error";
 import ImageUpload from "./ImageUpload";
 import {Delete} from "@material-ui/icons";
 import {Formik, Form,ErrorMessage} from "formik";
-import {addRoom,getRenterRoomById,editRoomById} from "../../api/renter";
+import {addRoom,getAdminRoomById,editRoomById} from "../../api/admin";
 import {toast} from "react-toastify";
 
 const validationSchema = Yup.object().shape({
@@ -42,7 +42,7 @@ function AddRoom({match}) {
   })
 
   async function getRoom(id) {
-    const {data} = await getRenterRoomById(id);
+    const {data} = await getAdminRoomById(id);
     setInitialValues(data);
 
     setPrev(data.mainPhoto)
@@ -98,6 +98,7 @@ function AddRoom({match}) {
     values["hotelId"] = match.params.hotelId||initialValues.hotelId;
     let isEdited=false
     if (roomId) {
+      values["isMainPhotoChanged"]=(values.mainPhoto==prev)?false:true
       const {data, status} = await editRoomById(values, roomId);
       if (status === 400) return setFieldError(data.property, data.msg);
       isEdited=true
@@ -110,7 +111,7 @@ function AddRoom({match}) {
     if(isEdited) toast.info("Successfully modified details")
     else toast.info("Successfully added room");
     setTimeout(() => {
-      window.location = "/renter/dashboard";
+      window.location = "/admin/dashboard";
     }, 1000);
   };
 
