@@ -34,10 +34,12 @@ function SearchComponent({initialValues}) {
     values["pageNumber"]=0
     values["pageSize"]=9
     const {data} = await getHotels(values);
-    let {hotelsCount,hotels,numberOfDays}=data
+    console.log(data,"dt")
+    let {hotels,numberOfDays}=data
     localStorage.setItem("numberOfDays",numberOfDays)
     let forcePage=0
-    history.push("/search", {data:hotels, hotelsCount,values,forcePage});
+    window.location=`/hoteldetails/${data.hotels._id}`
+    // history.push("/search", {data:hotels, hotelsCount,values,forcePage});
   };
 
   return (
@@ -70,7 +72,7 @@ function SearchComponent({initialValues}) {
                             label={null}
                             name="placeForSearch"
                             onChange={handleChange}
-                            options={["hampi", "sbhr"]}
+                            options={[null,"hampi", "sbhr"]}
                           />
                         </div>
                         <div className="form-input col-md-4 col-sm-6 mt-3 ">
