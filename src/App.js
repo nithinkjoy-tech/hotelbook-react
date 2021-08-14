@@ -21,6 +21,7 @@ import RoomDetails from './pages/RoomDetails';
 import BookedRoomDetails from './components/RoomDetailsPageComponents/BookedRoomDetails';
 import AdminBook from './components/common/AdminBook';
 
+
 function App() {
   return (
     <React.Fragment>
@@ -55,6 +56,8 @@ function App() {
         <Route path="/admin/addroom/:hotelId" component={AddRoom} />
         <Route path="/admin/editroom/:roomId" component={AddRoom} />
         <Route path="/" component={LandingPage} />
+
+
       </Switch>
       <Footer />
     </React.Fragment>
