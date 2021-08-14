@@ -52,4 +52,16 @@ export function addReview(hotelId,values){
     return apiClient.post(`/guest/review/${hotelId}`, values);
 }
 
+export function editReview(hotelId,values){
+    return apiClient.put(`/guest/review/${hotelId}`, values);
+}
+
+export function getReviews(hotelId){
+    return apiClient.get(`/guest/review/${hotelId}`);
+}
+
+export function getReviewById(reviewId){
+    return apiClient.get(`/guest/reviewbyid/${reviewId}`);
+}
+
 

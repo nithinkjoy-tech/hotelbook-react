@@ -8,7 +8,7 @@ import InputBox from "./InputBox";
 import "../../css/Booked_Dashboard.css";
 import {useHistory} from "react-router-dom";
 import Rating from "./Rating";
-import {getBookings, addReview} from "../../api/guest";
+import {getBookings, addReview,editReview,getReviewById} from "../../api/guest";
 import {displayNotification} from "./../../services/notificationService";
 
 const reviewSchema = Yup.object().shape({
@@ -21,9 +21,11 @@ function History() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [bookings, setBookings] = useState();
   const [hotelId, setHotelId] = useState();
+  const [bookingId, setBookingId] = useState();
   const [ratingValue, setRatingValue] = useState();
   const [reviewValue, setReviewValue] = useState();
-
+  const [initialValues, setInitialValues] = useState();
+  const [revId, setRevId] = useState();
   
 
   const getAllBookings = async () => {
@@ -33,10 +35,21 @@ function History() {
     setBookings(data);
   };
 
-  const onReviewClick = (hotelId) => {
-    setIsOpen(true);
+  const onReviewClick = async(hotelId,bookingId,reviewId) => {
     setHotelId(hotelId);
+    setBookingId(bookingId)
     
+    let datas={}
+    if(reviewId) {
+      const {data}=await getReviewById(reviewId)
+      console.log(data)
+      datas["review"]=data.review
+      datas["rating"]=data.rating
+      setRatingValue(data.rating)
+    }
+    setInitialValues(datas)
+    setRevId(reviewId)
+    setIsOpen(true);
   };
 
   const setValues=(getFieldProps)=>{
@@ -62,9 +75,17 @@ function History() {
 
   const handleSubmit = async (values,resetForm) => {
     console.log(values, "val");
-    const {data,status}=await addReview(hotelId, values)
-    if(status !== 200) return displayNotification("error",data)
-    displayNotification("success","Review Posted Successfully")
+    values["bookingId"]=bookingId
+    if(!revId){
+      const {data,status}=await addReview(hotelId, values)
+      if(status !== 200) return displayNotification("error",data)
+      displayNotification("success","Review Posted Successfully")
+    }else{
+      const {data,status}=await editReview(revId, values)
+      if(status !== 200) return displayNotification("error",data)
+      displayNotification("success","Review Edited Successfully")
+    }
+    
     resetForm({values: ""});
   };
 
@@ -131,7 +152,7 @@ function History() {
               >
                 Get Details
               </button>
-              <button onClick={() => onReviewClick(booking.hotelId)} className="btn btn-secondary">
+              <button onClick={() => onReviewClick(booking.hotelId,booking._id,booking.reviewId)} className="btn btn-secondary">
                 {booking?.reviewId ? "Edit Review" : "Add Review"}
               </button>
             </div>
@@ -139,7 +160,7 @@ function History() {
         </article>
       ))}
       <Formik
-        initialValues={{
+        initialValues={initialValues||{
           rating: "",
           review: "",
         }}
@@ -147,6 +168,7 @@ function History() {
         onSubmit={(values, { resetForm}) =>
           handleSubmit(values,resetForm)
         }
+        enableReinitialize
       >
         {({handleSubmit, setFieldValue, getFieldProps}) => (
           <ModalComponent

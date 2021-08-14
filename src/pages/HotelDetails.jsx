@@ -51,7 +51,7 @@ const HotelDetails = ({match,location}) => {
       {/* <RoomDescription description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris rutrum, dolor volutpat malesuada vulputate, diam libero tristique augue, et euismod dolor eros vitae ligula. Praesent cursus mi non nibh convallis, eget pharetra velit ornare. Fusce vel malesuada ex. Proin vitae leo rhoncus, dictum nulla molestie, condimentum libero. Etiam id mollis ipsum. Quisque tincidunt sagittis nisl, suscipit ullamcorper dolor ullamcorper eget. Cras non tortor id erat tempus interdum.'}/> */}
       <Amenities mainPhoto={hotel.mainPhoto} facilities={hotel.facilities} />
       <Table rooms={rooms} />
-      <Reviews />
+      <Reviews hotelId={hotel._id} />
     </React.Fragment>
   );
 };
