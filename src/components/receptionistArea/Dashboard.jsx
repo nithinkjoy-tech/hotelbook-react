@@ -7,17 +7,19 @@ import ArrivalList from './ArrivalList';
 import '../../css/Dashboard.css';
 
 function Dashboard() {
+  console.log(window.location)
+
     return (
       <div className="dashboard">
-        <div className="dashboard-sidebar">
+        
     <Sidebar />
-    </div>
     <div className="dashboard-items">
+      
     <Router>
     <Switch>
-     <Route exact path="/book" component={CheckIn}/>
-     <Route exact path="/" component={OverView} />
-     <Route exact path="/arrivalslist" component={ArrivalList} />
+     <Route exact path="/reception/dashboard/book" component={CheckIn}/>
+     <Route exact path="/reception/dashboard/arrivalslist" component={ArrivalList} />
+     <Route exact path="/reception/dashboard" component={OverView} />
     </Switch>
     </Router>
     </div>

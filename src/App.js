@@ -20,7 +20,9 @@ import RoomDescription from './components/RoomDetailsPageComponents/RoomDescript
 import RoomDetails from './pages/RoomDetails';
 import BookedRoomDetails from './components/RoomDetailsPageComponents/BookedRoomDetails';
 import AdminBook from './components/common/AdminBook';
-
+import Dashboard from './components/receptionistArea/Dashboard';
+import OverView from './components/receptionistArea/OverView';
+import ArrivalList from './components/receptionistArea/ArrivalList';
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
           autoClose={5000000}
         />
       <NavBar />
+
       <Switch>
         <Route path="/search" component={SearchPage} />
         <Route path="/signin" component={SigninPage} />
@@ -39,9 +42,14 @@ function App() {
         <Route path="/hoteldetails/:hotelId" component={HotelDetails} />
         <Route path="/hotel/roomdetails/:roomId" component={RoomDetails} />
         <Route path="/renter/welcome" component={ListPropertyWelcomePage} />
+        <Route path="/reception/dashboard/arrivals" component={ArrivalList} />
+        <Route path="/reception/dashboard" component={OverView} />
         <Route path="/renter/signin" component={SigninPage} />
         <Route path="/renter/signup" component={SignupPage} />
         <Route path="/renter/prof" component={AdminBook} />
+        {/* <Route exact path="reception/dashboard/book" component={CheckIn}/> 
+         <Route exact path="/arrivalslist" component={ArrivalList} />
+     <Route exact path="/" component={OverView} /> */}
         {/* <RenterRoute path="/renter/dashboard" component={RenterDashboard} /> */}
         {/* <RenterRoute path="/renter/room/:hotelId" component={RoomCard} />
         <RenterRoute path="/renter/listproperty/:id" component={ListPropertyPage} />
@@ -56,10 +64,8 @@ function App() {
         <Route path="/admin/addroom/:hotelId" component={AddRoom} />
         <Route path="/admin/editroom/:roomId" component={AddRoom} />
         <Route path="/" component={LandingPage} />
-
-
       </Switch>
-      <Footer />
+      {window.location.pathname.includes("/reception/dashboard")?null:<Footer/>}
     </React.Fragment>
   );
 }

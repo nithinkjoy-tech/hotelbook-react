@@ -129,3 +129,8 @@ code {
 .hotel > div {
   flex:50%
 }
+
+.page-top {
+  margin-top:65px;
+  display:"flex"
+}

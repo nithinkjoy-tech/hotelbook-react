@@ -31,7 +31,7 @@ const Sidebar = () => {
   };
 
   return (
-    <>
+    <div className="dashboard-sidebar">
       <Router>
         <div id="header">
           <ProSidebar collapsed={menuCollapse}>
@@ -39,20 +39,20 @@ const Sidebar = () => {
               <div className="logotext">
                 <p>{menuCollapse ? "Area" : "Reception Area"}</p>
               </div>
-              <div className="closemenu" onClick={menuIconClick}>
+              {/* <div className="closemenu" onClick={menuIconClick}>
                 {menuCollapse ? <FiArrowRightCircle /> : <FiArrowLeftCircle />}
-              </div>
+              </div> */}
             </SidebarHeader>
             <SidebarContent>
-              <Menu iconShape="square">
+              <Menu className="menu" iconShape="square">
                 <MenuItem icon={<FiHome />}>
-                 <a href='/'> Over View </a>
+                 <a ><Link to={'/reception/dashboard'} > Over View</Link></a> 
                 </MenuItem>
                 <MenuItem icon={<FaList />}>
-                  <a href='/book'> Book Now </a>
+                  <a ><Link to={'/reception/dashboard/book'} >Book Now</Link> </a>
                 </MenuItem>
                 <MenuItem icon={<FaRegHeart />}>
-                  <a href='/history'> History </a>
+                  <a><Link to={'/reception/dashboard'} >History</Link></a>
                 </MenuItem>
                 <MenuItem icon={<RiPencilLine />}>etc</MenuItem>
                 <MenuItem icon={<BiCog />}>etc</MenuItem>
@@ -66,7 +66,9 @@ const Sidebar = () => {
           </ProSidebar>
         </div>
       </Router>
-    </>
+    </div>
+
+    
   );
 };
 

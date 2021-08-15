@@ -39,6 +39,7 @@
     "react-stepper-horizontal": "^1.0.11",
     "react-toastify": "^7.0.4",
     "sass": "^1.36.0",
+    "stylish-sidebar": "^1.1.2",
     "web-vitals": "^1.1.1",
     "yup": "^0.32.9"
   },
