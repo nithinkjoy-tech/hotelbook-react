@@ -45,8 +45,8 @@ function App() {
         <RenterRoute path="/renter/room/:hotelId" component={RoomCard} />
         <RenterRoute path="/renter/listproperty/:id" component={ListPropertyPage} />
         <RenterRoute path="/renter/listproperty" component={ListPropertyPage} />
-        <RenterRoute path="/renter/addroom/:hotelId" component={AddRoom} />
         <RenterRoute path="/renter/editroom/:roomId" component={AddRoom} />
+        <RenterRoute path="/renter/addroom/:hotelId" component={AddRoom} />
         <Route path="/" component={LandingPage} />
       </Switch>
       <Footer />
