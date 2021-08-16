@@ -5,7 +5,6 @@ import Sidebar from "./Sidebar";
 function ArrivalList() {
   return (
     <div className="dashboard page-top">
-      <Sidebar />
       <div className="dashboard-items">
         <div className="arrivallist" style={{margin: 0}}>
           <table>

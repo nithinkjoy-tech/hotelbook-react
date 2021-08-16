@@ -3,7 +3,7 @@ import InputBox from "./InputBox";
 import {Formik, Form} from "formik";
 import * as Yup from "yup";
 import {guestChangePassword} from "./../../api/guest";
-import {renterChangePassword} from "./../../api/renter";
+import {receptionChangePassword} from "./../../api/renter";
 import {adminChangePassword} from "./../../api/admin";
 import {displayNotification} from "./../../services/notificationService";
 import {setAuthToken} from "./../../services/authService";
@@ -14,7 +14,7 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string().oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
 });
 
-function ChangePassword({title}) {
+function ChangePassword({title,receptionId}) {
   const [passwordType, setPasswordType] = useState("password");
   
   const handleSubmit = async (values, setFieldError, resetForm) => {
@@ -28,11 +28,13 @@ function ChangePassword({title}) {
       }
     }
 
-    if(window.location.pathname ==="/renter/dashboard"){
-      const {data, status} = await renterChangePassword(values);
+    if(window.location.pathname.includes("admin/reception/account")){
+      values["receptionId"]=receptionId;
+      console.log(values,"vls")
+      const {data, status} = await receptionChangePassword(values);
       if (status !== 200) setFieldError(data.property, data.msg);
       else {
-        setAuthToken(data.token);
+        // setAuthToken(data.token);
         displayNotification("success", data.msg);
         resetForm({values: ""});
       }

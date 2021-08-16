@@ -22,6 +22,9 @@ import { BiCog } from "react-icons/bi";
 
 import "react-pro-sidebar/dist/css/styles.css";
 import "../../css/Sidebar.css";
+import ArrivalList from './ArrivalList';
+import OverView from './OverView';
+import BookNow from './BookNow';
 
 const Sidebar = () => {
   const [menuCollapse, setMenuCollapse] = useState(false);
@@ -30,7 +33,11 @@ const Sidebar = () => {
     menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
   };
 
+  let [choice,setChoice]=useState()
+
   return (
+    <React.Fragment>
+
     <div className="dashboard-sidebar">
       <Router>
         <div id="header">
@@ -46,10 +53,11 @@ const Sidebar = () => {
             <SidebarContent>
               <Menu className="menu" iconShape="square">
                 <MenuItem icon={<FiHome />}>
-                 <a ><Link to={'/reception/dashboard'} > Over View</Link></a> 
+                 {/* <Link to={'/reception/dashboard'} > Over View</Link> */}
+                 <a onClick={()=>setChoice("overview")}>Overviw</a>
                 </MenuItem>
                 <MenuItem icon={<FaList />}>
-                  <a ><Link to={'/reception/dashboard/book'} >Book Now</Link> </a>
+                  <a onClick={()=>setChoice("booknow")}>Book Now</a>
                 </MenuItem>
                 <MenuItem icon={<FaRegHeart />}>
                   <a><Link to={'/reception/dashboard'} >History</Link></a>
@@ -66,9 +74,10 @@ const Sidebar = () => {
           </ProSidebar>
         </div>
       </Router>
-    </div>
-
-    
+    </div> 
+    {choice==="overview"?<OverView/>:""}
+    {choice==="booknow"?<BookNow/>:""}
+    </React.Fragment>
   );
 };
 

@@ -2,10 +2,11 @@ import React, {useState} from "react";
 import InputBox from "./../components/common/InputBox";
 import {Formik, Form} from "formik";
 import {guestSignup} from "../api/guest";
-import {renterSignup} from "../api/renter";
+import {receptionSignup} from "../api/renter";
 import {adminSignup} from "../api/admin";
 import * as Yup from "yup";
 import {setAuthToken} from "./../services/authService";
+import { displayNotification } from './../services/notificationService';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(2).max(50).required("Name is required").label("Name"),
@@ -18,7 +19,7 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
 });
 
-function SignupPage({location}) {
+function SignupPage({location,match}) {
   const [passwordType, setPasswordType] = useState("password");
 
   let pagecolor = "";
@@ -27,7 +28,7 @@ function SignupPage({location}) {
     traycolor = "white";
     pagecolor = "white";
   }
-  if (location.pathname === "/renter/sigup") {
+  if (location.pathname === "/admin/dashboard/createreception") {
     traycolor = "";
     pagecolor = "#fc5c65";
   }
@@ -46,14 +47,18 @@ function SignupPage({location}) {
         window.location = "/dashboard";
       }
     }
-
-    if (location.pathname === "/renter/signup") {
-      const {data, status} = await renterSignup(values);
+    console.log(location.pathname)
+    if (location.pathname.includes("/admin/reception/signup")) {
+      if(!match.params.hotelId) return displayNotification("error", "Something went wrong")
+      values["hotelId"]=match.params.hotelId
+      console.log("here")
+      const {data, status} = await receptionSignup(values);
+      if(data.property==="toast") return displayNotification("error", data.msg)
       console.log(data.property, data.msg, status);
       if (status === 400) setFieldError(data.property, data.msg);
       else {
-        setAuthToken(data)
-        window.location = "/renter/dashboard";
+        // setAuthToken(data)
+        window.location = "/admin/dashboard";
       }
     }
 

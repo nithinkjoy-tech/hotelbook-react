@@ -5,9 +5,6 @@ import Sidebar from "./Sidebar";
 function OverView() {
   return (
     <div className="page-top">
-        <div>
-      <Sidebar />
-        </div>
       <div className="dashboard">
         <div className="overview">
           <h2 className="overview-title">Over View</h2>

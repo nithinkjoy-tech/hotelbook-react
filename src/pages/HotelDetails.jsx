@@ -9,7 +9,7 @@ import Table from './../components/common/Table';
 import { displayNotification } from './../services/notificationService';
 
 const HotelDetails = ({match,location}) => {
-  const hotelId = match.params.hotelId;
+  const hotelId = match?.params?.hotelId||"60fd4bdd633e1c6bf453ee16";
 
   const [hotel, setHotel] = useState();
   const [rooms, setRooms] = useState();

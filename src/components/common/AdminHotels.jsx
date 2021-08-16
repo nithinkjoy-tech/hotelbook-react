@@ -1,7 +1,9 @@
 import React,{useState, useEffect} from 'react';
 import ReactLoading from 'react-loading'
+import {Link} from 'react-router-dom';
 import SearchResultComponent from "../searchPageComponent/SearchResultComponent";
 import { getAdminHotels } from '../../api/admin';
+
 
 function AdminHotels() {
     const [hotels,setHotels]=useState()
@@ -40,6 +42,7 @@ function AdminHotels() {
 
   return (
     <div>
+      
       <SearchResultComponent user="admin" hotels={hotels} />
     </div> 
   );

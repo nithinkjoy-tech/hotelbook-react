@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import PropertyInputBox from "../common/PropertyInputBox";
 import PropertySelectBox from "./../common/PropertySelectBox";
 import {useFormikContext} from "formik";
@@ -6,8 +6,10 @@ import SaveAsDraftButton from "./SaveAsDraftButton";
 
 function Step5({saveAsDraft}) {
   useEffect(() => {
-    window.scrollTo(0, 0) 
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
+
+  const [passwordType, setPasswordType] = useState("password");
 
   const {getFieldProps, setFieldValue, values} = useFormikContext();
 
@@ -68,48 +70,44 @@ function Step5({saveAsDraft}) {
               <div className="px-4 py-5 bg-white sm:p-6">
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
-                    <PropertySelectBox
-                      label="Is prepayment required"
-                      name="isPrepaymentRequired"
-                      options={["No", "Yes"]}
+                    <PropertyInputBox label="Name" name="name" />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <PropertyInputBox label="Email" name="email" />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <PropertyInputBox label="Username" name="username" />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <PropertyInputBox label="Password" name="password" type={passwordType} />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <PropertyInputBox
+                      label="Confirm Password"
+                      name="confirmPassword"
+                      type={passwordType}
                     />
                   </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <PropertySelectBox
-                      label="Are you registered for GST purposes?"
-                      name="GST"
-                      options={["No", "Yes"]}
-                    />
-                  </div>
-                  {GST && GST === "Yes" ? (
-                    <>
-                      <div className="col-span-6 sm:col-span-6">
-                        <PropertyInputBox label="Trade name" name="tradeName" />
-                      </div>
-                      <div className="col-span-6 sm:col-span-6">
-                        <PropertyInputBox label="GSTIN Number" name="GSTIN" />
-                      </div>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                  <div className="col-span-6 sm:col-span-3">
-                    <PropertyInputBox label="PAN Card number" name="panCardNumber" />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <PropertySelectBox label="State" name="state" options={states} />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <PropertyInputBox label="Payment Address" name="paymentAddress" />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <button
-                      className="btn btn-secondary mt-7"
-                      type="button"
-                      onClick={() => setPaymentAddress()}
-                    >
-                      copy payment address same as payment address
-                    </button>
+                  <div className="col-span-6 sm:col-span-3" style={{marginTop:"36px"}}>
+                    <div className="form-check">
+                      <input
+                        style={{cursor: "pointer"}}
+                        className="form-check-input"
+                        type="checkbox"
+                        value=""
+                        onChange={() =>
+                          setPasswordType(passwordType === "text" ? "password" : "text")
+                        }
+                        id="flexCheckDefault"
+                      />
+                      <label
+                        style={{cursor: "pointer"}}
+                        className="form-check-label"
+                        for="flexCheckDefault"
+                      >
+                        Show Password
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>

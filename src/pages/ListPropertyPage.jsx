@@ -41,31 +41,13 @@ const validationSchema = Yup.object().shape({
   accomodateChildren: Yup.string().required().oneOf(["No", "Yes"]),
   allowPets: Yup.string().required().oneOf(["No", "Yes"]),
   provideDormitoryForDriver: Yup.string().required().oneOf(["No", "Yes"]),
-  isPrepaymentRequired: Yup.string().required().oneOf(["No", "Yes"]),
-  GST: Yup.string().required().oneOf(["No", "Yes"]),
-  tradeName: Yup.string().when("GST", {
-    is: "Yes",
-    then: Yup.string().required("Trade name is required"),
-  }),
-  GSTIN: Yup.string().when("GST", {
-    is: "Yes",
-    then: Yup.string().required("GSTIN is required"),
-  }),
-  panCardNumber: Yup.string()
-    .required()
-    .length(10)
-    .matches(/^[a-z0-9]+$/i, "Only alphanumeric characters accepted (0-9, A-Z)"),
-  state: Yup.string().required(),
-  paymentAddress: Yup.string().required().min(8).max(255),
 });
 
 const booleanKeys = [
   "extraBed",
   "accomodateChildren",
   "allowPets",
-  "isPrepaymentRequired",
   "provideDormitoryForDriver",
-  "GST",
 ];
 
 function ListPropertyPage({match}) {
@@ -93,12 +75,6 @@ function ListPropertyPage({match}) {
     accomodateChildren: "No",
     allowPets: "No",
     provideDormitoryForDriver: "No",
-    isPrepaymentRequired: "No",
-    GST: "No",
-    tradeName: "",
-    GSTIN: "",
-    panCardNumber: "",
-    state: "Andhra Pradesh",
   });
 
   async function getHotels(id) {
@@ -133,7 +109,6 @@ function ListPropertyPage({match}) {
     {title: "Facilities and Services", onClick: () => setCurrentPage(2)},
     {title: "Photos", onClick: () => setCurrentPage(3)},
     {title: "Policies", onClick: () => setCurrentPage(4)},
-    {title: "Payments", onClick: () => setCurrentPage(5)},
   ];
 
   const handleClick = isValid => {
@@ -260,13 +235,18 @@ function ListPropertyPage({match}) {
                 <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
                   Back
                 </button>
-                <button style={nextButtonStyle} className="btn btn-primary" onClick={next}>
-                  Next
+                <button
+                  style={nextButtonStyle}
+                  type="submit"
+                  onClick={() => handleClick(isValid)}
+                  className="btn btn-success"
+                >
+                  Submit
                 </button>
               </div>
             </>
           )}
-          {currentPage === 5 && (
+          {/* {currentPage === 5 && (
             <>
               <Step5 saveAsDraft={saveAsDraft} />
               <div style={{display: "flex", justifyContent: "space-between"}}>
@@ -283,7 +263,7 @@ function ListPropertyPage({match}) {
                 </button>
               </div>
             </>
-          )}
+          )} */}
         </Form>
       )}
     </Formik>

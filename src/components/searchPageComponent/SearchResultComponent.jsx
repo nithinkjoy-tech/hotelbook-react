@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { displayNotification,dismissNotification } from './../../services/notificationService';
 
 function SearchResultComponent({hotels,user}) {  
+  console.log(hotels,"htls")
   let className
   if(user==="admin") {
     className ="renter-flex"
@@ -24,6 +25,7 @@ function SearchResultComponent({hotels,user}) {
 
   return (
     <div style={{marginTop:user==="admin"?"10%":"none"}} >
+      
       <div className="best-rooms w3l-blog">
       <div className="container py-sm-4">
       <div className="ban-content-inf row" style={{width:"100%"}}>
@@ -63,6 +65,15 @@ function SearchResultComponent({hotels,user}) {
                       Edit hotel
                     </span>
                   </Link>:<div></div>}
+                {user==="admin"&&!hotel.receptionId?<Link to={`/admin/reception/signup/${hotel._id}`} >
+                    <span className="btn mt-sm-4 mt-3">
+                      Create Reception Account
+                    </span>
+                  </Link>:<Link to={`/admin/reception/account/${hotel.receptionId}`} >
+                    <span className="btn mt-sm-4 mt-3">
+                      Go to Reception Account
+                    </span>
+                  </Link>}
                   {user==="admin"?<Link to={`/admin/addroom/${hotel._id}`} >
                     <span className="btn mt-sm-3">
                       <i style={{fontSize:"1.5rem"}}>+</i> Add Rooms

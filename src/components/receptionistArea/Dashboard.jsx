@@ -15,13 +15,13 @@ function Dashboard() {
     <Sidebar />
     <div className="dashboard-items">
       
-    <Router>
+    {/* <Router>
     <Switch>
      <Route exact path="/reception/dashboard/book" component={CheckIn}/>
      <Route exact path="/reception/dashboard/arrivalslist" component={ArrivalList} />
      <Route exact path="/reception/dashboard" component={OverView} />
     </Switch>
-    </Router>
+    </Router> */}
     </div>
    </div>
     )

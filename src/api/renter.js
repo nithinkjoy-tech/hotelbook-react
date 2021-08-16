@@ -4,8 +4,6 @@ export function getRenterHotels(values){
     return apiClient.get("/renter/hotel",values);
 }
 
-
-
 export function renterSignin(values){
     return apiClient.post("/renter/signin", values);
 }
@@ -22,8 +20,16 @@ export function editHotelById(values,id){
     return apiClient.put(`/renter/hotel/${id}`,values);
 }
 
-export function renterSignup(values){
-    return apiClient.post("/renter/signup", values);
+export function receptionSignup(values){
+    return apiClient.post("/reception/signup", values);
+}
+
+export function getReception(values){
+    return apiClient.get("/reception/signin", values);
+}
+
+export function editReceptionData(values){
+    return apiClient.put("/reception/signup", values);
 }
 
 export function getHotelRooms(id){
@@ -43,8 +49,8 @@ export function editRoomById(values,id){
     return apiClient.put(`/renter/room/${id}`,values);
 }
 
-export function renterChangePassword(values){
-    return apiClient.post("/renter/changePassword", values);
+export function receptionChangePassword(values){
+    return apiClient.post("/reception/changePassword", values);
 }
 
 export function getRenter(values){

@@ -20,6 +20,7 @@ import AdminProfile from '../components/common/AdminProfile';
 import AdminBook from '../components/common/AdminBook';
 // import AdminHotelsSection from '../components/common/AdminHistory';
 import AdminHotels from './../components/common/AdminHotels';
+import {Link} from "react-router-dom"
 
 function AdminDashboard() {
   const [selectOption,setSelectOption] = useState('profile');
@@ -29,6 +30,7 @@ function AdminDashboard() {
     return (
         <div className="guestDashboard">
             <div className="guestDashboard_menu">
+            <Link className="btn btn-primary ml-12" to={"/admin/addHotel"}>+ Add Hotel</Link>
                 <ul className="guestDashboard_menuItems">
                     <li onClick={e => {setSelectOption('profile'); }} className={activeProfileOption && "active"}><PersonIcon /><div className="Content">Profile</div></li>
                     {/* <li onClick={e => {setSelectOption('history'); }} className={activeHistoryOption && "active"}><HistoryIcon /><div className="Content">History</div></li> */}
@@ -38,10 +40,10 @@ function AdminDashboard() {
                     <li onClick={e => setSelectOption('logout')}><ExitToAppIcon/><div className="Content">Logout</div></li>
                 </ul>
             </div>
-           
+         
             {(() => { if (selectOption === 'profile') return (<AdminProfile title={"Profile"} description={"Basic info, for a faster booking experience"}/>)
             //  else if (selectOption === 'history') return (<AdminHistory />)
-             else if (selectOption === 'booked') return (<AdminBook />)
+            //  else if (selectOption === 'booked') return (<AdminBook />)
              else if (selectOption === 'hotels') return (<AdminHotels />)
              else if (selectOption === 'password') return (<ChangePassword title="Change Password" />)
              else if(selectOption === 'logout') return (<Logout />)
