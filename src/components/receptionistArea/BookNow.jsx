@@ -3,8 +3,10 @@ import Calendar from "./../landingPageComponent/Calendar";
 import HotelDetails from "./../../pages/HotelDetails";
 import {Formik, Form} from "formik";
 import * as Yup from "yup";
+import auth from "../../services/authService";
 
 function BookNow() {
+  // console.log(auth?.getCurrentUser)
   const dateValidator = Yup.object()
     .shape({
       day: Yup.number().min(1).max(31).required(),
@@ -24,7 +26,7 @@ function BookNow() {
   const handleSubmit = values => {
     console.log(values, "vls");
     localStorage.setItem("selectedDays",JSON.stringify(values.selectedDayRange))
-    window.location="/hoteldetails/60fd4bdd633e1c6bf453ee16"
+    window.location=`/hoteldetails/${auth.getCurrentUser()?.hotelId}`
   };
 
   return (
@@ -57,6 +59,7 @@ function BookNow() {
                             minimumDate={true}
                           />
                         </div>
+                        
                         {/* <div className="form-input col-md-3 col-sm-6 mt-3">
                           <RoomRequirement name="rooms" rooms={values.rooms} />
                         </div> */}

@@ -1,12 +1,13 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import {useHistory} from "react-router-dom";
 import RoomRequirement from "../landingPageComponent/RoomRequirement";
 import Calendar from "../landingPageComponent/Calendar";
 import * as Yup from "yup";
 import {Formik, Form} from "formik";
 import InputBox from "./InputBox";
-import {getHotels} from "../../api/guest";
+import {getHotelsName,getHotelInfo,getHotels} from "../../api/guest";
 import PropertySelectBox from './PropertySelectBox';
+import _ from "lodash";
 
 const dateValidator = Yup.object()
   .shape({
@@ -29,11 +30,24 @@ function SearchComponent({initialValues}) {
   // console.log(pageNumber,pageSize,"pnps")
   const history = useHistory();
 
+  const [options,setOptions]=useState()
+
+  const getHotels=async ()=>{
+    const {data}=await getHotelsName()
+    console.log(data,"dt")
+    setOptions(data)
+  }
+
+  useEffect(() => {
+    getHotels()
+  },[])
+
   const handleSubmit = async values => {
+    console.log(values,"vlds")
     localStorage.setItem("selectedDays",JSON.stringify(values.selectedDayRange))
     values["pageNumber"]=0
     values["pageSize"]=9
-    const {data} = await getHotels(values);
+    const {data} = await getHotelInfo(values);
     console.log(data,"dt")
     let {hotels,numberOfDays}=data
     localStorage.setItem("numberOfDays",numberOfDays)
@@ -41,6 +55,8 @@ function SearchComponent({initialValues}) {
     window.location=`/hoteldetails/${data.hotels._id}`
     // history.push("/search", {data:hotels, hotelsCount,values,forcePage});
   };
+
+  if(!options) return null
 
   return (
     <Formik
@@ -72,7 +88,7 @@ function SearchComponent({initialValues}) {
                             label={null}
                             name="placeForSearch"
                             onChange={handleChange}
-                            options={[null,"hampi", "sbhr"]}
+                            options={_.flattenDeep([null,options.map(hotel=>hotel.city)])}
                           />
                         </div>
                         <div className="form-input col-md-4 col-sm-6 mt-3 ">

@@ -46,7 +46,7 @@ function App() {
         <Route path="/renter/welcome" component={ListPropertyWelcomePage} />
         {/* <Route path="/reception/dashboard/arrivals" component={ArrivalList} /> */}
         <Route path="/reception/dashboard" component={Sidebar} />
-        <Route path="/renter/signin" component={SigninPage} />
+        <Route path="/reception/signin" component={SigninPage} />
         <Route path="/renter/signup" component={SignupPage} />
         <Route path="/renter/prof" component={AdminBook} />
         {/* <Route exact path="reception/dashboard/book" component={CheckIn}/> 

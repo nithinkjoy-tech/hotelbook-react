@@ -51,12 +51,12 @@ function SigninPage({location}) {
       }
     }
 
-    if (location.pathname === "/renter/signin") {
+    if (location.pathname === "/reception/signin") {
       const {data, status} = await renterSignin(values);
       if (status === 400) setFieldError("userId", data);
       else {
         setAuthToken(data);
-        window.location = "/renter/dashboard";
+        window.location = "/reception/dashboard";
       }
     }
     
@@ -182,7 +182,7 @@ function SigninPage({location}) {
                   </div>
                 </div>
               </div>
-            </section>
+          </section>
           </main>
         </Form>
       )}

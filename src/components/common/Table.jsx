@@ -31,6 +31,9 @@ function Table({rooms}) {
 
   // const object = {};
   const handleBooking=async(hotelId)=>{
+
+
+
     if(!getCurrentUser()?.isGuest) return window.location=`/signin?redirecturl=${window.location.href}`
     console.log(object);
     if(_.isEmpty(object)) return displayNotification("error","Please select rooms for booking")
@@ -134,7 +137,7 @@ function Table({rooms}) {
   };
 
   return (
-    <div style={{margin: "auto", width: "85%"}}>
+    <div style={{margin: "auto", width: "85%",marginTop:"30px"}}>
       <table className="table table-bordered">
         <thead className="table-dark">
           <tr>

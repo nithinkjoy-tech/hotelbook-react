@@ -8,7 +8,8 @@ function Reviews({hotelId}) {
   const [reviews, setReviews] = useState();
 
   const getHotelReviews = async () => {
-    const {data} = await getReviews(hotelId);
+    const {data,status} = await getReviews(hotelId);
+    if(status !== 200) return setReviews(null)
     console.log(data, "sb");
     setReviews(data);
   };

@@ -4,6 +4,17 @@ export function getHotels(values){
     return apiClient.get("/guest/book", values);
 }
 
+export function getHotelsName(){
+    return apiClient.get("/guest/gethotels");
+}
+
+// export function getHotelInfo(id){
+//     return apiClient.get(`/guest/book/${id}`);
+// }
+export function getHotelInfo(values){
+    return apiClient.get("/guest/book", values);
+}
+
 export function getHotel(id){
     return apiClient.get(`/guest/book/${id}`);
 }

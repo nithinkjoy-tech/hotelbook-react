@@ -5,7 +5,15 @@ export function getRenterHotels(values){
 }
 
 export function renterSignin(values){
-    return apiClient.post("/renter/signin", values);
+    return apiClient.post("/reception/signin", values);
+}
+
+export function offlineGuestSignup(values){
+    return apiClient.post("/reception/offlinesignup", values);
+}
+
+export function offlineGuestCheck(values){
+    return apiClient.get("/reception/offlinesignup", values);
 }
 
 export function registerHotels(values){
@@ -35,7 +43,6 @@ export function editReceptionData(values){
 export function getHotelRooms(id){
     return apiClient.get(`/renter/room?hotelId=${id}`);
 }
-
 
 export function getRenterRoomById(id){
     return apiClient.get(`/renter/room/${id}`);

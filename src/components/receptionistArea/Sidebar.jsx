@@ -38,14 +38,12 @@ const Sidebar = () => {
   return (
     <React.Fragment>
 
-    <div className="dashboard-sidebar">
+    <div className="dashboard-sidebar" style={{marginTop:"68px"}}>
       <Router>
         <div id="header">
+              
           <ProSidebar collapsed={menuCollapse}>
             <SidebarHeader>
-              <div className="logotext">
-                <p>{menuCollapse ? "Area" : "Reception Area"}</p>
-              </div>
               {/* <div className="closemenu" onClick={menuIconClick}>
                 {menuCollapse ? <FiArrowRightCircle /> : <FiArrowLeftCircle />}
               </div> */}
