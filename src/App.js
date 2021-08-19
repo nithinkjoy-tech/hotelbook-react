@@ -25,6 +25,7 @@ import OverView from './components/receptionistArea/OverView';
 import ArrivalList from './components/receptionistArea/ArrivalList';
 import Sidebar from './components/receptionistArea/Sidebar';
 import ReceptionDashboard from './pages/ReceptionDashboard';
+import AboutPage from './pages/AboutPage';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
       <NavBar />
 
       <Switch>
+      <Route path="/about" component={AboutPage} />
         <Route path="/search" component={SearchPage} />
         <Route path="/signin" component={SigninPage} />
         <Route path="/dashboard" component={GuestDashboard} />
