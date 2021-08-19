@@ -7,6 +7,7 @@ import {Form, Formik} from "formik";
 import Error from "./../forms/Error";
 import * as Yup from "yup";
 import {offlineGuestSignup} from "../../api/renter";
+import { displayNotification } from './../../services/notificationService';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(2).max(50).required("Name is required").label("Name"),
@@ -14,15 +15,17 @@ const validationSchema = Yup.object().shape({
   phoneNumber: Yup.string().min(5).max(50).nullable(),
 });
 
-function GuestForm() {
+function GuestForm({setGuestExist}) {
   const handleSubmit = async (values, setFieldError) => {
     console.log(values, "vls");
     const {data, status} = await offlineGuestSignup(values);
-    console.log(data.property, data.msg, status);
+    localStorage.setItem("offlineGuestId",JSON.stringify(data?.userId)) 
     if (status === 400) setFieldError(data.property, data.msg);
     else {
+      setGuestExist(data)
+      displayNotification("info","Guest logged In ,please book")
       //   setAuthToken(data);
-      window.location = "/dashboard";
+      // window.location = "/dashboard";
     }
   };
 

@@ -8,7 +8,6 @@ import Error from "../forms/Error";
 import * as Yup from "yup";
 import {offlineGuestCheck} from "../../api/renter";
 import { displayNotification } from './../../services/notificationService';
-import OfflineGuestContext from './../../context/offlineGuestContext';
 
 
 const validationSchema = Yup.object().shape({
@@ -22,6 +21,7 @@ function CheckRegistration({setGuestExist}) {
   const handleSubmit = async (values, setFieldError) => {
       const {data, status} = await offlineGuestCheck(values);
     setGuestExist(data)
+    localStorage.setItem("offlineGuestId",JSON.stringify(data?.userId)) 
     if(data?.isGuestExist) displayNotification("info","Guest logged In ,please book")
     else displayNotification("warn","Guest Dont have account, please create one")
   };

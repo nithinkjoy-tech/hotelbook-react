@@ -8,6 +8,7 @@ import ModalComponent from "./ModalComponent";
 import {displayNotification} from "./../../services/notificationService";
 import _ from "lodash";
 import { bookHotel } from './../../api/guest';
+import { bookOfflineHotel } from './../../api/renter';
 import {getCurrentUser} from "../../services/authService";
 
 function Table({rooms}) {
@@ -34,7 +35,7 @@ function Table({rooms}) {
 
 
 
-    if(!getCurrentUser()?.isGuest) return window.location=`/signin?redirecturl=${window.location.href}`
+    if(!getCurrentUser()?.isGuest&&!getCurrentUser()?.isReception) return window.location=`/signin?redirecturl=${window.location.href}`
     console.log(object);
     if(_.isEmpty(object)) return displayNotification("error","Please select rooms for booking")
     let roomsArray=[]
@@ -47,12 +48,22 @@ function Table({rooms}) {
     let finalData={
       roomDetails:roomsArray,
       selectedDayRange:JSON.parse(localStorage.getItem("selectedDays")),
-      hotelId
+      hotelId,
     }
     console.log(finalData,"dtt")
-    const {data,status}=await bookHotel(finalData)
-    if(status !== 200) return displayNotification("error", data)
-    displayNotification("success", data)
+    if(getCurrentUser()?.isGuest){
+      const {data,status}=await bookHotel(finalData)
+      if(status !== 200) return displayNotification("error", data)
+      displayNotification("success", data)
+    }
+
+    if(getCurrentUser()?.isReception){
+      finalData["offlineGuestId"]=JSON.parse(localStorage.getItem("offlineGuestId"))
+      if(!finalData["offlineGuestId"]) return displayNotification("error","Check if user is registered")
+      const {data,status}=await bookOfflineHotel(finalData)
+      if(status !== 200) return displayNotification("error", data)
+      displayNotification("success", data)
+    }
     // setTimeout(() => {
     //   window.location="/dashboard"
     // },1000)
@@ -135,6 +146,8 @@ function Table({rooms}) {
     setImages(images);
     setIsOpen(true);
   };
+
+  if(!rooms[0]) return <div style={{margin:"auto",width:"85%",marginTop:"20px",marginBottom:"20px"}} ><h1>There is no room left for booking</h1></div>
 
   return (
     <div style={{margin: "auto", width: "85%",marginTop:"30px"}}>

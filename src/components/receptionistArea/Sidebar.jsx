@@ -57,6 +57,9 @@ const Sidebar = () => {
                 <MenuItem icon={<FaList />}>
                   <a onClick={()=>setChoice("booknow")}>Book Now</a>
                 </MenuItem>
+                <MenuItem icon={<FaList />}>
+                  <a onClick={()=>setChoice("booking")}>Todays Arrivals</a>
+                </MenuItem>
                 <MenuItem icon={<FaRegHeart />}>
                   <a><Link to={'/reception/dashboard'} >History</Link></a>
                 </MenuItem>
@@ -75,6 +78,7 @@ const Sidebar = () => {
     </div> 
     {choice==="overview"?<OverView/>:""}
     {choice==="booknow"?<BookNow/>:""}
+    {choice==="booking"?<ArrivalList/>:""}
     </React.Fragment>
   );
 };
