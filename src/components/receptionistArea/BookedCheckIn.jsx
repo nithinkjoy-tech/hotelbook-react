@@ -22,7 +22,6 @@ const validate = Yup.object().shape({
   phone: Yup.string().min(10,'Enter a valid number').max(10).required('Required'),
   address: Yup.string().min(6,'Enter a valid address').max(50,'Too Long!').required('Required'),
   adhaar: Yup.string().min(12,'Enter a valid Adhaar number').required('Required'),
-
 })
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +44,7 @@ function BookedCheckIn() {
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
-const [saveDocument,setSaveDocument] = useState([]); // Save uploaded Document
+  const [saveDocument,setSaveDocument] = useState([]); // Save uploaded Document
 
 
   console.log(saveDocument);
@@ -74,7 +73,7 @@ const [saveDocument,setSaveDocument] = useState([]); // Save uploaded Document
   };
 
   return (
-    <Card className="card">
+    <Card className="card" style={{margin:"auto",width:"85%",marginTop:"75px"}}>
       <CardContent className="card-contents">
         <Formik initialValues={primaryDetails} onSubmit={() => {}} validationSchema={validate}>
           <Form>
@@ -245,6 +244,7 @@ const Camera = () => {
   const capture = React.useCallback(
     () => {
       const imageSrc = webcamRef.current.getScreenshot();
+      console.log(imageSrc)
     },
     [webcamRef]
   );

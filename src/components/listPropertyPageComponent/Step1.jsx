@@ -35,9 +35,6 @@ function Step1({saveAsDraft}) {
                     <PropertyInputBox label="Hotel Name" type="text" name="hotelName" />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <PropertyInputBox label="Contact Name" type="text" name="contactName" />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
                     <PropertySelectBox
                       label="Star Rating"
                       name="starRating"
@@ -68,9 +65,6 @@ function Step1({saveAsDraft}) {
                       type="text"
                       name="postalCode"
                     />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <PropertyInputBox label="Place For Search" type="text" name="placeForSearch" />
                   </div>
                 </div>
               </div>

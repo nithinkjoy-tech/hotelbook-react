@@ -48,14 +48,28 @@ function Step4({saveAsDraft}) {
                   <div className="col-span-3 sm:col-span-3">
                     <PropertySelectBox
                       label="Check-in"
-                      name="checkIn"
+                      name="checkInStart"
+                      options={check_in_out}
+                    />
+                  </div>
+                  <div className="col-span-3 sm:col-span-3">
+                    <PropertySelectBox
+                      label="Check-in"
+                      name="checkInEnd"
                       options={check_in_out}
                     />
                   </div>
                   <div className="col-span-3 sm:col-span-3">
                     <PropertySelectBox
                       label="Check-out"
-                      name="checkOut"
+                      name="checkOutStart"
+                      options={check_in_out}
+                    />
+                  </div>
+                  <div className="col-span-3 sm:col-span-3">
+                    <PropertySelectBox
+                      label="Check-out"
+                      name="checkOutEnd"
                       options={check_in_out}
                     />
                   </div>

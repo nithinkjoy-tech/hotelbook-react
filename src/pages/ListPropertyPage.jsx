@@ -15,14 +15,12 @@ let pincodeDirectory = require("india-pincode-lookup");
 const validationSchema = Yup.object().shape({
   hotelName: Yup.string().min(1).max(50).required(),
   starRating: Yup.string().oneOf(["1", "2", "3", "4", "5"]).nullable(),
-  contactName: Yup.string().required().min(2).max(50),
   phoneNumber: Yup.string()
     .required()
     .length(12)
     .matches(/^[0-9]+$/, "Mobile number must include only numbers"),
   address: Yup.string().required().min(8).max(255),
   city: Yup.string().required().min(1).max(50),
-  placeForSearch: Yup.string().required().min(1).max(50),
   postalCode: Yup.string()
     .required()
     .length(6)
@@ -36,8 +34,10 @@ const validationSchema = Yup.object().shape({
   photos: Yup.array().nullable(),
   freeCancellationAvailable: Yup.string().required(),
   ifNotCancelledBeforeDate: Yup.string(),
-  checkIn: Yup.string().required(),
-  checkOut: Yup.string().required(),
+  checkInStart: Yup.string().required(),
+  checkInEnd: Yup.string().required(),
+  checkOutStart: Yup.string().required(),
+  checkOutEnd: Yup.string().required(),
   accomodateChildren: Yup.string().required().oneOf(["No", "Yes"]),
   allowPets: Yup.string().required().oneOf(["No", "Yes"]),
   provideDormitoryForDriver: Yup.string().required().oneOf(["No", "Yes"]),
@@ -55,11 +55,9 @@ function ListPropertyPage({match}) {
   const [initialValues, setInitialValues] = useState({
     hotelName: "",
     starRating: "",
-    contactName: "",
     phoneNumber: "",
     address: "",
     city: "",
-    placeForSearch: "",
     postalCode: "",
     parking: "No",
     breakfast: "No",
@@ -70,8 +68,10 @@ function ListPropertyPage({match}) {
     photos: [],
     freeCancellationAvailable: "None.(Guest cannot cancel once booked)",
     ifNotCancelledBeforeDate: "of the first day",
-    checkIn: "00 : 00",
-    checkOut: "00 : 00",
+    checkInStart: "00 : 00",
+    checkInEnd: "00 : 00",
+    checkOutStart: "00 : 00",
+    checkOutEnd: "00 : 00",
     accomodateChildren: "No",
     allowPets: "No",
     provideDormitoryForDriver: "No",
@@ -120,8 +120,6 @@ function ListPropertyPage({match}) {
       setFieldError("postalCode", "No place with given postal code");
       return displayNotification("error", "Please check your form. You missed something");
     }
-
-    values.placeForSearch = values.placeForSearch.toLowerCase();
 
     const transform = obj =>
       booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === "Yes"}), obj);

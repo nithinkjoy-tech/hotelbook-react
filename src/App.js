@@ -25,6 +25,7 @@ import OverView from './components/receptionistArea/OverView';
 import ArrivalList from './components/receptionistArea/ArrivalList';
 import Sidebar from './components/receptionistArea/Sidebar';
 import ReceptionDashboard from './pages/ReceptionDashboard';
+import BookedCheckIn from './components/receptionistArea/BookedCheckIn';
 
 function App() {
   return (
@@ -36,19 +37,20 @@ function App() {
       <NavBar />
 
       <Switch>
-        <Route path="/search" component={SearchPage} />
-        <Route path="/signin" component={SigninPage} />
-        <Route path="/dashboard" component={GuestDashboard} />
-        <Route path="/signup" component={SignupPage} />
-        <Route path="/bookedroomdetails" component={BookedRoomDetails} />
-        <Route path="/hoteldetails/:hotelId" component={HotelDetails} />
-        <Route path="/hotel/roomdetails/:roomId" component={RoomDetails} />
-        <Route path="/renter/welcome" component={ListPropertyWelcomePage} />
+        <Route exact path="/search" component={SearchPage} />
+        <Route exact path="/signin" component={SigninPage} />
+        <Route exact path="/dashboard" component={GuestDashboard} />
+        <Route exact path="/signup" component={SignupPage} />
+        <Route exact path="/bookedroomdetails" component={BookedRoomDetails} />
+        <Route exact path="/hoteldetails/:hotelId" component={HotelDetails} />
+        <Route exact path="/hotel/roomdetails/:roomId" component={RoomDetails} />
+        <Route exact path="/renter/welcome" component={ListPropertyWelcomePage} />
         {/* <Route path="/reception/dashboard/arrivals" component={ArrivalList} /> */}
-        <Route path="/reception/dashboard" component={Sidebar} />
-        <Route path="/reception/signin" component={SigninPage} />
-        <Route path="/renter/signup" component={SignupPage} />
-        <Route path="/renter/prof" component={AdminBook} />
+        <Route exact path="/reception/dashboard/checkin/:bookingId" component={BookedCheckIn} />
+        <Route exact path="/reception/dashboard" component={Sidebar} />
+        <Route exact path="/reception/signin" component={SigninPage} />
+        <Route exact path="/renter/signup" component={SignupPage} />
+        <Route exact path="/renter/prof" component={AdminBook} />
         {/* <Route exact path="reception/dashboard/book" component={CheckIn}/> 
          <Route exact path="/arrivalslist" component={ArrivalList} />
      <Route exact path="/" component={OverView} /> */}
@@ -58,16 +60,16 @@ function App() {
         <RenterRoute path="/renter/listproperty" component={ListPropertyPage} />
         <RenterRoute path="/renter/addroom/:hotelId" component={AddRoom} />
         <RenterRoute path="/renter/editroom/:roomId" component={AddRoom} /> */}
-        <Route path="/admin/reception/signup/:hotelId" component={SignupPage} />
-        <Route path="/admin/reception/account/:receptionId" component={ReceptionDashboard} />
-        <Route path="/admin/signin" component={SigninPage} />
-        <Route path="/admin/dashboard" component={AdminDashboard} />
-        <Route path="/admin/room/:hotelId" component={RoomCard} />
-        <Route path="/admin/addHotel/:id" component={ListPropertyPage} />
-        <Route path="/admin/addHotel" component={ListPropertyPage} />
-        <Route path="/admin/addroom/:hotelId" component={AddRoom} />
-        <Route path="/admin/editroom/:roomId" component={AddRoom} />
-        <Route path="/" component={LandingPage} />
+        <Route exact path="/admin/reception/signup/:hotelId" component={SignupPage} />
+        <Route exact path="/admin/reception/account/:receptionId" component={ReceptionDashboard} />
+        <Route exact path="/admin/signin" component={SigninPage} />
+        <Route exact path="/admin/dashboard" component={AdminDashboard} />
+        <Route exact path="/admin/room/:hotelId" component={RoomCard} />
+        <Route exact path="/admin/addHotel/:id" component={ListPropertyPage} />
+        <Route exact path="/admin/addHotel" component={ListPropertyPage} />
+        <Route exact path="/admin/addroom/:hotelId" component={AddRoom} />
+        <Route exact path="/admin/editroom/:roomId" component={AddRoom} />
+        <Route exact path="/" component={LandingPage} />
       </Switch>
       {window.location.pathname.includes("/reception/dashboard")?null:<Footer/>}
     </React.Fragment>

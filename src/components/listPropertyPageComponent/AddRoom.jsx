@@ -7,13 +7,14 @@ import FormCheckBox from "./../common/FormCheckBox";
 import Error from "./../forms/Error";
 import ImageUpload from "./ImageUpload";
 import {Delete} from "@material-ui/icons";
-import {Formik, Form,ErrorMessage} from "formik";
-import {addRoom,getAdminRoomById,editRoomById} from "../../api/admin";
+import {Formik, Form, ErrorMessage} from "formik";
+import {addRoom, getAdminRoomById, editRoomById} from "../../api/admin";
 import {toast} from "react-toastify";
 
 const validationSchema = Yup.object().shape({
   roomType: Yup.string().min(1).max(50).required(),
   numberOfRoomsOfThisType: Yup.number().min(1).max(9999).required(),
+  roomNumbers:Yup.string().required().matches(/^[0-9,]+$/,"Only number seperated by commas allowed"),
   kindOfBed: Yup.string()
     .required()
     .oneOf(["Single bed", "Double bed", "Large bed", "Extra large bed"]),
@@ -28,9 +29,10 @@ const validationSchema = Yup.object().shape({
 function AddRoom({match}) {
   let roomId = match.params.roomId;
 
-  const [initialValues,setInitialValues]=useState({
+  const [initialValues, setInitialValues] = useState({
     roomType: "",
     numberOfRoomsOfThisType: "",
+    roomNumbers: "",
     kindOfBed: "Single bed",
     numberOfBeds: "",
     basePricePerNight: "",
@@ -38,15 +40,15 @@ function AddRoom({match}) {
     facilities: [],
     mainPhoto: "",
     photos: [],
-    hotelId:null
-  })
+    hotelId: null,
+  });
 
   async function getRoom(id) {
     const {data} = await getAdminRoomById(id);
     setInitialValues(data);
 
-    setPrev(data.mainPhoto)
-    setNumberOfImages(data.photos.length)
+    setPrev(data.mainPhoto);
+    setNumberOfImages(data.photos.length);
   }
 
   useEffect(() => {
@@ -95,44 +97,35 @@ function AddRoom({match}) {
   };
 
   const handleSubmit = async (values, setFieldError) => {
-    values["hotelId"] = match.params.hotelId||initialValues.hotelId;
-    let isEdited=false
+    let roomNos=values.roomNumbers.split(",");
+    console.log(roomNos.length,Number(values.numberOfRoomsOfThisType))
+    if(roomNos.length>Number(values.numberOfRoomsOfThisType)) return setFieldError("roomNumbers", "You added extra room numbers")
+    if(roomNos.length<Number(values.numberOfRoomsOfThisType)) return setFieldError("roomNumbers", "You added less room numbers")
+    values["hotelId"] = match.params.hotelId || initialValues.hotelId;
+    let isEdited = false;
     if (roomId) {
-      values["isMainPhotoChanged"]=(values.mainPhoto==prev)?false:true
+      values["isMainPhotoChanged"] = values.mainPhoto == prev ? false : true;
       const {data, status} = await editRoomById(values, roomId);
       if (status === 400) return setFieldError(data.property, data.msg);
-      isEdited=true
+      isEdited = true;
     } else {
       const {data, status} = await addRoom(values);
       if (status === 400 && data.property === "toast") return toast.error(data.msg);
       if (status === 400) return setFieldError(data.property, data.msg);
     }
     toast.dismiss();
-    if(isEdited) toast.info("Successfully modified details")
+    if (isEdited) toast.info("Successfully modified details");
     else toast.info("Successfully added room");
     setTimeout(() => {
       window.location = "/admin/dashboard";
     }, 1000);
   };
 
-  
-
-
-  let checkBoxModified = (feature, setFieldValue,{value,name}) => {
+  let checkBoxModified = (feature, setFieldValue, {value, name}) => {
     if (value.includes(feature)) value = value.filter(val => feature !== val);
     else value.push(feature);
     setFieldValue(name, value);
   };
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
   let leftFeature = [
     "Air Conditioning",
@@ -141,12 +134,18 @@ function AddRoom({match}) {
     "Shower",
     "Geyser/Water Heater",
     "Toiletries",
-    "Sanitizers"
+    "Sanitizers",
   ];
-  let rightFeature = ["Western Toilet Seat", "Room service", "Dustbins", "Hot tub/jacuzzi", "Toilet Paper","Hot & Cold Water"];
+  let rightFeature = [
+    "Western Toilet Seat",
+    "Room service",
+    "Dustbins",
+    "Hot tub/jacuzzi",
+    "Toilet Paper",
+    "Hot & Cold Water",
+  ];
 
-  if(roomId&&!initialValues?.roomType) return null
-
+  if (roomId && !initialValues?.roomType) return null;
 
   return (
     <Formik
@@ -176,23 +175,35 @@ function AddRoom({match}) {
                             <PropertyInputBox label="Room Type" type="text" name="roomType" />
                           </div>
                           <div className="col-span-6 sm:col-span-3">
-                            <PropertyInputBox
-                              label="Number of Rooms of this Type"
-                              name="numberOfRoomsOfThisType"
-                            />
-                          </div>
-                          <div className="col-span-6 sm:col-span-3">
                             <PropertySelectBox
                               label="Kind of Bed"
                               name="kindOfBed"
                               options={["Single bed", "Double bed", "Large bed", "Extra large bed"]}
                             />
                           </div>
-
+                          
                           <div className="col-span-6 sm:col-span-3">
                             <PropertyInputBox
-                              label="Number of Beds"
-                              name="numberOfBeds"
+                              label="Number of Rooms of this Type"
+                              name="numberOfRoomsOfThisType"
+                            />
+                          </div>
+                          <div className="col-span-6 sm:col-span-3">
+                            <PropertyInputBox
+                              label="Room Numbers"
+                              name="roomNumbers"
+                              placeholder="Enter room numbers seperated by commas ex: 101,102"
+                            />
+                          </div>
+                          
+
+                          <div className="col-span-6 sm:col-span-3">
+                            <PropertyInputBox label="Number of Beds" name="numberOfBeds" />
+                          </div>
+                          <div className="col-span-6 sm:col-span-3">
+                            <PropertyInputBox
+                              label="Number of Guests in a Room"
+                              name="numberOfGuestsInaRoom"
                             />
                           </div>
                           <div className="col-span-6 sm:col-span-3">
@@ -203,11 +214,10 @@ function AddRoom({match}) {
                             />
                           </div>
                           <div className="col-span-6 sm:col-span-3">
-                            <PropertyInputBox
-                              label="Number of Guests in a Room"
-                              name="numberOfGuestsInaRoom"
-                            />
+                            
                           </div>
+                          
+                          
                           <div className="col-span-6 sm:col-span-3">
                             <label
                               htmlFor="hotelName"
@@ -232,10 +242,16 @@ function AddRoom({match}) {
                                             {leftFeature.map(feature => (
                                               <FormCheckBox
                                                 key={feature}
-                                                defaultChecked={getFieldProps("facilities").value.includes(feature)}
+                                                defaultChecked={getFieldProps(
+                                                  "facilities"
+                                                ).value.includes(feature)}
                                                 label={feature}
                                                 onChange={() =>
-                                                  checkBoxModified(feature, setFieldValue,getFieldProps("facilities"))
+                                                  checkBoxModified(
+                                                    feature,
+                                                    setFieldValue,
+                                                    getFieldProps("facilities")
+                                                  )
                                                 }
                                               />
                                             ))}
@@ -244,10 +260,16 @@ function AddRoom({match}) {
                                             {rightFeature.map(feature => (
                                               <FormCheckBox
                                                 key={feature}
-                                                defaultChecked={getFieldProps("facilities").value.includes(feature)}
+                                                defaultChecked={getFieldProps(
+                                                  "facilities"
+                                                ).value.includes(feature)}
                                                 label={feature}
                                                 onChange={() =>
-                                                  checkBoxModified(feature, setFieldValue,getFieldProps("facilities"))
+                                                  checkBoxModified(
+                                                    feature,
+                                                    setFieldValue,
+                                                    getFieldProps("facilities")
+                                                  )
                                                 }
                                               />
                                             ))}
@@ -256,7 +278,9 @@ function AddRoom({match}) {
                                       </div>
                                     </div>
 
-                                    <div style={{width: "80vw",marginTop:"3rem"}}>
+                                    
+
+                                    <div style={{width: "80vw", marginTop: "3rem"}}>
                                       <div className="col-span-6 sm:col-span-6">
                                         <ImageUpload
                                           label="Cover photo"
@@ -267,7 +291,7 @@ function AddRoom({match}) {
                                             handleImageChange(image, setFieldValue);
                                           }}
                                         />
-                                          <ErrorMessage name="mainPhoto" component={Error} />
+                                        <ErrorMessage name="mainPhoto" component={Error} />
                                       </div>
                                       {prev ? (
                                         <div>

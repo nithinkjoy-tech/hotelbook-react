@@ -8,6 +8,7 @@ import _ from "lodash";
 
 function ArrivalList() {
   const handleClick = data => {
+    window.location=`/reception/dashboard/checkin/${data}`
     console.log(data);
   };
 
@@ -46,7 +47,7 @@ function ArrivalList() {
         name: "",
         cell: row => (
           <td data-label="CheckIn">
-            <button onClick={() => handleClick(row)} className="checkin-button">
+            <button onClick={() => handleClick(row._id)} className="checkin-button">
               CheckIn
             </button>
           </td>

@@ -60,7 +60,7 @@ function SearchResultComponent({hotels,user}) {
                   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit itaque fuga consequatur molestias quo, eaque animi tempore facilis quae autem vitae est repellendus.</p>
                   <p style={{color:"purple",fontWeight:"bold"}} >Book for Rs.{hotel?.startingRatePerDay} </p>
                 <div style={{display:"flex",justifyContent:"space-between"}}>
-                {user==="admin"?<Link to={`/admin/listproperty/${hotel._id}`} >
+                {user==="admin"?<Link to={`/admin/addHotel/${hotel._id}`} >
                     <span className="btn mt-sm-4 mt-3">
                       Edit hotel
                     </span>
