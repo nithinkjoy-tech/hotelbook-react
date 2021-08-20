@@ -25,6 +25,7 @@ import OverView from './components/receptionistArea/OverView';
 import ArrivalList from './components/receptionistArea/ArrivalList';
 import Sidebar from './components/receptionistArea/Sidebar';
 import ReceptionDashboard from './pages/ReceptionDashboard';
+import AboutPage from './pages/AboutPage';
 import BookedCheckIn from './components/receptionistArea/BookedCheckIn';
 
 function App() {
