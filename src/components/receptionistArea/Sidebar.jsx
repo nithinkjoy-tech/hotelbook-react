@@ -10,7 +10,7 @@ import {
   SidebarContent,
 } from "react-pro-sidebar";
 
-import { FaList, FaRegHeart } from "react-icons/fa";
+import { FaList, FaRegHeart,FaAddressCard } from "react-icons/fa";
 import {
   FiHome,
   FiLogOut,
@@ -25,6 +25,10 @@ import "../../css/Sidebar.css";
 import ArrivalList from './ArrivalList';
 import OverView from './OverView';
 import BookNow from './BookNow';
+import UpcomingArrivalList from './UpcomingArrivalList';
+import CurrentlyStaying from './CurrentlyStaying';
+import CompletedStays from './CompletedStays';
+
 
 const Sidebar = () => {
   const [menuCollapse, setMenuCollapse] = useState(false);
@@ -42,7 +46,7 @@ const Sidebar = () => {
       <Router>
         <div id="header">
               
-          <ProSidebar collapsed={menuCollapse}>
+          <ProSidebar width="245px" collapsed={menuCollapse}>
             <SidebarHeader>
               {/* <div className="closemenu" onClick={menuIconClick}>
                 {menuCollapse ? <FiArrowRightCircle /> : <FiArrowLeftCircle />}
@@ -58,27 +62,31 @@ const Sidebar = () => {
                   <a onClick={()=>setChoice("booknow")}>Book Now</a>
                 </MenuItem>
                 <MenuItem icon={<FaList />}>
-                  <a onClick={()=>setChoice("booking")}>Todays Arrivals</a>
+                  <a onClick={()=>setChoice("arrivalList")}>Todays Arrivals</a>
                 </MenuItem>
-                <MenuItem icon={<FaRegHeart />}>
-                  <a><Link to={'/reception/dashboard'} >History</Link></a>
+                <MenuItem icon={<FaList />}>
+                  <a onClick={()=>setChoice("upcomingArrivalList")}>Upcoming Arrivals</a>
+                </MenuItem>
+                <MenuItem icon={<FaList />}>
+                  <a onClick={()=>setChoice("currentlyStaying")}>Currently Staying</a>
+                </MenuItem>
+                <MenuItem icon={<FaList />}>
+                <a onClick={()=>setChoice("completedStays")}>Completed Stays</a>
                 </MenuItem>
                 <MenuItem icon={<RiPencilLine />}>etc</MenuItem>
                 <MenuItem icon={<BiCog />}>etc</MenuItem>
               </Menu>
             </SidebarContent>
-            <SidebarFooter>
-              <Menu>
-                <MenuItem>&copy;Adithya group</MenuItem>
-              </Menu>
-            </SidebarFooter>
           </ProSidebar>
         </div>
       </Router>
     </div> 
     {choice==="overview"?<OverView/>:""}
     {choice==="booknow"?<BookNow/>:""}
-    {choice==="booking"?<ArrivalList/>:""}
+    {choice==="arrivalList"?<ArrivalList/>:""}
+    {choice==="upcomingArrivalList"?<UpcomingArrivalList/>:""}
+    {choice==="currentlyStaying"?<CurrentlyStaying/>:""}
+    {choice==="completedStays"?<CompletedStays/>:""}
     </React.Fragment>
   );
 };

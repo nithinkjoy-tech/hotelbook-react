@@ -31,7 +31,7 @@ function Booked_Dashboard() {
     getAllBookings();
   }, []);
 
-  if (!bookings) return null;
+  if (!bookings) return <h2 style={{marginTop:"150px",marginLeft:"20px"}} >You currently don't have any booking.</h2>;;
 
   return (
     <React.Fragment>

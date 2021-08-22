@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import PropertyInputBox from "../common/PropertyInputBox";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -9,6 +9,10 @@ import * as Yup from "yup";
 import {offlineGuestSignup} from "../../api/renter";
 import { displayNotification } from './../../services/notificationService';
 
+const validateEmail=Yup.object().shape({
+  email: Yup.string().required("Email is required").email("Email must be valid").label("Email"),
+})
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(2).max(50).required("Name is required").label("Name"),
   email: Yup.string().required("Email is required").email("Email must be valid").label("Email"),
@@ -16,8 +20,10 @@ const validationSchema = Yup.object().shape({
 });
 
 function GuestForm({setGuestExist}) {
+
+  const [initialValues, setInitialValues]=useState()
+
   const handleSubmit = async (values, setFieldError) => {
-    console.log(values, "vls");
     const {data, status} = await offlineGuestSignup(values);
     localStorage.setItem("offlineGuestId",JSON.stringify(data?.userId)) 
     if (status === 400) setFieldError(data.property, data.msg);
@@ -29,6 +35,28 @@ function GuestForm({setGuestExist}) {
     }
   };
 
+  useEffect(() => {
+    validateEmail
+    .isValid({
+      email:localStorage.getItem("guestUserId")
+    })
+    .then(function (valid) {
+      if(valid){
+        setInitialValues({
+          name:"",
+          email: localStorage.getItem("guestUserId"),
+          phoneNumber:""
+        })
+      }else{
+        setInitialValues({
+          name:"",
+          email: "",
+          phoneNumber:localStorage.getItem("guestUserId")
+        })
+      }
+    });
+  },[])
+
   //   const {handleBlur, getFieldProps, values, setFieldValue} = useFormikContext();
 
   //   let {value, name} = getFieldProps("phoneNumber");
@@ -36,16 +64,16 @@ function GuestForm({setGuestExist}) {
   //   const changePhoneNumber = number => {
   //     setFieldValue(name, number);
   //   };
-
   return (
     <Formik
-      initialValues={{
+      initialValues={initialValues||{
         name: "",
         email: "",
         phoneNumber: "",
       }}
       validationSchema={validationSchema}
       onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
+      enableReinitialize
     >
       {({errors, touched, values, handleChange, handleBlur}) => (
         <Form>

@@ -1,3 +1,8 @@
+//aadhard card photo only
+//passport for forieneers
+//no room change after 10 mins
+//
+
 import React, {useEffect, useState} from "react";
 import PropertyInputBox from "../common/PropertyInputBox";
 import PropertySelectBox from "./../common/PropertySelectBox";
@@ -10,6 +15,7 @@ import {Delete} from "@material-ui/icons";
 import {Formik, Form, ErrorMessage} from "formik";
 import {addRoom, getAdminRoomById, editRoomById} from "../../api/admin";
 import {toast} from "react-toastify";
+import { displayNotification } from './../../services/notificationService';
 
 const validationSchema = Yup.object().shape({
   roomType: Yup.string().min(1).max(50).required(),
@@ -97,6 +103,9 @@ function AddRoom({match}) {
   };
 
   const handleSubmit = async (values, setFieldError) => {
+    if(values.roomNumbers[values.roomNumbers.length - 1]==","){
+      values.roomNumbers=values.roomNumbers.substring(0,values.roomNumbers.length-1)
+  }
     let roomNos=values.roomNumbers.split(",");
     console.log(roomNos.length,Number(values.numberOfRoomsOfThisType))
     if(roomNos.length>Number(values.numberOfRoomsOfThisType)) return setFieldError("roomNumbers", "You added extra room numbers")
@@ -106,7 +115,9 @@ function AddRoom({match}) {
     if (roomId) {
       values["isMainPhotoChanged"] = values.mainPhoto == prev ? false : true;
       const {data, status} = await editRoomById(values, roomId);
-      if (status === 400) return setFieldError(data.property, data.msg);
+      if (status === 400) {
+        displayNotification("Error","You missed something in your form, please check")
+        setFieldError(data.property, data.msg);}
       isEdited = true;
     } else {
       const {data, status} = await addRoom(values);

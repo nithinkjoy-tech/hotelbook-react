@@ -22,8 +22,11 @@ function CheckRegistration({setGuestExist}) {
       const {data, status} = await offlineGuestCheck(values);
     setGuestExist(data)
     localStorage.setItem("offlineGuestId",JSON.stringify(data?.userId)) 
-    if(data?.isGuestExist) displayNotification("info","Guest logged In ,please book")
-    else displayNotification("warn","Guest Dont have account, please create one")
+    if(data?.isGuestExist) {
+      displayNotification("info","Guest logged In ,please book")}
+    else {
+      localStorage.setItem("guestUserId",values.userId)
+      displayNotification("warn","Guest Dont have account, please create one")}
   };
 
   //   const {handleBlur, getFieldProps, values, setFieldValue} = useFormikContext();

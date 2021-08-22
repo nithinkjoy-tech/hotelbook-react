@@ -105,7 +105,7 @@ function SearchResultComponent({hotels,user}) {
                 </div>
               </div> 
               </div>
-          ))}</>:<p>There is no place with given name</p>}
+          ))}</>:<p>No hotel available. Add one.</p>}
           <div style={{width:"50%"}} ></div>
         </div>
       </div>

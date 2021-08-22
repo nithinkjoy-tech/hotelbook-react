@@ -1,12 +1,12 @@
 import React, {useEffect, useState, useMemo} from "react";
 import "../../css/ArrivalList.css";
 import Sidebar from "./Sidebar";
-import {getBookings} from "../../api/renter";
+import {getCurrentlyStaying} from "../../api/renter";
 import DataTable, {createTheme} from "react-data-table-component";
 import InputBox from "./../common/InputBox";
 import _ from "lodash";
 
-function ArrivalList() {
+function CurrentlyStaying() {
   const handleClick = data => {
     window.location=`/reception/dashboard/checkin/${data}`
     console.log(data);
@@ -24,8 +24,13 @@ function ArrivalList() {
         selector: "phoneNumber",
       },
       {
-        name: "Booked Date",
-        selector: "bookedOn",
+        name: "Checked In",
+        selector: "startingDayOfStay",
+        sortable: true,
+      },
+      {
+        name: "Check Out",
+        selector: "endingDayOfStay",
         sortable: true,
       },
       {
@@ -46,9 +51,9 @@ function ArrivalList() {
       {
         name: "",
         cell: row => (
-          <td data-label="CheckIn">
+          <td data-label="CheckOut">
             <button onClick={() => handleClick(row._id)} className="checkin-button">
-              CheckIn
+              CheckOut
             </button>
           </td>
         ),
@@ -67,7 +72,7 @@ function ArrivalList() {
   };
 
   const getAllBookings = async () => {
-    const {data,status} = await getBookings();
+    const {data,status} = await getCurrentlyStaying();
     if(status!==200) return
     setBooking(data);
     setFullBooking([...data]);
@@ -82,7 +87,7 @@ function ArrivalList() {
       <div className="arrivallist" style={{margin: 0}}>
         <>
           <DataTable
-            title="Arrivals List"
+            title="Currently Staying List"
             pagination
             subHeader
             noDataComponent="No bookings available for today"
@@ -103,4 +108,4 @@ function ArrivalList() {
   );
 }
 
-export default ArrivalList;
+export default CurrentlyStaying;

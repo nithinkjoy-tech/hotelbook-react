@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import PersonIcon from "@material-ui/icons/Person";
 import "bootstrap/dist/css/bootstrap.css";
 import ImageGallery from "react-image-gallery";
@@ -23,7 +23,9 @@ function Table({rooms}) {
   // // let images=[]
   // const [open, setOpen] = React.useState(false);
   let numberOfDays = localStorage.getItem("numberOfDays");
-
+  useEffect(()=>{
+    localStorage.removeItem("offlineGuestId");
+  },[])
   const handleRoomClick = room => {
     console.log("clicke");
     window.location = `/hotel/roomdetails/${room._id}`;
@@ -58,8 +60,8 @@ function Table({rooms}) {
     }
 
     if(getCurrentUser()?.isReception){
+      if(!JSON.parse(localStorage.getItem("offlineGuestId"))) return displayNotification("error","Check if user is registered")
       finalData["offlineGuestId"]=JSON.parse(localStorage.getItem("offlineGuestId"))
-      if(!finalData["offlineGuestId"]) return displayNotification("error","Check if user is registered")
       const {data,status}=await bookOfflineHotel(finalData)
       if(status !== 200) return displayNotification("error", data)
       displayNotification("success", data)

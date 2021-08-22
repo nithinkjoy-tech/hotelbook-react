@@ -3,7 +3,7 @@ import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import DatePicker, {utils} from "@hassanmojab/react-modern-calendar-datepicker";
 import {useFormikContext} from "formik";
      
-const Calendar = ({selectedDayRange, name,minimumDate}) => {
+const Calendar = ({selectedDayRange, name,minimumDate,placeholder}) => {
   const formik = useFormikContext();
   const field = formik.getFieldProps(name);
 
@@ -19,7 +19,7 @@ const Calendar = ({selectedDayRange, name,minimumDate}) => {
             }${selectedDayRange?.to?.day ? " - " + selectedDayRange?.to?.day + "/" : ""}${
               selectedDayRange?.to?.month ? selectedDayRange?.to?.month + "/" : ""
             }${selectedDayRange?.to?.year ? selectedDayRange?.to?.year +"📅": ""}`
-          : "📅  Check-in - Check-out"
+          : (placeholder||"📅  Check-in - Check-out")
       }
       style={{
         cursor: "pointer",

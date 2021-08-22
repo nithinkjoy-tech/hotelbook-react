@@ -89,7 +89,7 @@ function History() {
     resetForm({values: ""});
   };
 
-  if (!bookings) return null;
+  if (!bookings) return <h2 style={{marginTop:"150px",marginLeft:"20px"}} >There is no previous booking history.</h2>;
 
   return (
     <div className="history">

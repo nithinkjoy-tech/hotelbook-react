@@ -69,8 +69,19 @@ export function getRenter(values) {
 }
 
 export function getBookings(values) {
-  console.log("calling");
   return apiClient.get("/reception/booking/todays", values);
+}
+
+export function getCompletedStays(values) {
+  return apiClient.get("/reception/booking/completed", values);
+}
+
+export function getCurrentlyStaying(values) {
+  return apiClient.get("/reception/booking/staying", values);
+}
+
+export function getUpcomingBookings(values) {
+  return apiClient.get("/reception/booking/upcoming", values);
 }
 
 export function editRenterData(values) {
