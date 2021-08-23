@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import PersonIcon from "@material-ui/icons/Person";
 import "bootstrap/dist/css/bootstrap.css";
 import ImageGallery from "react-image-gallery";
@@ -7,8 +7,8 @@ import {getRoombyId} from "../../api/guest";
 import ModalComponent from "./ModalComponent";
 import {displayNotification} from "./../../services/notificationService";
 import _ from "lodash";
-import { bookHotel } from './../../api/guest';
-import { bookOfflineHotel } from './../../api/renter';
+import {bookHotel} from "./../../api/guest";
+import {bookOfflineHotel} from "./../../api/renter";
 import {getCurrentUser} from "../../services/authService";
 
 function Table({rooms}) {
@@ -23,9 +23,9 @@ function Table({rooms}) {
   // // let images=[]
   // const [open, setOpen] = React.useState(false);
   let numberOfDays = localStorage.getItem("numberOfDays");
-  useEffect(()=>{
+  useEffect(() => {
     localStorage.removeItem("offlineGuestId");
-  },[])
+  }, []);
   const handleRoomClick = room => {
     console.log("clicke");
     window.location = `/hotel/roomdetails/${room._id}`;
@@ -33,103 +33,106 @@ function Table({rooms}) {
   let selectedDays = JSON.parse(localStorage.getItem("selectedDays"));
 
   // const object = {};
-  const handleBooking=async(hotelId)=>{
-
-
-
-    if(!getCurrentUser()?.isGuest&&!getCurrentUser()?.isReception) return window.location=`/signin?redirecturl=${window.location.href}`
+  const handleBooking = async hotelId => {
+    if (!getCurrentUser()?.isGuest && !getCurrentUser()?.isReception)
+      return (window.location = `/signin?redirecturl=${window.location.href}`);
     console.log(object);
-    if(_.isEmpty(object)) return displayNotification("error","Please select rooms for booking")
-    let roomsArray=[]
-    for(let [key, value] of Object.entries(object)){
-      console.log(key,"key")
-      console.log(object,"obj")
-      roomsArray.push({roomId:key,noOfRooms:value})
+    if (_.isEmpty(object)) return displayNotification("error", "Please select rooms for booking");
+    let roomsArray = [];
+    for (let [key, value] of Object.entries(object)) {
+      console.log(key, "key");
+      console.log(object, "obj");
+      roomsArray.push({roomId: key, noOfRooms: value});
     }
 
-    let finalData={
-      roomDetails:roomsArray,
-      selectedDayRange:JSON.parse(localStorage.getItem("selectedDays")),
+    let finalData = {
+      roomDetails: roomsArray,
+      selectedDayRange: JSON.parse(localStorage.getItem("selectedDays")),
       hotelId,
-    }
-    console.log(finalData,"dtt")
-    if(getCurrentUser()?.isGuest){
-      const {data,status}=await bookHotel(finalData)
-      if(status !== 200) return displayNotification("error", data)
-      displayNotification("success", data)
+    };
+    console.log(finalData, "dtt");
+    if (getCurrentUser()?.isGuest) {
+      const {data, status} = await bookHotel(finalData);
+      if (status !== 200) return displayNotification("error", data);
+      displayNotification("success", data);
     }
 
-    if(getCurrentUser()?.isReception){
-      if(!JSON.parse(localStorage.getItem("offlineGuestId"))) return displayNotification("error","Check if user is registered")
-      finalData["offlineGuestId"]=JSON.parse(localStorage.getItem("offlineGuestId"))
-      const {data,status}=await bookOfflineHotel(finalData)
-      if(status !== 200) return displayNotification("error", data)
-      displayNotification("success", data)
+    if (getCurrentUser()?.isReception) {
+      if (!JSON.parse(localStorage.getItem("offlineGuestId")))
+        return displayNotification("error", "Check if user is registered");
+      finalData["offlineGuestId"] = JSON.parse(localStorage.getItem("offlineGuestId"));
+      const {data, status} = await bookOfflineHotel(finalData);
+      if (status !== 200) return displayNotification("error", data);
+      displayNotification("success", data);
     }
     // setTimeout(() => {
     //   window.location="/dashboard"
     // },1000)
     // {
-//   "roomDetails":[{"roomId": "60995ece56a3f64368509ce9",
-//         "noOfRooms":3
-//       },
-//       {
-//         "roomId":"60995ee156a3f64368509cea",
-//         "noOfRooms":2
-//       }],
-//   "selectedDate":{"from":{
-//   "day":19,
-//   "month":5,
-//   "year":2021
-// },
-// "to":{
-//   "day":29,
-//   "month":5,
-//   "year":2021
-// }}
-// }
-  }
+    //   "roomDetails":[{"roomId": "60995ece56a3f64368509ce9",
+    //         "noOfRooms":3
+    //       },
+    //       {
+    //         "roomId":"60995ee156a3f64368509cea",
+    //         "noOfRooms":2
+    //       }],
+    //   "selectedDate":{"from":{
+    //   "day":19,
+    //   "month":5,
+    //   "year":2021
+    // },
+    // "to":{
+    //   "day":29,
+    //   "month":5,
+    //   "year":2021
+    // }}
+    // }
+  };
+
+  const handleExtraBedSelect = selected => {};
 
   const handleSelect = selected => {
     // let object={...object}
-    
-    console.log(object,"ob")
-    let key=selected.slice(0, 24)
-    let value=Number(selected.slice(24, selected.length))
-    object[key] = value;
-    setObject(object)
-    console.log(value,"vl")
 
-    let bedsNo=0,personsNo=0,priceNo=0,roomsNo=0
-    let values=[]
-    let datas=[]
-    console.log(object,"ob1")
+    console.log(object, "ob");
+    let key = selected.slice(0, 24);
+    let value = Number(selected.slice(24, selected.length));
+    object[key] = value;
+    setObject(object);
+    console.log(value, "vl");
+
+    let bedsNo = 0,
+      personsNo = 0,
+      priceNo = 0,
+      roomsNo = 0;
+    let values = [];
+    let datas = [];
+    console.log(object, "ob1");
     for (let [key, value] of Object.entries(object)) {
-      console.log(value,typeof value,"cc")
-      if(Number(value)===0) {
+      console.log(value, typeof value, "cc");
+      if (Number(value) === 0) {
         setObject(_.omit(object, [key.toString()]));
       }
     }
 
     for (let [key, value] of Object.entries(object)) {
-      let data=_.filter(rooms, { '_id': key})[0]
-      values.push(Number(value))
-      datas.push(data)
+      let data = _.filter(rooms, {_id: key})[0];
+      values.push(Number(value));
+      datas.push(data);
     }
-    for(let index in values){
-      console.log(index, typeof values[index])
-      console.log(index, typeof Number(datas[index].numberOfBeds),"bb")
-      bedsNo+=values[index]*Number(datas[index].numberOfBeds)
-      personsNo+=values[index]*Number(datas[index].numberOfGuestsInaRoom)
-      priceNo+=values[index]*Number((datas[index].basePricePerNight)*numberOfDays)
-      roomsNo+=values[index]
- 
+    for (let index in values) {
+      console.log(index, typeof values[index]);
+      console.log(index, typeof Number(datas[index].numberOfBeds), "bb");
+      bedsNo += values[index] * Number(datas[index].numberOfBeds);
+      personsNo += values[index] * Number(datas[index].numberOfGuestsInaRoom);
+      priceNo += values[index] * Number(datas[index].basePricePerNight * numberOfDays);
+      roomsNo += values[index];
     }
     // let data=_.filter(rooms, { '_id': key})[0]
-    setBeds(bedsNo)
-    setPersons(personsNo)
-    setPrice(priceNo)
-    setRoomsNumber(roomsNo)
+    setBeds(bedsNo);
+    setPersons(personsNo);
+    setPrice(priceNo);
+    setRoomsNumber(roomsNo);
     // setBeds(Number(data.numberOfBeds)*values)
     // setPersons(Number(data.numberOfGuestsInaRoom)*values)
     // setPrice((Number(data.basePricePerNight)*numberOfDays)*values)
@@ -149,10 +152,15 @@ function Table({rooms}) {
     setIsOpen(true);
   };
 
-  if(!rooms[0]) return <div style={{margin:"auto",width:"85%",marginTop:"20px",marginBottom:"20px"}} ><h1>There is no room left for booking</h1></div>
-
+  if (!rooms[0])
+    return (
+      <div style={{margin: "auto", width: "85%", marginTop: "20px", marginBottom: "20px"}}>
+        <h1>There is no room left for booking</h1>
+      </div>
+    );
+  console.log(rooms, "rm");
   return (
-    <div style={{margin: "auto", width: "85%",marginTop:"30px"}}>
+    <div style={{margin: "auto", width: "85%", marginTop: "30px"}}>
       <table className="table table-bordered">
         <thead className="table-dark">
           <tr>
@@ -234,27 +242,54 @@ function Table({rooms}) {
                       {room.basePricePerNight * numberOfDays * no}
                     </option>
                   ))}
-                  {/* <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                  <option value="4">Four</option>
-                  <option value="5">Five</option>
-                  <option value="6">Six</option> */}
                 </select>
+                {room.extraBed ? (
+                  <p style={{marginTop: "25px", marginBottom: 0}}>
+                    {room.noOfExtraBeds} extra beds per room can be provided during the time of
+                    checkin.{" "}
+                    <span style={{fontWeight: "bold"}}>
+                      Note: One person per extra bed. Price per extra bed is {room.pricePerExtraBed}{" "}
+                      Rs
+                    </span>{" "}
+                  </p>
+                ) : (
+                  <p style={{marginTop: "25px", marginBottom: 0}}>No extra Bed provided</p>
+                )}
+                {/* <select
+                  onChange={e => handleExtraBedSelect(e.target.value)}
+                  className="form-select"
+                  aria-label="Default select example"
+                >
+                  {_.range(room.noOfExtraBeds + 1).map(no => (
+                    <option value={`${room._id}${no}`.toString()}>
+                      {no.toString()}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </option>
+                  ))}
+                </select> */}
               </td>
             </tr>
           ))}
           <tr>
-            <td style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center'}} >
+            <td style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
               <div>Total Booking details</div>
               <div>
-                <button onClick={()=>handleBooking(rooms[0].hotelId)} className="btn btn-primary">Book Now</button>
+                <button onClick={() => handleBooking(rooms[0].hotelId)} className="btn btn-primary">
+                  Book Now
+                </button>
               </div>
             </td>
-            <td className="tdalign">Beds:<span>{beds}</span></td> 
-            <td className="tdalign">Persons:<span>{persons}</span></td>
-            <td className="tdalign">Price:<span>{price}</span></td>
-            <td className="tdalign">Rooms:<span>{roomsNumber}</span></td>
+            <td className="tdalign">
+              Beds:<span>{beds}</span>
+            </td>
+            <td className="tdalign">
+              Persons:<span>{persons}</span>
+            </td>
+            <td className="tdalign">
+              Price:<span>{price}</span>
+            </td>
+            <td className="tdalign">
+              Rooms:<span>{roomsNumber}</span>
+            </td>
           </tr>
           {images.length > 0 ? (
             <ModalComponent modalIsOpen={modalIsOpen} setIsOpen={setIsOpen}>
