@@ -1,8 +1,20 @@
 import React, {useState, useEffect} from "react";
 import Webcam from "react-webcam";
 import {Card, CardContent, MenuItem, InputLabel, FormHelperText} from "@material-ui/core";
-import {Formik, Form, Field, FormikConfig, FormikValues, useFormikContext} from "formik";
+import {
+  Formik,
+  Form,
+  Field,
+  FieldArray,
+  FormikConfig,
+  FormikValues,
+  useFormikContext,
+  getIn,
+} from "formik";
 import {TextField, Select} from "formik-material-ui";
+import MUISelect from "@material-ui/core/Select";
+import MUITextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
 import "../../css/BookedCheckIn.css";
 import {makeStyles} from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
@@ -77,7 +89,7 @@ function BookedCheckIn({match}) {
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
-  // const {handleChange} =useFormikContext()
+  let formikContext = useFormikContext();
 
   const [saveDocument, setSaveDocument] = useState([]); // Save uploaded Document
   const [initialValues, setInitialValues] = useState();
@@ -124,6 +136,28 @@ function BookedCheckIn({match}) {
     adhaar: "",
   };
 
+  const Input = ({field, form: {errors}}) => {
+    const errorMessage = getIn(errors, field.name);
+
+    return (
+      <>
+        <MUITextField {...field} />
+        {errorMessage && <div style={{color: "red"}}>{errorMessage}</div>}
+      </>
+    );
+  };
+
+  // const Select = ({field, form: {errors}}) => {
+  //   const errorMessage = getIn(errors, field.name);
+
+  //   return (
+  //     <>
+  //       <MUI.Select {...field} />
+  //       {errorMessage && <div style={{color: "red"}}>{errorMessage}</div>}
+  //     </>
+  //   );
+  // };
+
   if (!initialValues) return null;
 
   return (
@@ -134,6 +168,16 @@ function BookedCheckIn({match}) {
           onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
           validationSchema={validate}
         >
+          {({
+         values,
+         errors,
+         touched,
+         handleChange,
+         handleBlur,
+         handleSubmit,
+         isSubmitting,
+         /* and other goodies */
+       }) => (
           <Form>
             <div className={classes.root}>
               <Stepper activeStep={activeStep} alternativeLabel>
@@ -152,7 +196,14 @@ function BookedCheckIn({match}) {
                 ) : (
                   <div>
                     <Typography className={classes.instructions}>
-                      {getStepContent(activeStep, initialValues)}
+                      {getStepContent(
+                        activeStep,
+                        initialValues,
+                        Input,
+                        Select,
+                        classes,
+                        handleChange
+                      )}
                     </Typography>
                     <div>
                       <Button
@@ -162,20 +213,22 @@ function BookedCheckIn({match}) {
                       >
                         Back
                       </Button>
-                      {activeStep === steps.length - 1 ? (
-                        null
-                      ) : (
+                      {activeStep === steps.length - 1 ? null : (
                         <Button variant="contained" color="primary" onClick={handleNext}>
                           Next
                         </Button>
                       )}
-                      {activeStep === steps.length - 1 ? <button className="btn btn-primary" type="submit">Submit</button>:null}
+                      {activeStep === steps.length - 1 ? (
+                        <button className="btn btn-primary" type="submit">
+                          Submit
+                        </button>
+                      ) : null}
                     </div>
                   </div>
                 )}
               </div>
             </div>
-          </Form>
+          </Form>)}
         </Formik>
       </CardContent>
     </Card>
@@ -184,7 +237,8 @@ function BookedCheckIn({match}) {
 
 export default BookedCheckIn;
 
-function getStepContent(stepIndex, initialValues) {
+function getStepContent(stepIndex, initialValues, Input, Select, classes, handleChange) {
+
   switch (stepIndex) {
     case 0:
       return (
@@ -229,87 +283,114 @@ function getStepContent(stepIndex, initialValues) {
     case 1:
       return (
         <div style={{margin: "auto", width: "75%"}}>
-          {/* <div className="first-row">
-            <Field readOnly name="roomType" component={Select} label="Room Type" className="fields">
-              <MenuItem value="Single">Single</MenuItem>
-              <MenuItem value="Double Room">Double Room</MenuItem>
-              <MenuItem value="Triple">Triple</MenuItem>
-              <MenuItem value="Quad">Quad</MenuItem>
-              <MenuItem value="Queen">Queen</MenuItem>
-              <MenuItem value="King">King</MenuItem>
-              <MenuItem value="Twin">Twin</MenuItem>
-            </Field>
-
-            <Field name="roomNumber" component={Select} label="Room Number" className="fields">
-              <MenuItem value="Room No- 101">Room No- 101</MenuItem>
-              <MenuItem value="102">Double</MenuItem>
-              <MenuItem value="103">Triple</MenuItem>
-              <MenuItem value="104">Quad</MenuItem>
-              <MenuItem value="Queen">Queen</MenuItem>
-              <MenuItem value="King">King</MenuItem>
-              <MenuItem value="Twin">Twin</MenuItem>
-            </Field>
-          </div>
-          <div className="second-row">
-            <Field name="adults" component={TextField} label="Adults" className="fields" />
-            <Field name="children" component={TextField} label="Children" className="fields" />
-          </div>
-          <div className="third-row">
-            <Field name="extraBed" component={Select} label="Extra Bed" className="fields">
-              <MenuItem value="No extra bed">No extra bed</MenuItem>
-              <MenuItem value="102">Double</MenuItem>
-              <MenuItem value="103">Triple</MenuItem>
-              <MenuItem value="104">Quad</MenuItem>
-              <MenuItem value="Queen">Queen</MenuItem>
-              <MenuItem value="King">King</MenuItem>
-              <MenuItem value="Twin">Twin</MenuItem>
-            </Field>
-          </div> */}
-          {/* <div style={{backgroundColor: "black", height: "2px"}}></div> */}
-          {/* {_.range(initialValues.)} */}
-          {Object.entries(initialValues.roomFinalDetails).map(([key, value]) => (
-            // console.log(value)
+          {/* {Object.entries(initialValues.roomFinalDetails).map(([key, value]) => ( */}
+          <FieldArray name="roomFinalDetails">
+            {({push, remove}) => (
               <div>
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <PropertySelectBox
-                    label="Room Type"
-                    name="roomType"
-                    disable={true}
-                    options={[value.roomType]}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <PropertySelectBox
-                    label="Room Number"
-                    name="roomNumber"
-                    options={_.flattenDeep([
-                      null,
-                      value.availableRoomNumbers.map(roomNo => roomNo),
-                    ])}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <PropertyInputBox label="Adults" type="text" name="adults" />
-                </div>
+                {initialValues.roomFinalDetails.map((p, index) => {
+                  console.log(p,"bb")
+                  return (
+                    <div
+                      key={p.roomId + index}
+                      style={{
+                        marginBottom: "30px",
+                        boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                        padding: "30px",
+                        borderRadius: "10px",
+                      }}
+                    >
+                      {/* <div className="grid grid-cols-6 gap-6"> */}
+                      {/* <Field name={`roomFinalDetails[${index}].roomType`} component={Input} /> */}
+                      {/* {p.availableRoomNumbers.map((pet, i) => {
+                          return (
+                            <div key={pet.id}> */}
+                      <MUISelect
+                        name={`roomFinalDetails[${index}].roomType`}
+                        defaultValue={p.roomType}
+                        onChange={handleChange}
+                        disabled
+                        >
+                        <MenuItem value={p.roomType}>{p.roomType}</MenuItem>
+                      </MUISelect>
+                      <MUISelect
+                        name={`roomFinalDetails[${index}].roomNumber`}
+                        defaultValue={p.roomNumber}
+                        onChange={handleChange}
+                        >
+                        {p.availableRoomNumbers.map((no, ind) => (
+                          <MenuItem value={no} key={ind.toString()}>
+                            {no}
+                          </MenuItem>
+                        ))}
+                      </MUISelect>
+                      {/* </div>
+                          );
+                        })} */}
+                      {/* <Field
+                          name={`roomFinalDetails[${index}].roomNumber`}
+                          as={Select}
+                          label="Room Type"
+                          className="fields"
+                        >
+                          <MenuItem value="12">12</MenuItem>
+                          <MenuItem value="Double">Double</MenuItem>
+                          <MenuItem value="Triple">Triple</MenuItem>
+                          <MenuItem value="Quad">Quad</MenuItem>
+                          <MenuItem value="Queen">Queen</MenuItem>
+                          <MenuItem value="King">King</MenuItem>
+                          <MenuItem value="Twin">Twin</MenuItem>
+                        </Field> */}
+                      {/* <div className="col-span-6 sm:col-span-3">
+                          <PropertySelectBox
+                            label="Room Type"
+                            name={`roomFinalDetails[${index}].roomType`}
+                            disabled={true}
+                            options={[p.roomType]}
+                          />
+                        </div>
+                        <div className="col-span-6 sm:col-span-3">
+                          <PropertySelectBox
+                            label="Room Number"
+                            name={`roomFinalDetails[${index}].roomNumber`}
+                            options={_.flattenDeep([
+                              null,
+                              p.availableRoomNumbers.map(roomNo => roomNo),
+                            ])}
+                          />
+                        </div>
+                        <div className="col-span-6 sm:col-span-3">
+                          <PropertyInputBox
+                            label="Adults"
+                            type="text"
+                            name={`roomFinalDetails[${index}].adults`}
+                          />
+                        </div>
 
-                <div className="col-span-6 sm:col-span-3">
-                  <PropertyInputBox label="Children" type="text" name="children" />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <PropertySelectBox
-                    label="Extra Bed"
-                    name="extraBed"
-                    options={_.range(value.noOfExtraBeds + 1).map(opt => opt)}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <p style={{marginTop: "30px"}}>{value.pricePerExtraBed} Rs per Extra Bed</p>
-                </div>
+                        <div className="col-span-6 sm:col-span-3">
+                          <PropertyInputBox
+                            label="Children"
+                            type="text"
+                            name={`roomFinalDetails[${index}].children`}
+                          />
+                        </div>
+                        <div className="col-span-6 sm:col-span-3">
+                          <PropertySelectBox
+                            label="Extra Bed"
+                            name={`roomFinalDetails[${index}].extraBed`}
+                            options={_.range(p.noOfExtraBeds + 1).map(opt => opt)}
+                          />
+                        </div> */}
+                      <div className="col-span-6 sm:col-span-3">
+                        <p style={{marginTop: "30px"}}>{p.pricePerExtraBed} Rs per Extra Bed</p>
+                      </div>
+                    </div>
+                    // </div>
+                  );
+                })}
               </div>
-            </div>
-            
-          ))}
+            )}
+          </FieldArray>
+          {/* ))} */}
         </div>
       );
     case 2:
@@ -347,18 +428,20 @@ const Camera = () => {
     console.log(imageSrc);
   }, [webcamRef]);
 
-  return (
-    <>
-      <Webcam
-        audio={false}
-        ref={webcamRef}
-        height={720}
-        screenshotFormat="image/jpeg"
-        width={620}
-      />
-      <button className="camera-button" onClick={capture}>
-        Capture photo
-      </button>
-    </>
-  );
+  return null;
+
+  // return (
+  //   <>
+  //     <Webcam
+  //       audio={false}
+  //       ref={webcamRef}
+  //       height={720}
+  //       screenshotFormat="image/jpeg"
+  //       width={620}
+  //     />
+  //     <button className="camera-button" onClick={capture}>
+  //       Capture photo
+  //     </button>
+  //   </>
+  // );
 };
