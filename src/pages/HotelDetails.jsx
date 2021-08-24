@@ -29,7 +29,7 @@ const HotelDetails = ({match,location}) => {
     setHotel(data);
     let selectedDayRange=JSON.parse(localStorage.getItem("selectedDays"))
     console.log(selectedDayRange,"sdrg")
-    let {data:roomData, status:reqStatus} = await getRoomsbyId({roomIds:data.hotelRooms,selectedDayRange});
+    let {data:roomData, status:reqStatus} = await getRoomsbyId({roomIds:data.hotelRooms,selectedDayRange,hotelId});
     console.log(roomData,"dtnj"); 
     setRooms(roomData) 
     let numberOfDays = Number(localStorage.getItem("numberOfDays"))

@@ -80,6 +80,10 @@ export function getCurrentlyStaying(values) {
   return apiClient.get("/reception/booking/staying", values);
 }
 
+export function getBookingDetails(id) {
+  return apiClient.get(`/reception/booking/details/${id}`);
+}
+
 export function getUpcomingBookings(values) {
   return apiClient.get("/reception/booking/upcoming", values);
 }

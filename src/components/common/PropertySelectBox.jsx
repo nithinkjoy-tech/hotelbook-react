@@ -2,13 +2,14 @@ import React from "react";
 import {useFormikContext,ErrorMessage} from "formik";
 import Error from "../forms/Error";
 
-function PropertySelectBox({label, name, options}) {
+function PropertySelectBox({label, name, options,disabled}) {
   const {values, handleChange} = useFormikContext();
 
   return (
     <React.Fragment>
       {label && <label className="block text-sm font-medium text-gray-700">{label}</label>}
       <select
+        disabled={disabled}
         style={{cursor: "pointer"}}
         name={name}
         value={values[name]}

@@ -3,6 +3,7 @@ import {useFormikContext} from "formik";
 import SaveAsDraftButton from "./SaveAsDraftButton";
 import PropertySelectBox from "./../common/PropertySelectBox";
 import FormCheckBox from "./../common/FormCheckBox";
+import PropertyInputBox from './../common/PropertyInputBox';
 
 function Step2({saveAsDraft}) {
   useEffect(() => {
@@ -69,6 +70,13 @@ function Step2({saveAsDraft}) {
                       label="No. of extra beds"
                       name="noOfExtraBeds"
                       options={[1,2,3,4]}
+                    />
+                  </div>:<div></div>}
+                  {extraBed==="Yes"?<div className="col-span-6 sm:col-span-3">
+                    <PropertyInputBox
+                      label="Price Per Extra Bed"
+                      name="pricePerExtraBed"
+                      type="text"
                     />
                   </div>:<div></div>}
 
