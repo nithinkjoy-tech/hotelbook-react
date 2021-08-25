@@ -69,6 +69,18 @@
    cursor: pointer;
 }
 
+.download-button{
+    margin-left:120px;
+    background-color:#5647ff;
+    color: aliceblue;
+    font-weight: 800;
+    border: none;
+    border-radius:10px;
+    width:120px;
+    height:30px;
+    cursor: pointer;
+ }
+
 .title-fields{
     margin-left:90px;
 }
@@ -113,4 +125,8 @@
 .dis{
   background-color:lightblue;
   cursor: not-allowed;
+}
+
+.invoice-button{
+    display: flex;
 }

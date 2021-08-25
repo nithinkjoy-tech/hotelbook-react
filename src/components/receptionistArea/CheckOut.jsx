@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-// import Invoice from './Invoice'
+import Invoice from '../common/Invoice'
 import '../../css/Checkout.css'
 
 function CheckOut() {
@@ -38,9 +38,21 @@ function CheckOut() {
     setVisible(true);
   }
 
-//   function generateInvoice(){
-//     Invoice();
-//   }
+  function generateInvoice(){
+    const d = new Date();
+    const date = d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear();
+    // Name
+    // Address
+    // phone
+    // inputfields
+    // Total
+    // Amount
+    // Date
+    let name = 'vishnu satheesh';
+    let address = 'pulickal house, kakkinje post, kaanjal';
+    let phone = '8137833845'
+    Invoice(name,address,phone,inputFields,total,amount,date);
+  }
 
   function handleSave() {
     const fields = [...inputFields];
@@ -132,10 +144,9 @@ function CheckOut() {
           <button type="button" className="pay-button">PAY</button>
         </div>
       </div>
-      <div className="invoice-buttons">
-        <button type="button" className="view-button">View</button>
-        <button type="button" className="download-button">Download</button>
-      
+      <div className="invoice-button">
+        <p className="invoice-text">Download Invoice now</p>
+        <button type="button" className="download-button" onClick={generateInvoice}>Download</button>
       </div>
     </div>
   );
