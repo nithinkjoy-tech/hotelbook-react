@@ -84,6 +84,10 @@ export function getBookingDetails(id) {
   return apiClient.get(`/reception/booking/details/${id}`);
 }
 
+export function checkIn(values) {
+  return apiClient.post(`/reception/booking/checkin`,values);
+}
+
 export function getUpcomingBookings(values) {
   return apiClient.get("/reception/booking/upcoming", values);
 }
