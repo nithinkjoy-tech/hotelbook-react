@@ -28,6 +28,7 @@ import BookNow from './BookNow';
 import UpcomingArrivalList from './UpcomingArrivalList';
 import CurrentlyStaying from './CurrentlyStaying';
 import CompletedStays from './CompletedStays';
+import CheckOut from './CheckOut';
 
 
 const Sidebar = () => {
@@ -72,8 +73,13 @@ const Sidebar = () => {
                 </MenuItem>
                 <MenuItem icon={<FaList />}>
                 <a onClick={()=>setChoice("completedStays")}>Completed Stays</a>
+                </MenuItem> 
+                {/*  */}
+                <MenuItem icon={<FaList />}>
+                <a onClick={()=>setChoice("checkout")}>Checkout</a>
                 </MenuItem>
-                <MenuItem icon={<RiPencilLine />}>etc</MenuItem>
+                {/*  */}
+
                 <MenuItem icon={<BiCog />}>etc</MenuItem>
               </Menu>
             </SidebarContent>
@@ -87,6 +93,7 @@ const Sidebar = () => {
     {choice==="upcomingArrivalList"?<UpcomingArrivalList/>:""}
     {choice==="currentlyStaying"?<CurrentlyStaying/>:""}
     {choice==="completedStays"?<CompletedStays/>:""}
+    {choice==="checkout"?<CheckOut/>:""}
     </React.Fragment>
   );
 };
