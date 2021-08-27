@@ -55,6 +55,9 @@ function Table({rooms}) {
       const {data, status} = await bookHotel(finalData);
       if (status !== 200) return displayNotification("error", data);
       displayNotification("success", data);
+      setTimeout(()=>{
+        window.location="/dashboard"
+      },1000)
     }
 
     if (getCurrentUser()?.isReception) {
@@ -64,6 +67,9 @@ function Table({rooms}) {
       const {data, status} = await bookOfflineHotel(finalData);
       if (status !== 200) return displayNotification("error", data);
       displayNotification("success", data);
+      setTimeout(()=>{
+        window.location="/reception/dashboard"
+      },1000)
     }
     // setTimeout(() => {
     //   window.location="/dashboard"
@@ -255,17 +261,6 @@ function Table({rooms}) {
                 ) : (
                   <p style={{marginTop: "25px", marginBottom: 0}}>No extra Bed provided</p>
                 )}
-                {/* <select
-                  onChange={e => handleExtraBedSelect(e.target.value)}
-                  className="form-select"
-                  aria-label="Default select example"
-                >
-                  {_.range(room.noOfExtraBeds + 1).map(no => (
-                    <option value={`${room._id}${no}`.toString()}>
-                      {no.toString()}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    </option>
-                  ))}
-                </select> */}
               </td>
             </tr>
           ))}

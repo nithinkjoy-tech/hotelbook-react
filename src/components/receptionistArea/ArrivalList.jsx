@@ -82,7 +82,7 @@ function ArrivalList() {
       <div className="arrivallist" style={{margin: 0}}>
         <>
           <DataTable
-            title="Arrivals List"
+            title="Todays Arrivals List"
             pagination
             subHeader
             noDataComponent="No bookings available for today"

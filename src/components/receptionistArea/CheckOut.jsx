@@ -1,31 +1,50 @@
-import React, { useState,useEffect } from "react";
-import Invoice from '../common/Invoice'
-import '../../css/Checkout.css'
+import React, {useState, useEffect} from "react";
+import Invoice from "../common/Invoice";
+import "../../css/Checkout.css";
+import {checkOutDetails,checkOut} from "../../api/renter"
+import { displayNotification } from './../../services/notificationService';
 
-function CheckOut() {
+function CheckOut({match}) {
+  const bookingId = match.params.bookingId
   const [inputFields, setInputFields] = useState([]);
   const [values, setValues] = useState();
   const [visible, setVisible] = useState(false);
+  const [details, setDetails] = useState();
   let disable = true;
 
   //Amount calculation
-  const money = 1500;
-  const [total,setTotal] = useState(money);
-  const [amount,setAmount] = useState([]);
+  // const money = 1500;
+  const [money, setMoney] = useState();
+  const [total, setTotal] = useState();
+  const [amount, setAmount] = useState([]);
 
- useEffect(() => {
-  const amountList = inputFields.map(amt => Number(amt.amount));
-   const result = amountList.reduce((a,b)=>a+b,0);
-   setAmount(result)
- }, [inputFields,amount])
+  const handlePay=async()=>{
+    const {data,status}=await checkOut(bookingId)
+    if(status !== 200) return displayNotification("error","Something went wrong")
+    console.log(data)
+    displayNotification("info","Payment successfull")
+    
+  }
 
+  const getDetails=async()=>{
+    const {data}=await checkOutDetails(bookingId)
+    console.log(data)
+    setDetails(data)
+    setTotal(Number(data.price))
+  }
 
-  values && (values.item && values.amount ? disable = false : disable = true) 
+  useEffect(() => {
+    getDetails()
+    const amountList = inputFields.map(amt => Number(amt.amount));
+    const result = amountList.reduce((a, b) => a + b, 0);
+    setAmount(result);
+  }, [inputFields, amount]);
 
+  values && (values.item && values.amount ? (disable = false) : (disable = true));
 
   function handleChange(e) {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
+    const {name, value} = e.target;
+    setValues({...values, [name]: value});
   }
 
   function handleRemove(index) {
@@ -38,9 +57,9 @@ function CheckOut() {
     setVisible(true);
   }
 
-  function generateInvoice(){
+  function generateInvoice() {
     const d = new Date();
-    const date = d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear();
+    const date = d.getDate() + "/" + d.getMonth()+1 + "/" + d.getFullYear();
     // Name
     // Address
     // phone
@@ -48,10 +67,10 @@ function CheckOut() {
     // Total
     // Amount
     // Date
-    let name = 'vishnu satheesh';
-    let address = 'pulickal house, kakkinje post, kaanjal';
-    let phone = '8137833845'
-    Invoice(name,address,phone,inputFields,total,amount,date);
+    let name = "vishnu satheesh";
+    let address = "pulickal house, kakkinje post, kaanjal";
+    let phone = "8137833845";
+    Invoice(details?.name||name, address, phone, inputFields, total, amount, date);
   }
 
   function handleSave() {
@@ -60,16 +79,18 @@ function CheckOut() {
     setInputFields(fields);
     setVisible(false);
     disable = true;
-    setValues(undefined)
+    setValues(undefined);
   }
+
+  if(!details) return null
 
   return (
     <div className="checkout">
       <h2 className="title">Check Out</h2>
-      <div className="contents">
+      <div className="payment-contents">
         <div className="left">
           <h4 className="name">Name</h4>
-          <p>Vishnu Satheesh</p>
+          <p>{details.name}</p>
           <h4 className="address">Address</h4>
           <p>Pulickal house, kakkinje post, kaanjal</p>
           <h4 className="phone">Phone</h4>
@@ -78,34 +99,27 @@ function CheckOut() {
         <div className="right">
           <h4 className="title-fields">Add Additional Charges here!</h4>
           <div className="input-box">
-          {inputFields &&
-            inputFields.map((field, index) => {
-              return (
-                <div className="text-fields" key={index}>
-                  <div className="list-items">
-                    <div className="list-item">
-                      <h5 className="item-list">{field.item}</h5>
-                      <h5 className="item-list">{field.amount}</h5>
-                      {
-                        <button
-                          className="remove-button"
-                          onClick={() => handleRemove(index)}
-                        >
-                          {" "}
-                          -{" "}
-                        </button>
-                      }
+            {inputFields &&
+              inputFields.map((field, index) => {
+                return (
+                  <div className="text-fields" key={index}>
+                    <div className="list-items">
+                      <div className="list-item">
+                        <h5 className="item-list">{field.item}</h5>
+                        <h5 className="item-list">{field.amount}</h5>
+                        {
+                          <button className="remove-button" onClick={() => handleRemove(index)}>
+                            {" "}
+                            -{" "}
+                          </button>
+                        }
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-</div>
-          <button
-            type="button"
-            className="add-button"
-            onClick={() => handleVisible()}
-          >
+                );
+              })}
+          </div>
+          <button type="button" className="add-button" onClick={() => handleVisible()}>
             +
           </button>
 
@@ -125,9 +139,9 @@ function CheckOut() {
                 placeholder="Item Cost"
                 onChange={handleChange}
               />
-               <button
+              <button
                 type="button"
-                className={`save-button ${disable ? 'dis' : ''}`}
+                className={`save-button ${disable ? "dis" : ""}`}
                 onClick={() => handleSave()}
                 disabled={disable}
               >
@@ -139,14 +153,21 @@ function CheckOut() {
           )}
           <div className="amount">
             <h4 className="total">Total -</h4>
-            <h3 className="total-amount">Rs. {total+amount}</h3>
+            <h3 className="total-amount">Rs. {total + amount}</h3>
           </div>
-          <button type="button" className="pay-button">PAY</button>
+          <button onClick={handlePay} type="button" className="pay-button">
+            PAY
+          </button>
         </div>
       </div>
       <div className="invoice-button">
         <p className="invoice-text">Download Invoice now</p>
-        <button type="button" className="download-button" onClick={generateInvoice}>Download</button>
+        <button type="button" className="download-button" onClick={generateInvoice}>
+          Download
+        </button>
+        <button type="button" className="btn btn-warning" onClick={()=>window.location="/reception/dashboard"}>
+          Go to Home
+        </button>
       </div>
     </div>
   );

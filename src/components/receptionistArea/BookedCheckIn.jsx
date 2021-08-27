@@ -164,7 +164,8 @@ function BookedCheckIn({match}) {
   };
 
   const handleSubmit = async values => {
-    const {data}=await checkIn(values)
+    const {data}=await checkIn(values);
+    window.location='/reception/dashboard'
   };
 
   const primaryDetails = {

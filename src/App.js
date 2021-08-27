@@ -27,6 +27,7 @@ import Sidebar from './components/receptionistArea/Sidebar';
 import ReceptionDashboard from './pages/ReceptionDashboard';
 import AboutPage from './pages/AboutPage';
 import BookedCheckIn from './components/receptionistArea/BookedCheckIn';
+import CheckOut from './components/receptionistArea/CheckOut';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
         <Route exact path="/renter/welcome" component={ListPropertyWelcomePage} />
         {/* <Route path="/reception/dashboard/arrivals" component={ArrivalList} /> */}
         <Route exact path="/reception/dashboard/checkin/:bookingId" component={BookedCheckIn} />
+        <Route exact path="/reception/dashboard/checkout/:bookingId" component={CheckOut} />
         <Route exact path="/reception/dashboard" component={Sidebar} />
         <Route exact path="/reception/signin" component={SigninPage} />
         <Route exact path="/renter/signup" component={SignupPage} />
