@@ -4,7 +4,6 @@ import SearchResultComponent from "../components/searchPageComponent/SearchResul
 import { getAdminHotels } from '../api/admin';
 import Logout from '../components/common/Logout'
 import '../../src/css/RenterDashboard.css'
-import ReactPaginate from 'react-paginate';
 import PersonIcon from '@material-ui/icons/Person';
 import HistoryIcon from '@material-ui/icons/History';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
