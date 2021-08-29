@@ -23,6 +23,7 @@ import { BiCog } from "react-icons/bi";
 import "react-pro-sidebar/dist/css/styles.css";
 import "../../css/Sidebar.css";
 import RestaurantCurrentlyStaying from './RestaurantCurrentlyStaying';
+import AddFoodItem from './AddFoodItem.jsx';
 
 
 const RestaurantSidebar = () => {
@@ -46,8 +47,11 @@ const RestaurantSidebar = () => {
             </SidebarHeader>
             <SidebarContent>
               <Menu className="menu" iconShape="square">                
-                <MenuItem style={{backgroundColor:"#FED00B",borderRadius:"8px"}} icon={<FaList />}>
+                <MenuItem icon={<FaList />}>
                   <a onClick={()=>setChoice("addBill")}>Add Bill</a>
+                </MenuItem>
+                <MenuItem icon={<FaList />}>
+                  <a onClick={()=>setChoice("addFoodItem")}>Add Food Item</a>
                 </MenuItem>
               </Menu>
             </SidebarContent>
@@ -56,6 +60,7 @@ const RestaurantSidebar = () => {
       </Router>
     </div> 
     {choice==="addBill"?<RestaurantCurrentlyStaying/>:""}
+    {choice==="addFoodItem"?<AddFoodItem/>:""}
     </React.Fragment>
   );
 };

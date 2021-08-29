@@ -6,9 +6,8 @@ import InputBox from "./../common/InputBox";
 import _ from "lodash";
 
 function RestaurantCurrentlyStaying() {
-  const handleClick = data => {
-    window.location=`/reception/dashboard/checkout/${data}`
-    console.log(data);
+  const handleClick = bookingId => {
+    window.location=`/restaurant/additemstobill/${bookingId}`
   };
 
   const columns = useMemo(
@@ -23,36 +22,19 @@ function RestaurantCurrentlyStaying() {
         selector: "phoneNumber",
       },
       {
-        name: "Checked In",
-        selector: "startingDayOfStay",
-        sortable: true,
-      },
-      {
-        name: "Check Out",
-        selector: "endingDayOfStay",
-        sortable: true,
-      },
-      {
         name: "Email",
         selector: "email",
       },
       {
-        name: "Booking Mode",
-        sortable: true,
-        selector: "bookingMode",
-        cell: row =>
-          row.bookingMode === "online" ? (
-            <span className="badge badge-success">Online</span>
-          ) : (
-            <span className="badge badge-secondary">Offline</span>
-          ),
+        name: "Room Numbers",
+        selector: "roomNumbers",
       },
       {
         name: "",
         cell: row => (
           <td data-label="CheckOut">
-            <button onClick={() => handleClick(row._id)} className="checkin-button">
-              CheckOut
+            <button onClick={() => handleClick(row._id)} className="btn btn-secondary">
+              Add Bill
             </button>
           </td>
         ),
