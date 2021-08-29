@@ -36,8 +36,20 @@ export function receptionSignup(values) {
   return apiClient.post("/reception/signup", values);
 }
 
+export function restaurantSignup(values) {
+  return apiClient.post("/restaurant/signup", values);
+}
+
 export function getReception(values) {
   return apiClient.get("/reception/signin", values);
+}
+
+export function getRestaurant(values) {
+  return apiClient.get("/restaurant/signin", values);
+}
+
+export function editRestaurantData(values) {
+  return apiClient.put("/restaurant/signup", values);
 }
 
 export function editReceptionData(values) {
@@ -62,6 +74,10 @@ export function editRoomById(values, id) {
 
 export function receptionChangePassword(values) {
   return apiClient.post("/reception/changePassword", values);
+}
+
+export function restaurantChangePassword(values) {
+  return apiClient.post("/restaurant/changePassword", values);
 }
 
 export function getRenter(values) {

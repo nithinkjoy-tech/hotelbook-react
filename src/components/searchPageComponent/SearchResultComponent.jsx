@@ -74,6 +74,15 @@ function SearchResultComponent({hotels,user}) {
                       Go to Reception Account
                     </span>
                   </Link>}
+                {user==="admin"&&!hotel.restaurantId?<Link to={`/admin/restaurant/signup/${hotel._id}`} >
+                    <span className="btn mt-sm-4 mt-3">
+                      Create Restaurant Account
+                    </span>
+                  </Link>:<Link to={`/admin/restaurant/account/${hotel.restaurantId}`} >
+                    <span className="btn mt-sm-4 mt-3">
+                      Go to Restaurant Account
+                    </span>
+                  </Link>}
                   {user==="admin"?<Link to={`/admin/addroom/${hotel._id}`} >
                     <span className="btn mt-sm-3">
                       <i style={{fontSize:"1.5rem"}}>+</i> Add Rooms
