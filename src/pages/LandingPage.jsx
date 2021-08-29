@@ -4,6 +4,7 @@ import Carousel from '../components/common/Carousel';
 import Places from '../components/landingPageComponent/Places';
 import SearchResultComponent from '../components/searchPageComponent/SearchResultComponent';
 import AboutHome from '../components/landingPageComponent/AboutHome';
+import SpecialitySection from '../components/landingPageComponent/SpecialitySection';
 
 
 function LandingPage() {
@@ -13,6 +14,7 @@ function LandingPage() {
             <SearchComponent initialValues={null} />
             {/* <Places /> */}
             <AboutHome />
+            <SpecialitySection />
         </div> 
     )
 }
