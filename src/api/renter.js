@@ -108,8 +108,8 @@ export function checkOutDetails(id) {
   return apiClient.get(`/reception/booking/checkout/${id}`);
 }
 
-export function checkOut(id) {
-  return apiClient.post(`/reception/booking/checkout/${id}`);
+export function checkOut(id, values) {
+  return apiClient.post(`/reception/booking/checkout/${id}`,values);
 }
 
 export function getUpcomingBookings(values) {

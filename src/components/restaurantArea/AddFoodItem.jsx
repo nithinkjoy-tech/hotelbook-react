@@ -49,7 +49,8 @@ const AddFoodItem = () => {
 
   return (
     <div className="dashboard-items">
-      <div style={{textAlign: "center"}}>
+      <div style={{textAlign: "center",marginTop:"75px"}}>
+      <h1>Add Food items</h1>
         <Formik
           initialValues={initialValues}
           onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
