@@ -3,6 +3,7 @@ import InputBox from "./../components/common/InputBox";
 import {Formik, Form} from "formik";
 import {guestSignin} from "../api/guest";
 import {renterSignin} from "../api/renter";
+import {restaurantSignin} from "../api/restaurant";
 import {adminSignin} from "../api/admin";
 import * as Yup from "yup";
 import {setAuthToken} from "./../services/authService";
@@ -50,13 +51,22 @@ function SigninPage({location}) {
         window.location = "/dashboard";
       }
     }
-
+ 
     if (location.pathname === "/reception/signin") {
       const {data, status} = await renterSignin(values);
       if (status === 400) setFieldError("userId", data);
       else {
         setAuthToken(data);
         window.location = "/reception/dashboard";
+      }
+    }
+
+    if (location.pathname === "/restaurant/signin") {
+      const {data, status} = await restaurantSignin(values);
+      if (status === 400) setFieldError("userId", data);
+      else {
+        setAuthToken(data);
+        window.location = "/restaurant/dashboard";
       }
     }
     

@@ -1,15 +1,13 @@
 import React, {useEffect, useState, useMemo} from "react";
 import "../../css/ArrivalList.css";
-import Sidebar from "./Sidebar";
-import {getBookings} from "../../api/renter";
+import {getCurrentlyStaying} from "../../api/restaurant";
 import DataTable, {createTheme} from "react-data-table-component";
 import InputBox from "./../common/InputBox";
 import _ from "lodash";
 
-function ArrivalList() {
-  const handleClick = data => {
-    window.location=`/reception/dashboard/checkin/${data}`
-    console.log(data);
+function RestaurantCurrentlyStaying() {
+  const handleClick = bookingId => {
+    window.location=`/restaurant/additemstobill/${bookingId}`
   };
 
   const columns = useMemo(
@@ -24,31 +22,19 @@ function ArrivalList() {
         selector: "phoneNumber",
       },
       {
-        name: "Booked Date",
-        selector: "bookedOn",
-        sortable: true,
-      },
-      {
         name: "Email",
         selector: "email",
       },
       {
-        name: "Booking Mode",
-        sortable: true,
-        selector: "bookingMode",
-        cell: row =>
-          row.bookingMode === "online" ? (
-            <span className="badge badge-success">Online</span>
-          ) : (
-            <span className="badge badge-secondary">Offline</span>
-          ),
+        name: "Room Numbers",
+        selector: "roomNumbers",
       },
       {
         name: "",
         cell: row => (
-          <td data-label="CheckIn">
-            <button onClick={() => handleClick(row._id)} className="checkin-button">
-              CheckIn
+          <td data-label="CheckOut">
+            <button onClick={() => handleClick(row._id)} className="btn btn-secondary">
+              Add Bill
             </button>
           </td>
         ),
@@ -67,7 +53,7 @@ function ArrivalList() {
   };
 
   const getAllBookings = async () => {
-    const {data,status} = await getBookings();
+    const {data,status} = await getCurrentlyStaying();
     if(status!==200) return
     setBooking(data);
     setFullBooking([...data]);
@@ -82,7 +68,7 @@ function ArrivalList() {
       <div className="arrivallist" style={{margin: 0}}>
         <>
           <DataTable
-            title="Todays Arrivals List"
+            title="Currently Staying List"
             pagination
             subHeader
             noDataComponent="No bookings available for today"
@@ -103,4 +89,4 @@ function ArrivalList() {
   );
 }
 
-export default ArrivalList;
+export default RestaurantCurrentlyStaying;

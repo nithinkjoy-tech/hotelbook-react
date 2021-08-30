@@ -38,7 +38,7 @@ const Sidebar = () => {
     menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
   };
 
-  let [choice,setChoice]=useState()
+  let [choice,setChoice]=useState("arrivalList")
 
   return (
     <React.Fragment>
@@ -55,15 +55,12 @@ const Sidebar = () => {
             </SidebarHeader>
             <SidebarContent>
               <Menu className="menu" iconShape="square">
-                <MenuItem icon={<FiHome />}>
-                 {/* <Link to={'/reception/dashboard'} > Over View</Link> */}
-                 <a onClick={()=>setChoice("overview")}>Overviw</a>
+                
+                <MenuItem icon={<FaList />}>
+                  <a onClick={()=>setChoice("arrivalList")}>Todays Arrivals</a>
                 </MenuItem>
                 <MenuItem icon={<FaList />}>
                   <a onClick={()=>setChoice("booknow")}>Book Now</a>
-                </MenuItem>
-                <MenuItem icon={<FaList />}>
-                  <a onClick={()=>setChoice("arrivalList")}>Todays Arrivals</a>
                 </MenuItem>
                 <MenuItem icon={<FaList />}>
                   <a onClick={()=>setChoice("upcomingArrivalList")}>Upcoming Arrivals</a>
@@ -74,12 +71,6 @@ const Sidebar = () => {
                 <MenuItem icon={<FaList />}>
                 <a onClick={()=>setChoice("completedStays")}>Completed Stays</a>
                 </MenuItem> 
-                {/*  */}
-                <MenuItem icon={<FaList />}>
-                <a onClick={()=>setChoice("checkout")}>Checkout</a>
-                </MenuItem>
-                {/*  */}
-
                 <MenuItem icon={<BiCog />}>etc</MenuItem>
               </Menu>
             </SidebarContent>

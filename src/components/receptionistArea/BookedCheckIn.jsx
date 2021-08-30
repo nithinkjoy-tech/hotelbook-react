@@ -10,6 +10,7 @@ import {
   FormikValues,
   useFormikContext,
   getIn,
+  ErrorMessage,
 } from "formik";
 import {TextField, Select} from "formik-material-ui";
 import MUISelect from "@material-ui/core/Select";
@@ -28,6 +29,9 @@ import {getBookingDetails} from "../../api/renter";
 import PropertyInputBox from "./../common/PropertyInputBox";
 import PropertySelectBox from "./../common/PropertySelectBox";
 import _ from "lodash";
+import Error from "../../components/forms/Error";
+import {checkIn} from "../../api/renter";
+import {KeyboardReturnTwoTone} from "@material-ui/icons";
 
 let dateObj = new Date();
 let month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -40,11 +44,16 @@ if (month.length == 1) {
 
 let newdate = year + "/" + month + "/" + day;
 
+let a = 0;
+let roomNumberObject = {};
+let duplicateVal;
+let globalProp;
+
 const validate = Yup.object().shape({
   name: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Required"),
   phoneNumber: Yup.string().min(5).max(50).required(),
   address: Yup.string().min(8, "Too short").max(255, "Too Long!").required("Required"),
-  adhaar: Yup.string().min(12, "Enter a valid Adhaar number").required("Required"),
+  identityProofNumber: Yup.string().max(30).required("Required"),
   email: Yup.string().required("Email is required").email("Email must be valid").label("Email"),
   startingDayOfStay: Yup.string()
     .matches(
@@ -57,7 +66,6 @@ const validate = Yup.object().shape({
       message: "Invalid Date",
     })
     .required(),
-
   endingDayOfStay: Yup.string()
     .matches(
       /^(((\d{4}\/((0[13578]\/|1[02]\/)(0[1-9]|[12]\d|3[01])|(0[13456789]\/|1[012]\/)(0[1-9]|[12]\d|30)|02\/(0[1-9]|1\d|2[0-8])))|((([02468][048]|[13579][26])00|\d{2}([13579][26]|0[48]|[2468][048])))\/02\/29)){0,10}$/,
@@ -69,6 +77,61 @@ const validate = Yup.object().shape({
       message: "Invalid Date",
     })
     .required(),
+  identityProof: Yup.mixed().required("Identity Proof image is required"),
+  roomFinalDetails: Yup.array().of(
+    Yup.object({
+      roomType: Yup.string().required(),
+      roomNumber: Yup.number()
+        .typeError("Room Number should be a Number")
+        .test({
+          name: "unique",
+          test: values => {
+            let roomNos = [];
+            for (let [key, value] of Object.entries(roomNumberObject)) {
+              roomNos.push(value);
+            }
+            let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
+
+            duplicateVal = findDuplicates(roomNos);
+
+            if (_.isEmpty(duplicateVal)) return true;
+            else return false;
+          },
+          message: "Repeated Room Numbers!",
+        })
+        .required("Room Number is required"),
+      adults: Yup.number()
+        .typeError("Room Number should be a Number")
+        .min(1, "Minimum one adult should be there.")
+        .required("Number of Adults is required"),
+      children: Yup.number()
+        .typeError("Room Number should be a Number")
+        .min(0)
+        .test(
+          "max",
+          () =>
+            `Total members allowed in this room is ${
+              globalProp.parent.selectedExtraBed === "Extra Bed- None"
+                ? globalProp.parent.guests + 0
+                : globalProp.parent.guests + globalProp.parent.selectedExtraBed
+            }. Choose Extra bed if available.`,
+          function (value, props) {
+            const {adults} = this.parent;
+            globalProp = this;
+            let extraBed;
+            if (props.parent.selectedExtraBed == "Extra Bed- None") {
+              extraBed = 0;
+            } else {
+              extraBed = Number(props.parent.selectedExtraBed);
+            }
+            return value <= props.parent.guests + extraBed - adults;
+          }
+        )
+        .required("Number of Children is required")
+        .label("Children"),
+      selectedExtraBed: Yup.mixed().nullable(),
+    })
+  ),
 });
 
 const useStyles = makeStyles(theme => ({
@@ -82,6 +145,9 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
+  multilineColor:{
+    color:'red'
+}
 }));
 
 function BookedCheckIn({match}) {
@@ -89,13 +155,26 @@ function BookedCheckIn({match}) {
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
-  let formikContext = useFormikContext();
-
-  const [saveDocument, setSaveDocument] = useState([]); // Save uploaded Document
+  const [prev, setPrev] = useState(); // Save uploaded Document
   const [initialValues, setInitialValues] = useState();
 
-  console.log(saveDocument);
   console.log();
+
+  const handleImageChange = (data, setFieldValue) => {
+    if (!data[0]) return;
+    // console.log(data,"dta")
+    const reader = new FileReader();
+    setPrev(null)
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        let imageBase64 = reader.result;
+        console.log(imageBase64, "64");
+        setFieldValue("identityProof", imageBase64);
+      }
+    };
+    reader.readAsDataURL(data[0]);
+  };
+
   const getDetails = async () => {
     const {data} = await getBookingDetails(match.params.bookingId);
     data.startingDayOfStay = data.startingDayOfStay.replaceAll("-", "/");
@@ -121,19 +200,9 @@ function BookedCheckIn({match}) {
   };
 
   const handleSubmit = async values => {
-    console.log(values, "vls");
-  };
-
-  const primaryDetails = {
-    firstName: "Vishnu",
-    lastName: "Satheesh",
-    phone: "8137833845",
-    roomType: "Double Room",
-    guestNumber: "2",
-    roomNumber: "Room No- 101",
-    extraBed: "No extra bed",
-    address: "",
-    adhaar: "",
+    console.log(values, "vlss");
+    const {data} = await checkIn(values);
+    window.location='/reception/dashboard'
   };
 
   const Input = ({field, form: {errors}}) => {
@@ -147,17 +216,6 @@ function BookedCheckIn({match}) {
     );
   };
 
-  // const Select = ({field, form: {errors}}) => {
-  //   const errorMessage = getIn(errors, field.name);
-
-  //   return (
-  //     <>
-  //       <MUI.Select {...field} />
-  //       {errorMessage && <div style={{color: "red"}}>{errorMessage}</div>}
-  //     </>
-  //   );
-  // };
-
   if (!initialValues) return null;
 
   return (
@@ -169,66 +227,86 @@ function BookedCheckIn({match}) {
           validationSchema={validate}
         >
           {({
-         values,
-         errors,
-         touched,
-         handleChange,
-         handleBlur,
-         handleSubmit,
-         isSubmitting,
-         /* and other goodies */
-       }) => (
-          <Form>
-            <div className={classes.root}>
-              <Stepper activeStep={activeStep} alternativeLabel>
-                {steps.map(label => (
-                  <Step key={label}>
-                    <StepLabel>{label}</StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-              <div>
-                {activeStep === steps.length ? (
-                  <div>
-                    <Typography className={classes.instructions}>All steps completed</Typography>
-                    <Button onClick={handleReset}>Reset</Button>
-                  </div>
-                ) : (
-                  <div>
-                    <Typography className={classes.instructions}>
-                      {getStepContent(
-                        activeStep,
-                        initialValues,
-                        Input,
-                        Select,
-                        classes,
-                        handleChange
-                      )}
-                    </Typography>
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            getFieldProps,
+            getFieldMeta,
+            setFieldTouched,
+            setFieldValue,
+            setFieldMeta,
+            isValid,
+            /* and other goodies */
+          }) => (
+            <Form>
+              <div className={classes.root}>
+                <Stepper activeStep={activeStep} alternativeLabel>
+                  {steps.map(label => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+                <div>
+                  {activeStep === steps.length ? (
                     <div>
-                      <Button
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        className={classes.backButton}
-                      >
-                        Back
-                      </Button>
-                      {activeStep === steps.length - 1 ? null : (
-                        <Button variant="contained" color="primary" onClick={handleNext}>
-                          Next
-                        </Button>
-                      )}
-                      {activeStep === steps.length - 1 ? (
-                        <button className="btn btn-primary" type="submit">
-                          Submit
-                        </button>
-                      ) : null}
+                      <Typography className={classes.instructions}>All steps completed</Typography>
+                      <Button onClick={handleReset}>Reset</Button>
                     </div>
-                  </div>
-                )}
+                  ) : (
+                    <div>
+                      <Typography className={classes.instructions}>
+                        {getStepContent(
+                          activeStep,
+                          initialValues,
+                          Input,
+                          Select,
+                          classes,
+                          handleChange,
+                          getFieldProps,
+                          values,
+                          errors,
+                          getIn,
+                          handleBlur,
+                          touched,
+                          getFieldMeta,
+                          setFieldTouched,
+                          setFieldValue,
+                          setFieldMeta,
+                          handleImageChange,
+                          prev,
+                          setPrev
+                        )}
+                      </Typography>
+                      <div>
+                        <Button
+                          disabled={activeStep === 0}
+                          onClick={handleBack}
+                          className={classes.backButton}
+                        >
+                          Back
+                        </Button>
+                        {activeStep === steps.length - 1 ? null : (
+                          <Button variant="contained" color="primary" onClick={handleNext}>
+                            Next
+                          </Button>
+                        )}
+                        {activeStep === steps.length - 1 ? (
+                          <button className="btn btn-primary" type="submit">
+                            Submit
+                          </button>
+                        ) : null}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          </Form>)}
+            </Form>
+          )}
         </Formik>
       </CardContent>
     </Card>
@@ -237,14 +315,39 @@ function BookedCheckIn({match}) {
 
 export default BookedCheckIn;
 
-function getStepContent(stepIndex, initialValues, Input, Select, classes, handleChange) {
-
+function getStepContent(
+  stepIndex,
+  initialValues,
+  Input,
+  Select,
+  classes,
+  handleChange,
+  getFieldProps,
+  values,
+  errors,
+  getIn,
+  handleBlur,
+  touched,
+  getFieldMeta,
+  setFieldTouched,
+  setFieldValue,
+  setFieldMeta,
+  handleImageChange,
+  prev,
+  setPrev
+) {
   switch (stepIndex) {
     case 0:
       return (
         <div className="first-form">
           <div className="first-row">
-            <Field name="name" component={TextField} label="Full Name" className="fields" />
+            <Field
+              name="name"
+              disabled
+              component={TextField}
+              label="Full Name"
+              className="fields"
+            />
             <Field name="phoneNumber" component={TextField} label="Phone" className="fields" />
           </div>
           <div className="second-row w-3/6">
@@ -256,9 +359,24 @@ function getStepContent(stepIndex, initialValues, Input, Select, classes, handle
               className="fields"
             />
           </div>
-          <div className="third-row">
-            <Field name="adhaar" component={TextField} label="Adhaar Number" className="fields" />
-            <Field name="email" component={TextField} label="Email ID" className="fields" />
+          <div className="third-row w-3/6">
+            <Field
+            fullWidth
+              name="identityProofNumber"
+              component={TextField}
+              label="Aadhar or Passport Number"
+              className="fields"
+            />
+          </div>
+          <div className="third-row w-3/6">
+            <Field
+            fullWidth
+              name="email"
+              disabled
+              component={TextField}
+              label="Email ID"
+              className="fields"
+            />
           </div>
           <div className="fourth-row w-3/6">
             <Field
@@ -267,6 +385,7 @@ function getStepContent(stepIndex, initialValues, Input, Select, classes, handle
               component={TextField}
               label="Arrival Date (YYYY/MM/DD)"
               className="fields"
+              disabled
             />
           </div>
           <div className="fifth-row w-3/6">
@@ -276,19 +395,18 @@ function getStepContent(stepIndex, initialValues, Input, Select, classes, handle
               component={TextField}
               label="Departure Date (YYYY/MM/DD)"
               className="fields"
+              disabled
             />
           </div>
         </div>
       );
     case 1:
       return (
-        <div style={{margin: "auto", width: "75%"}}>
-          {/* {Object.entries(initialValues.roomFinalDetails).map(([key, value]) => ( */}
+        <div style={{margin: "auto", width: "68%"}}>
           <FieldArray name="roomFinalDetails">
             {({push, remove}) => (
               <div>
                 {initialValues.roomFinalDetails.map((p, index) => {
-                  console.log(p,"bb")
                   return (
                     <div
                       key={p.roomId + index}
@@ -299,98 +417,108 @@ function getStepContent(stepIndex, initialValues, Input, Select, classes, handle
                         borderRadius: "10px",
                       }}
                     >
-                      {/* <div className="grid grid-cols-6 gap-6"> */}
-                      {/* <Field name={`roomFinalDetails[${index}].roomType`} component={Input} /> */}
-                      {/* {p.availableRoomNumbers.map((pet, i) => {
-                          return (
-                            <div key={pet.id}> */}
                       <MUISelect
+                        fullWidth
                         name={`roomFinalDetails[${index}].roomType`}
                         defaultValue={p.roomType}
                         onChange={handleChange}
                         disabled
-                        >
+                      >
                         <MenuItem value={p.roomType}>{p.roomType}</MenuItem>
                       </MUISelect>
-                      <MUISelect
+                      
+                      <MUITextField
+                        fullWidth
+                        name={`roomFinalDetails[${index}].adults`}
+                        label="Number of Adults"
+                        className="mt-3"
+                        onChange={handleChange}
+                        value={getFieldProps(`roomFinalDetails[${index}].adults`).value}
+                        onBlur={handleBlur}
+                        placeholder="Input zero if none"
+                      />
+                      {/* {errors.roomFinalDetails[index].adults?} */}
+                      {/* const errorMessage = getIn(errors, field.name) */}
+                      {getIn(errors, `roomFinalDetails[${index}].adults`) &&
+                        getFieldMeta(`roomFinalDetails[${index}].adults`).touched && (
+                          <div style={{color: "red"}}>
+                            {getIn(errors, `roomFinalDetails[${index}].adults`)}
+                          </div>
+                        )}
+                      {/* <ErrorMessage name={getFieldProps(`roomFinalDetails[${index}].adults`).name} component={Error} /> */}
+                      <MUITextField
+                        fullWidth
+                        name={`roomFinalDetails[${index}].children`}
+                        label="Number of Children"
+                        className="mt-14"
+                        onChange={handleChange}
+                        value={getFieldProps(`roomFinalDetails[${index}].children`).value}
+                        onBlur={handleBlur}
+                        placeholder="Input zero if none"
+                      />
+                      {getIn(errors, `roomFinalDetails[${index}].children`) &&
+                        getFieldMeta(`roomFinalDetails[${index}].children`).touched && (
+                          <div style={{color: "red"}}>
+                            {getIn(errors, `roomFinalDetails[${index}].children`)}
+                          </div>
+                        )}
+                        <MUISelect
+                        fullWidth
                         name={`roomFinalDetails[${index}].roomNumber`}
                         defaultValue={p.roomNumber}
-                        onChange={handleChange}
-                        >
+                        className="mt-3"
+                        onChange={e => {
+                          setFieldValue(`roomFinalDetails[${index}].roomNumber`, e.target.value);
+                          setFieldTouched(`roomFinalDetails[${index}].roomNumber`);
+                          roomNumberObject[`roomFinalDetails[${index}].roomNumber`] =
+                            e.target.value;
+                        }}
+                        value={getFieldProps(`roomFinalDetails[${index}].roomNumber`).value}
+                      >
+                        <MenuItem value="Select Room Number">Select Room Number</MenuItem>
                         {p.availableRoomNumbers.map((no, ind) => (
                           <MenuItem value={no} key={ind.toString()}>
                             {no}
                           </MenuItem>
                         ))}
                       </MUISelect>
-                      {/* </div>
-                          );
-                        })} */}
-                      {/* <Field
-                          name={`roomFinalDetails[${index}].roomNumber`}
-                          as={Select}
-                          label="Room Type"
-                          className="fields"
-                        >
-                          <MenuItem value="12">12</MenuItem>
-                          <MenuItem value="Double">Double</MenuItem>
-                          <MenuItem value="Triple">Triple</MenuItem>
-                          <MenuItem value="Quad">Quad</MenuItem>
-                          <MenuItem value="Queen">Queen</MenuItem>
-                          <MenuItem value="King">King</MenuItem>
-                          <MenuItem value="Twin">Twin</MenuItem>
-                        </Field> */}
-                      {/* <div className="col-span-6 sm:col-span-3">
-                          <PropertySelectBox
-                            label="Room Type"
-                            name={`roomFinalDetails[${index}].roomType`}
-                            disabled={true}
-                            options={[p.roomType]}
-                          />
-                        </div>
-                        <div className="col-span-6 sm:col-span-3">
-                          <PropertySelectBox
-                            label="Room Number"
-                            name={`roomFinalDetails[${index}].roomNumber`}
-                            options={_.flattenDeep([
-                              null,
-                              p.availableRoomNumbers.map(roomNo => roomNo),
-                            ])}
-                          />
-                        </div>
-                        <div className="col-span-6 sm:col-span-3">
-                          <PropertyInputBox
-                            label="Adults"
-                            type="text"
-                            name={`roomFinalDetails[${index}].adults`}
-                          />
-                        </div>
-
-                        <div className="col-span-6 sm:col-span-3">
-                          <PropertyInputBox
-                            label="Children"
-                            type="text"
-                            name={`roomFinalDetails[${index}].children`}
-                          />
-                        </div>
-                        <div className="col-span-6 sm:col-span-3">
-                          <PropertySelectBox
-                            label="Extra Bed"
-                            name={`roomFinalDetails[${index}].extraBed`}
-                            options={_.range(p.noOfExtraBeds + 1).map(opt => opt)}
-                          />
-                        </div> */}
+                      {getIn(errors, `roomFinalDetails[${index}].roomNumber`) &&
+                        getFieldMeta(`roomFinalDetails[${index}].roomNumber`).touched &&
+                        !_.isEmpty(duplicateVal) &&
+                        duplicateVal[0] ==
+                          getFieldProps(`roomFinalDetails[${index}].roomNumber`).value && (
+                          <div style={{color: "red"}}>
+                            {getIn(errors, `roomFinalDetails[${index}].roomNumber`)}
+                          </div>
+                        )}
+                      <MUISelect
+                        fullWidth
+                        name={`roomFinalDetails[${index}].selectedExtraBed`}
+                        // defaultValue={"Extra Bed- None"}
+                        onChange={handleChange}
+                        className="mt-3"
+                        displayEmpty
+                        value={
+                          getFieldProps(`roomFinalDetails[${index}].selectedExtraBed`).value ||
+                          "Extra Bed- None"
+                        }
+                      >
+                        <MenuItem value="Extra Bed- None">Extra Bed- None</MenuItem>
+                        {_.range(1, p.noOfExtraBeds + 1).map((no, ind) => (
+                          <MenuItem value={no} key={ind.toString()}>
+                            {no}
+                          </MenuItem>
+                        ))}
+                      </MUISelect>
                       <div className="col-span-6 sm:col-span-3">
                         <p style={{marginTop: "30px"}}>{p.pricePerExtraBed} Rs per Extra Bed</p>
                       </div>
                     </div>
-                    // </div>
                   );
                 })}
               </div>
             )}
           </FieldArray>
-          {/* ))} */}
         </div>
       );
     case 2:
@@ -399,17 +527,23 @@ function getStepContent(stepIndex, initialValues, Input, Select, classes, handle
           <div className="first-row">
             <h3 className="dropzone-heading">Upload Adhaar card</h3>
             <DropzoneArea
-              // onSave={setSaveDocument}
+              onChange={data => handleImageChange(data, setFieldValue)}
               acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
               showPreviews={true}
               maxFileSize={60000000}
+              filesLimit={1}
             />
+            {getIn(errors, `identityProof`) && getFieldMeta("identityProof").touched && (
+              <div style={{color: "red"}}>{getIn(errors, "identityProof")}</div>
+            )}
           </div>
-          <div className="second-row space-right">
+          <p style={{fontSize: "30px",textAlign: "center"}} >Or</p>
+          <div className="second-row space-right" style={{margin:"auto",width:"50%"}}>
             <h3 className="camera-heading">Take a Snap</h3>
-            <Camera />
+            <Camera setFieldValue={setFieldValue} setPrev={setPrev} />
           </div>
-        </div>
+          {prev?<img style={{margin:"auto",width:"50%"}} src={prev} />:null}
+        </div> 
       );
     default:
       return "Unknown stepIndex";
@@ -420,28 +554,28 @@ function getSteps() {
   return ["Personal Informations", "Room Details", "Verifications"];
 }
 
-const Camera = () => {
+const Camera = ({setFieldValue,setPrev}) => {
   const webcamRef = React.useRef(null);
-
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
-    console.log(imageSrc);
+    setFieldValue("identityProof",imageSrc);
+    setPrev(imageSrc);
   }, [webcamRef]);
 
-  return null;
+  // return null;
 
-  // return (
-  //   <>
-  //     <Webcam
-  //       audio={false}
-  //       ref={webcamRef}
-  //       height={720}
-  //       screenshotFormat="image/jpeg"
-  //       width={620}
-  //     />
-  //     <button className="camera-button" onClick={capture}>
-  //       Capture photo
-  //     </button>
-  //   </>
-  // );
+  return (
+    <>
+      <Webcam
+        audio={false}
+        ref={webcamRef}
+        height={720}
+        screenshotFormat="image/jpeg"
+        width={620}
+      />
+      <button className="camera-button" type="button" onClick={capture}>
+        Capture photo
+      </button>
+    </>
+  );
 };

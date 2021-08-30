@@ -8,7 +8,7 @@ import _ from "lodash";
 
 function CurrentlyStaying() {
   const handleClick = data => {
-    window.location=`/reception/dashboard/checkin/${data}`
+    window.location=`/reception/dashboard/checkout/${data}`
     console.log(data);
   };
 

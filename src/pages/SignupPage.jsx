@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import InputBox from "./../components/common/InputBox";
 import {Formik, Form} from "formik";
 import {guestSignup} from "../api/guest";
-import {receptionSignup} from "../api/renter";
+import {receptionSignup,restaurantSignup} from "../api/renter";
 import {adminSignup} from "../api/admin";
 import * as Yup from "yup";
 import {setAuthToken} from "./../services/authService";
@@ -53,6 +53,20 @@ function SignupPage({location,match}) {
       values["hotelId"]=match.params.hotelId
       console.log("here")
       const {data, status} = await receptionSignup(values);
+      if(data.property==="toast") return displayNotification("error", data.msg)
+      console.log(data.property, data.msg, status);
+      if (status === 400) setFieldError(data.property, data.msg);
+      else {
+        // setAuthToken(data)
+        window.location = "/admin/dashboard";
+      }
+    }
+
+    if (location.pathname.includes("/admin/restaurant/signup")) {
+      if(!match.params.hotelId) return displayNotification("error", "Something went wrong")
+      values["hotelId"]=match.params.hotelId
+      console.log("here")
+      const {data, status} = await restaurantSignup(values);
       if(data.property==="toast") return displayNotification("error", data.msg)
       console.log(data.property, data.msg, status);
       if (status === 400) setFieldError(data.property, data.msg);

@@ -1,152 +1,307 @@
-import React, { useState,useEffect } from "react";
-import Invoice from '../common/Invoice'
-import '../../css/Checkout.css'
+import React, {useState, useEffect, useRef} from "react";
+import Invoice from "../common/Invoice";
+import "../../css/Checkout.css";
+import {checkOutDetails, checkOut} from "../../api/renter";
+import {displayNotification} from "./../../services/notificationService";
+import {Button} from "@material-ui/core";
+import {FieldArray, Form, Formik, getIn} from "formik";
+import * as Yup from "yup";
+import MUITextField from "@material-ui/core/TextField";
+import _ from "lodash";
+import {confirmAlert} from "react-confirm-alert";
 
-function CheckOut() {
+const validationSchema = Yup.object().shape({
+  items: Yup.array().of(
+    Yup.object().shape({
+      itemName: Yup.string().min(1).max(50).required().label("Item Name"),
+      itemPrice: Yup.number()
+        .typeError("Must be a Number")
+        .positive()
+        .min(1)
+        .max(1000000)
+        .required()
+        .label("Item Price"),
+    })
+  ),
+});
+
+function CheckOut({match}) {
+  const bookingId = match.params.bookingId;
   const [inputFields, setInputFields] = useState([]);
-  const [values, setValues] = useState();
-  const [visible, setVisible] = useState(false);
-  let disable = true;
+  const [details, setDetails] = useState();
+  let removeButtonRef = useRef(null);
 
-  //Amount calculation
-  const money = 1500;
-  const [total,setTotal] = useState(money);
-  const [amount,setAmount] = useState([]);
+  const [total, setTotal] = useState();
+  const [isPaid, setIsPaid] = useState(false);
+  const [grandTotal, setGrandTotal] = useState();
+  const [restaurantBillAmount, setRestaurantBillAmount] = useState();
+  const [accomodationTotal, setAccomodationTotal] = useState();
 
- useEffect(() => {
-  const amountList = inputFields.map(amt => Number(amt.amount));
-   const result = amountList.reduce((a,b)=>a+b,0);
-   setAmount(result)
- }, [inputFields,amount])
+  const initialValues = {items: [{itemName: "", itemPrice: ""}]};
 
+  const getDetails = async () => {
+    const {data, status} = await checkOutDetails(bookingId);
+    if (status !== 200) {
+      displayNotification("error", data);
+      setTimeout(() => {
+        window.location = "/reception/dashboard";
+      }, 1000);
+    }
+    setDetails(data);
+    setTotal(Number(data.price));
+    setGrandTotal(Number(data.price));
+    setRestaurantBillAmount(data.restaurantBillAmount);
+    setAccomodationTotal(data.accomodationTotal);
+    if (removeButtonRef.current) {
+      removeButtonRef.current.click();
+    }
+  };
 
-  values && (values.item && values.amount ? disable = false : disable = true) 
+  useEffect(() => {
+    getDetails();
+  }, []);
 
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
-  }
-
-  function handleRemove(index) {
-    const fields = [...inputFields];
-    fields.splice(index, 1);
-    setInputFields(fields);
-  }
-
-  function handleVisible() {
-    setVisible(true);
-  }
-
-  function generateInvoice(){
+  function generateInvoice() {
     const d = new Date();
-    const date = d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear();
-    // Name
-    // Address
-    // phone
-    // inputfields
-    // Total
-    // Amount
-    // Date
-    let name = 'vishnu satheesh';
-    let address = 'pulickal house, kakkinje post, kaanjal';
-    let phone = '8137833845'
-    Invoice(name,address,phone,inputFields,total,amount,date);
+    let month = d.getMonth() + 1;
+    const date = d.getDate() + "/" + month + "/" + d.getFullYear();
+    Invoice(
+      details?.name,
+      details?.address,
+      details?.phoneNumber,
+      inputFields,
+      date,
+      grandTotal,
+      restaurantBillAmount,
+      accomodationTotal
+    );
   }
 
-  function handleSave() {
-    const fields = [...inputFields];
-    fields.push(values);
-    setInputFields(fields);
-    setVisible(false);
-    disable = true;
-    setValues(undefined)
-  }
+  const handleSubmit = async values => {
+    confirmAlert({
+      title: "Confirm Payment",
+      message: "Are you sure want to pay.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            const {data, status} = await checkOut(bookingId, values);
+            if (status !== 200) return displayNotification("error", "Something went wrong");
+            displayNotification("info", "Payment successfull");
+            setIsPaid(true);
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {
+            return null;
+          },
+        },
+      ],
+    });
+  };
+
+  if (!details) return null;
 
   return (
-    <div className="checkout">
+    <div className="checkout mt-14">
       <h2 className="title">Check Out</h2>
-      <div className="contents">
-        <div className="left">
-          <h4 className="name">Name</h4>
-          <p>Vishnu Satheesh</p>
-          <h4 className="address">Address</h4>
-          <p>Pulickal house, kakkinje post, kaanjal</p>
-          <h4 className="phone">Phone</h4>
-          <p>8198745632</p>
-        </div>
-        <div className="right">
-          <h4 className="title-fields">Add Additional Charges here!</h4>
-          <div className="input-box">
-          {inputFields &&
-            inputFields.map((field, index) => {
-              return (
-                <div className="text-fields" key={index}>
-                  <div className="list-items">
-                    <div className="list-item">
-                      <h5 className="item-list">{field.item}</h5>
-                      <h5 className="item-list">{field.amount}</h5>
-                      {
-                        <button
-                          className="remove-button"
-                          onClick={() => handleRemove(index)}
-                        >
-                          {" "}
-                          -{" "}
-                        </button>
-                      }
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-</div>
-          <button
-            type="button"
-            className="add-button"
-            onClick={() => handleVisible()}
-          >
-            +
-          </button>
-
-          {visible ? (
-            <div className="fields">
-              <input
-                type="text"
-                className="itembox"
-                name="item"
-                placeholder="Additional Item"
-                onChange={handleChange}
-              />
-              <input
-                type="text"
-                className="amountbox"
-                name="amount"
-                placeholder="Item Cost"
-                onChange={handleChange}
-              />
-               <button
-                type="button"
-                className={`save-button ${disable ? 'dis' : ''}`}
-                onClick={() => handleSave()}
-                disabled={disable}
-              >
-                ADD
-              </button>
-            </div>
-          ) : (
-            ""
-          )}
-          <div className="amount">
-            <h4 className="total">Total -</h4>
-            <h3 className="total-amount">Rs. {total+amount}</h3>
+      <div style={{display: "flex"}}>
+        <button
+          type="button"
+          className="btn btn-warning"
+          onClick={() => (window.location = "/reception/dashboard")}
+        >
+          Go to Home
+        </button>
+        <div className="payment-contents" style={{flexGrow: 1}}>
+          <div className="left">
+            <h4 className="name">Name</h4>
+            <p>{details.name}</p>
+            <h4 className="address">Address</h4>
+            <p>{details.address}</p>
+            <h4 className="phone">Phone</h4>
+            <p>{details.phoneNumber}</p>
           </div>
-          <button type="button" className="pay-button">PAY</button>
+          <div className="right">
+            <div className="container">
+              <div className="row">
+                <div className="col" style={{fontSize: "20px"}}>
+                  Accomodation Total
+                </div>
+                <div className="col font-bold" style={{fontSize: "20px"}}>
+                  Rs. {accomodationTotal}
+                </div>
+                <div className="w-100"></div>
+                <div className="col" style={{fontSize: "20px"}}>
+                  Restaurant Total
+                </div>
+                <div className="col font-bold" style={{fontSize: "20px"}}>
+                  Rs. {restaurantBillAmount}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style={{textAlign: "center"}}>
+                <Formik
+                  initialValues={initialValues}
+                  onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
+                  validationSchema={validationSchema}
+                >
+                  {({
+                    values,
+                    errors,
+                    isValid,
+                    getFieldProps,
+                    getFieldMeta,
+                    handleChange,
+                    handleBlur,
+                    setFieldValue,
+                  }) => (
+                    <Form>
+                      <FieldArray name="items">
+                        {({push, remove}) => (
+                          <div>
+                            {values.items.map((p, index) => {
+                              return (
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "space-evenly",
+                                    alignItems: "flex-end",
+                                  }}
+                                  key={p.id}
+                                >
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-evenly",
+                                      alignItems: "flex-end",
+                                    }}
+                                  >
+                                    <MUITextField
+                                      name={`items[${index}].itemName`}
+                                      label="Item Name"
+                                      className="mt-14"
+                                      onChange={handleChange}
+                                      value={getFieldProps(`items[${index}].itemName`).value}
+                                      onBlur={handleBlur}
+                                    />
+                                    {getIn(errors, `items[${index}].itemName`) &&
+                                      getFieldMeta(`items[${index}].itemName`).touched && (
+                                        <div style={{color: "red"}}>
+                                          {getIn(errors, `items[${index}].itemName`)}
+                                        </div>
+                                      )}
+                                  </div>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-evenly",
+                                      alignItems: "flex-end",
+                                    }}
+                                  >
+                                    <MUITextField
+                                      name={`items[${index}].itemPrice`}
+                                      label="Item Price"
+                                      className="mt-14"
+                                      onChange={async e => {
+                                        await setFieldValue(
+                                          `items[${index}].itemPrice`,
+                                          e.target.value
+                                        );
+                                      }}
+                                      value={(() => {
+                                        let extraItemsPrice = 0;
+                                        values.items.map(
+                                          item => (extraItemsPrice += Number(item.itemPrice))
+                                        );
+                                        setGrandTotal(Number(total) + extraItemsPrice);
+                                        setInputFields(values);
+                                        return getFieldProps(`items[${index}].itemPrice`).value;
+                                      })()}
+                                      onBlur={handleBlur}
+                                    />
+                                    {getIn(errors, `items[${index}].itemPrice`) &&
+                                      getFieldMeta(`items[${index}].itemPrice`).touched && (
+                                        <div style={{color: "red"}}>
+                                          {getIn(errors, `items[${index}].itemPrice`)}
+                                        </div>
+                                      )}
+                                  </div>
+                                  <div
+                                    ref={removeButtonRef}
+                                    className="btn btn-danger"
+                                    onClick={() => {
+                                      remove(index);
+                                      setGrandTotal(
+                                        Number(total) -
+                                          Number(getFieldProps(`items[${index}].itemPrice`).value)
+                                      );
+                                    }}
+                                  >
+                                    Delete
+                                  </div>
+                                </div>
+                              );
+                            })}
+                            <Button
+                              type="button"
+                              className="mt-3"
+                              style={{marginRight: "130px"}}
+                              variant="contained"
+                              onClick={() => {
+                                if (!isValid) return;
+                                push({itemName: "", itemPrice: ""});
+                              }}
+                            >
+                              Add Additional Charges
+                            </Button>
+                          </div>
+                        )}
+                      </FieldArray>
+                      <div></div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-end",
+                          justifyContent: "flex-start",
+                        }}
+                        className="mt-8"
+                      >
+                        <div>
+                          <h3>
+                            {" "}
+                            Total Rs. <span style={{fontWeight: "bold"}}>{grandTotal}</span>
+                          </h3>
+                        </div>
+                        {!isPaid && (
+                          <Button
+                            className="mb-2 ml-5"
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                          >
+                            pay amount
+                          </Button>
+                        )}
+                        {isPaid && (
+                          <button
+                            type="button"
+                            className="mb-2 ml-5 btn btn-secondary"
+                            onClick={generateInvoice}
+                          >
+                            Download Invoice
+                          </button>
+                        )}
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="invoice-button">
-        <p className="invoice-text">Download Invoice now</p>
-        <button type="button" className="download-button" onClick={generateInvoice}>Download</button>
       </div>
     </div>
   );
