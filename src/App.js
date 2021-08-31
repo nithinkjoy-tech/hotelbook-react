@@ -32,6 +32,8 @@ import CheckOut from "./components/receptionistArea/CheckOut";
 import RestaurantSidebar from "./components/restaurantArea/RestaurantSidebar";
 import AddFoodItem from "./components/restaurantArea/AddFoodItem.jsx";
 import AddItemsToBill from "./components/restaurantArea/AddItemsToBill";
+import HotelSidebar from "./pages/HotelSidebar";
+import AddRoomBoy from './pages/AddRoomBoy';
 
 function App() {
   return (
@@ -82,13 +84,16 @@ function App() {
         <Route exact path="/admin/room/:hotelId" component={RoomCard} />
         <Route exact path="/admin/addHotel/:id" component={ListPropertyPage} />
         <Route exact path="/admin/addHotel" component={ListPropertyPage} />
+        <Route exact path="/admin/manageHotel/roomBoy/:roomBoyId" component={AddRoomBoy} />
+        <Route exact path="/admin/manageHotel/:hotelId" component={HotelSidebar} />
         <Route exact path="/admin/addroom/:hotelId" component={AddRoom} />
         <Route exact path="/admin/editroom/:roomId" component={AddRoom} />
         <Route exact path="/" component={LandingPage} />
       </Switch>
       {window.location.pathname.includes("/reception/dashboard") ||
       window.location.pathname.includes("/restaurant/dashboard") ||
-      window.location.pathname.includes("/restaurant/additemstobill") ? null : (
+      window.location.pathname.includes("/restaurant/additemstobill") ||
+      window.location.pathname.includes("/admin/manageHotel") ? null : (
         <Footer />
       )}
     </React.Fragment>

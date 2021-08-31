@@ -32,6 +32,7 @@ import _ from "lodash";
 import Error from "../../components/forms/Error";
 import {checkIn} from "../../api/renter";
 import {KeyboardReturnTwoTone} from "@material-ui/icons";
+import { displayNotification } from './../../services/notificationService';
 
 let dateObj = new Date();
 let month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -100,6 +101,17 @@ const validate = Yup.object().shape({
           message: "Repeated Room Numbers!",
         })
         .required("Room Number is required"),
+      roomBoy:Yup.string().min(2).max(50).test({
+        name:"shouldSelect",
+        test:values=>{
+          if(values==="Select Room Boy"){
+            return false
+          }else{
+            return true
+          }
+        },
+        message:"Allocate a Room Boy"
+      }).required(),
       adults: Yup.number()
         .typeError("Room Number should be a Number")
         .min(1, "Minimum one adult should be there.")
@@ -130,6 +142,7 @@ const validate = Yup.object().shape({
         .required("Number of Children is required")
         .label("Children"),
       selectedExtraBed: Yup.mixed().nullable(),
+      roomBoyId:Yup.string()
     })
   ),
 });
@@ -157,6 +170,7 @@ function BookedCheckIn({match}) {
 
   const [prev, setPrev] = useState(); // Save uploaded Document
   const [initialValues, setInitialValues] = useState();
+  
 
   console.log();
 
@@ -201,8 +215,12 @@ function BookedCheckIn({match}) {
 
   const handleSubmit = async values => {
     console.log(values, "vlss");
-    const {data} = await checkIn(values);
-    window.location='/reception/dashboard'
+    const {data,status} = await checkIn(values);
+    if(status!==200) return displayNotification("error","Could not checkin, something went wrong")
+    displayNotification("info","Checkin Successfull")
+    setTimeout(() => {
+      window.location='/reception/dashboard'
+    },1000)
   };
 
   const Input = ({field, form: {errors}}) => {
@@ -491,6 +509,40 @@ function getStepContent(
                             {getIn(errors, `roomFinalDetails[${index}].roomNumber`)}
                           </div>
                         )}
+
+
+
+                        <MUISelect
+                        fullWidth
+                        name={`roomFinalDetails[${index}].roomBoy`}
+                        defaultValue={p.roomBoy}
+                        className="mt-3"
+                        onChange={e => {
+                          setFieldValue(`roomFinalDetails[${index}].roomBoy`, e.target.value);
+                          setFieldValue(`roomFinalDetails[${index}].roomBoyId`, initialValues.roomBoys.filter(boy=>boy.name===e.target.value)[0]._id);
+                          setFieldTouched(`roomFinalDetails[${index}].roomBoy`);
+                          
+                        }}
+                        value={getFieldProps(`roomFinalDetails[${index}].roomBoy`).value}
+                      >
+                        <MenuItem value="Select Room Boy">Select Room Boy</MenuItem>
+                        {initialValues.roomBoys.map((boy, ind) => (
+                          <MenuItem value={boy.name} key={boy._id}>
+                            {boy.name}
+                          </MenuItem>
+                        ))}
+                      </MUISelect>
+                      {getIn(errors, `roomFinalDetails[${index}].roomBoy`) &&
+                        getFieldMeta(`roomFinalDetails[${index}].roomBoy`).touched  && (
+                          <div style={{color: "red"}}>
+                            {getIn(errors, `roomFinalDetails[${index}].roomBoy`)}
+                          </div>
+                        )}
+
+
+
+
+
                       <MUISelect
                         fullWidth
                         name={`roomFinalDetails[${index}].selectedExtraBed`}

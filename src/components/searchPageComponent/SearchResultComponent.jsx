@@ -19,7 +19,7 @@ function SearchResultComponent({hotels,user}) {
   }
 
   const handleHotelClick=(id)=>{
-    if(user==="admin") return window.location=`/admin/room/${id}`
+    if(user==="admin") return window.location=`/admin/manageHotel/${id}`
     window.location=`/hoteldetails/${id}`
   }
 

@@ -4,8 +4,7 @@ import {getHotelRooms} from "./../api/admin";
 import "../css/Card.css";
 import { Link } from 'react-router-dom';
 
-function RoomCard({match}) {
-  const hotelId=match.params.hotelId
+function RoomCard({hotelId}) {
   const [rooms, setRooms] = useState();
 
   const getRooms = async () => {
@@ -24,7 +23,7 @@ function RoomCard({match}) {
 
 
   return (
-    <div>
+    <div className="dashboard-items">
       <h1 style={{marginTop: "70px", textAlign: "center"}}>Rooms</h1>
       <Link 
         to={`/admin/addroom/${hotelId}`}
