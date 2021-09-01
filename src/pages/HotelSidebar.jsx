@@ -21,13 +21,17 @@ import { RiPencilLine } from "react-icons/ri";
 import { BiCog } from "react-icons/bi";
 
 import "react-pro-sidebar/dist/css/styles.css";
-import "../../css/Sidebar.css";
-import RestaurantCurrentlyStaying from './RestaurantCurrentlyStaying';
-import AddFoodItem from './AddFoodItem.jsx';
+import "../css/Sidebar.css";
+// import RestaurantCurrentlyStaying from './RestaurantCurrentlyStaying';
+// import AddFoodItem from './AddFoodItem.jsx';
+// import AddRoom from './../components/listPropertyPageComponent/AddRoom';
+import ManageRoomBoy from './ManageRoomBoy';
+import AddRoomBoy from './AddRoomBoy';
+import RoomCard from './RoomCard';
 
 
-const RestaurantSidebar = () => {
-  
+const HotelSidebar = ({match}) => {
+    const hotelId=match.params.hotelId
   const [menuCollapse, setMenuCollapse] = useState(false);
 
   const menuIconClick = () => {
@@ -39,7 +43,7 @@ const RestaurantSidebar = () => {
   return (
     <React.Fragment>
 
-    <div className="dashboard-sidebar" style={{marginTop:"68px"}}>
+    <div className="dashboard-sidebar"  style={{marginTop:"68px"}}>
       <Router>
         <div id="header">
               
@@ -49,10 +53,13 @@ const RestaurantSidebar = () => {
             <SidebarContent>
               <Menu className="menu" iconShape="square">                
                 <MenuItem icon={<FaList />}>
-                  <a onClick={()=>setChoice("addBill")}>Add Bill</a>
+                  <a onClick={()=>setChoice("manageRooms")}>Manage Rooms</a>
                 </MenuItem>
                 <MenuItem icon={<FaList />}>
-                  <a onClick={()=>setChoice("addFoodItem")}>Add Food Item</a>
+                  <a onClick={()=>setChoice("addRoomBoy")}>Add RoomBoy</a>
+                </MenuItem>
+                <MenuItem icon={<FaList />}>
+                  <a onClick={()=>setChoice("manageRoomBoy")}>Manage RoomBoy</a>
                 </MenuItem>
               </Menu>
             </SidebarContent>
@@ -60,10 +67,11 @@ const RestaurantSidebar = () => {
         </div>
       </Router>
     </div> 
-    {choice==="addBill"?<RestaurantCurrentlyStaying/>:""}
-    {choice==="addFoodItem"?<AddFoodItem/>:""}
+    {choice==="manageRooms"?<RoomCard hotelId={hotelId} />:""}
+    {choice==="addRoomBoy"?<AddRoomBoy/>:""}
+    {choice==="manageRoomBoy"?<ManageRoomBoy/>:""}
     </React.Fragment>
   );
-};
+}
 
-export default RestaurantSidebar;
+export default HotelSidebar;

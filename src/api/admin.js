@@ -20,6 +20,26 @@ export function adminChangePassword(values){
     return apiClient.post("/admin/changePassword", values);
 }
 
+export function getRoomBoy(roomBoyId){
+    return apiClient.get(`/admin/roomBoy/${roomBoyId}`);
+}
+
+export function getRoomBoys(){
+    return apiClient.get(`/admin/roomBoy`);
+}
+
+export function addRoomBoy(values){
+    return apiClient.post("/admin/roomBoy", values);
+}
+
+export function editRoomBoy(roomBoyId,values){
+    return apiClient.put(`/admin/roomBoy/${roomBoyId}`, values);
+}
+
+export function deleteRoomBoy(roomBoyId){
+    return apiClient.delete(`/admin/roomBoy/${roomBoyId}`);
+}
+
 export function editAdminData(values){
     return apiClient.put("/admin/signup", values);
 }
