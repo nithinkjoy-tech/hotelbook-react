@@ -52,7 +52,7 @@ function AboutSection() {
             <div className="maghny-gd-1 col-lg-4 col-md-6 mt-md-0 mt-4">
               <div className="maghny-grid">
                 <figure className="effect-lily border-radius">
-                  <img className="img-fluid" src={img2} />
+                  <img alt="" className="img-fluid" src={img2} />
                   <figcaption className="w3set-hny">
                     <div>
                       <h4>
