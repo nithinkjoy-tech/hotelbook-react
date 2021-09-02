@@ -67,13 +67,13 @@ function AboutSection() {
             <div className="maghny-gd-1 col-lg-4 col-md-6 mt-lg-0 mt-4">
               <div className="maghny-grid">
                 <figure className="effect-lily border-radius">
-                  <img className="img-fluid" src={img3} />
+                  <img alt="" className="img-fluid" src={img3} />
                   <figcaption className="w3set-hny">
                     <div>
                       <h4>
                         Best Luxury Rooms <span> Hotels</span>
                       </h4>
-                      <p>Cool view </p>
+                      <p>Cool view</p>
                     </div>
                   </figcaption>
                 </figure>
