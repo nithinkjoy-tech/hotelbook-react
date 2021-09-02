@@ -561,7 +561,7 @@ function getStepContent(
                         }
                       >
                         <MenuItem value="Extra Bed- None">Extra Bed- None</MenuItem>
-                        {_.range(1, p.noOfExtraBeds + 1).map((no, ind) => (
+                        {initialValues.extraBed&&_.range(1, p.noOfExtraBeds + 1).map((no, ind) => (
                           <MenuItem value={no} key={ind.toString()}>
                             {no}
                           </MenuItem>
