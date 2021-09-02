@@ -3,12 +3,14 @@ import slide1 from "../images/slide1.jpg";
 import {getHotelRooms} from "./../api/admin";
 import "../css/Card.css";
 import { Link } from 'react-router-dom';
+import { displayNotification } from './../services/notificationService';
 
 function RoomCard({hotelId}) {
   const [rooms, setRooms] = useState();
 
   const getRooms = async () => {
-    const {data} = await getHotelRooms(hotelId);
+    const {data,status} = await getHotelRooms(hotelId);
+    if(status !==200) return displayNotification("error", "Invalid Url");
     console.log(data, "dt");
     setRooms(data);
   };
@@ -21,6 +23,7 @@ function RoomCard({hotelId}) {
     getRooms();
   }, []);
 
+  if(!rooms) return null
 
   return (
     <div className="dashboard-items">

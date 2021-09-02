@@ -29,8 +29,8 @@ const validationSchema = Yup.object().shape({
   breakfast: Yup.string().required().oneOf(["No", "Yes, Free", "Yes, Paid"]),
   facilities: Yup.array(),
   extraBed: Yup.string().required().oneOf(["No", "Yes"]),
-  noOfExtraBeds: Yup.number().min(1).max(4),
-  pricePerExtraBed: Yup.number().min(5).max(10000),
+  noOfExtraBeds: Yup.number().min(1).max(4).nullable(),
+  pricePerExtraBed: Yup.number().min(0).max(10000).nullable(),
   mainPhoto: Yup.mixed().required(),
   photos: Yup.array().nullable(),
   freeCancellationAvailable: Yup.string().required(),
@@ -65,7 +65,7 @@ function ListPropertyPage({match}) {
     facilities: [],
     extraBed: "No",
     noOfExtraBeds: 1,
-    pricePerExtraBed:"",
+    pricePerExtraBed:0,
     mainPhoto: "",
     photos: [],
     freeCancellationAvailable: "None.(Guest cannot cancel once booked)",
@@ -118,10 +118,11 @@ function ListPropertyPage({match}) {
   };
 
   const handleSubmit = async (values, setFieldError) => {
-    if (pincodeDirectory.lookup(values.postalCode).length === 0) {
-      setFieldError("postalCode", "No place with given postal code");
-      return displayNotification("error", "Please check your form. You missed something");
-    }
+    console.log(values,"initialValues")
+    // if (pincodeDirectory.lookup(values.postalCode).length === 0) {
+    //   setFieldError("postalCode", "No place with given postal code");
+    //   return displayNotification("error", "Please check your form. You missed something");
+    // }
 
     const transform = obj =>
       booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === "Yes"}), obj);
@@ -133,6 +134,7 @@ function ListPropertyPage({match}) {
       isEdited = true;
     } else {
       const {data, status} = await registerHotels(transform(values));
+      console.log(data,"gere")
       if (status === 400) return setFieldError(data.property, data.msg);
     }
     toast.dismiss();

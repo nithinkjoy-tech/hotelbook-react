@@ -38,7 +38,7 @@ const HotelSidebar = ({match}) => {
     menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
   };
 
-  let [choice,setChoice]=useState("addBill")
+  let [choice,setChoice]=useState("manageRooms")
 
   return (
     <React.Fragment>
@@ -68,8 +68,8 @@ const HotelSidebar = ({match}) => {
       </Router>
     </div> 
     {choice==="manageRooms"?<RoomCard hotelId={hotelId} />:""}
-    {choice==="addRoomBoy"?<AddRoomBoy/>:""}
-    {choice==="manageRoomBoy"?<ManageRoomBoy/>:""}
+    {choice==="addRoomBoy"?<AddRoomBoy hotelId={hotelId} />:""}
+    {choice==="manageRoomBoy"?<ManageRoomBoy hotelId={hotelId}/>:""}
     </React.Fragment>
   );
 }

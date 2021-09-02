@@ -1,12 +1,12 @@
 import React, {useEffect, useState, useMemo} from "react";
 // import "../../css/ArrivalList.css";
-import {getRoomBoys, deleteRoomBoy} from "../api/admin";
+import {getRoomBoys, deleteRoomBoy,getHotelRooms} from "../api/admin";
 import DataTable, {createTheme} from "react-data-table-component";
 import _ from "lodash";
 import {confirmAlert} from "react-confirm-alert";
 import {displayNotification} from "../services/notificationService";
 
-function ManageRoomBoy() {
+function ManageRoomBoy({hotelId}) {
   const handleEdit = roomBoyId => {
     console.log(roomBoyId);
     window.location = `/admin/manageHotel/roomBoy/${roomBoyId}`;
@@ -62,11 +62,6 @@ function ManageRoomBoy() {
         selector: "address",
       },
       {
-        name: "Current Hotel",
-        selector: "currentHotel",
-        grow: 1,
-      },
-      {
         name: "",
         cell: row => (
           <td data-label="Edit">
@@ -99,6 +94,12 @@ function ManageRoomBoy() {
   };
 
   const getAllRoomBoys = async () => {
+
+    if(hotelId){
+      const {data:validHotel,status:resStatus}=await getHotelRooms(hotelId);
+    if(resStatus !== 200) return displayNotification("error","Invalid URL")
+    }
+
     const {data, status} = await getRoomBoys();
     if (status !== 200) return;
     setRoomBoys(data);

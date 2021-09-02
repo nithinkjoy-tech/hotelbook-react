@@ -27,7 +27,7 @@ const dateValidator = Yup.object()
 
 function UpcomingArrivalList() {
   const handleClick = id => {
-    console.Console(id);
+    console.log(id);
   };
 
   const columns = useMemo(

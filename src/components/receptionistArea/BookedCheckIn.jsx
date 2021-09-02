@@ -36,14 +36,19 @@ import { displayNotification } from './../../services/notificationService';
 
 let dateObj = new Date();
 let month = dateObj.getUTCMonth() + 1; //months from 1-12
-let day = dateObj.getUTCDate();
+let date = dateObj.getUTCDate();
 let year = dateObj.getUTCFullYear();
 month = month.toString();
 if (month.length == 1) {
   month = "0" + month;
 }
 
-let newdate = year + "/" + month + "/" + day;
+date = date.toString();
+if (date.length == 1) {
+  date = "0" + date;
+}
+
+let newdate = year + "/" + month + "/" + date;
 
 let a = 0;
 let roomNumberObject = {};

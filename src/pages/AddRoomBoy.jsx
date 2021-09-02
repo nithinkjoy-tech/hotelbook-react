@@ -7,7 +7,7 @@ import FormCheckBox from "../components/common/FormCheckBox";
 // import Error from "../../forms/Error";
 import {Delete} from "@material-ui/icons";
 import {Formik, Form, ErrorMessage, getIn} from "formik";
-import {addRoomBoy, getRoomBoy,editRoomBoy} from "../api/admin";
+import {addRoomBoy, getRoomBoy,editRoomBoy,getHotelRooms} from "../api/admin";
 import {getHotelsName} from "../api/guest";
 import Error from "../components/forms/Error";
 import {toast} from "react-toastify";
@@ -31,12 +31,16 @@ const validationSchema = Yup.object().shape({
     .matches(/^[0-9]+$/, "Aadhar Number must include only numbers")
     .label("Aadhar Number"),
   photo: Yup.mixed().required(),
-  currentHotel: Yup.string().required().label("Current Hotel"),
+  currentHotelId: Yup.string().required().label("Current Hotel Id"),
 });
 
-function AddRoomBoy({match}) {
+function AddRoomBoy({match,hotelId}) {
   const roomBoyId = match?.params?.roomBoyId;
-  console.log(roomBoyId, "rbid");
+  console.log(hotelId, "rbid");
+
+  // let mongoIdRegex=new RegExp("^[0-9a-fA-F]{24}$")
+  
+  // if(!mongoIdRegex.test(roomBoyId)) return displayNotification("error","Invalid ")
 
   const [initialValues, setInitialValues] = useState({
     name: "",
@@ -44,8 +48,7 @@ function AddRoomBoy({match}) {
     address: "",
     aadharNumber: "",
     photo: "",
-    currentHotel: "",
-    currentHotelId:""
+    currentHotelId:hotelId||""
   });
 
 
@@ -53,10 +56,15 @@ function AddRoomBoy({match}) {
   const [prev, setPrev] = useState();
 
   const getRoomBoyDetails = async () => {
-    const {data, status} = await getHotelsName();
-    if (status !== 200) return displayNotification("error", "Something went wrong");
-    // console.log(data,"dt")
-    setOptions(data);
+    // const {data, status} = await getHotelsName();
+    // if (status !== 200) return displayNotification("error", "Something went wrong");
+    // // console.log(data,"dt")
+    // setOptions(data);
+
+    if(hotelId){
+      const {data:validHotel,status:resStatus}=await getHotelRooms(hotelId);
+    if(resStatus !== 200) return displayNotification("error","Invalid URL")
+    }
 
     if (roomBoyId) {
       console.log("here");
@@ -74,7 +82,7 @@ function AddRoomBoy({match}) {
   }, []);
 
   const handleSubmit = async (values, setFieldError) => {
-    values["currentHotelId"]=options.filter(option=>option.city===values["currentHotel"])[0]._id
+    // values["currentHotelId"]=options.filter(option=>option.city===values["currentHotel"])[0]._id
     if (!roomBoyId) {
       const {data, status} = await addRoomBoy(values);
       if (status !== 200) return displayNotification("error", data);
@@ -100,7 +108,6 @@ function AddRoomBoy({match}) {
     reader.readAsDataURL(data[0]);
   };
 
-  if (!options) return null;
 
   return (
     <div className={roomBoyId ? "" : "dashboard-items"}>
@@ -173,15 +180,15 @@ function AddRoomBoy({match}) {
                                 placeholder="Aadhar Number"
                               />
                             </div>
-                            <div className="col-span-6 sm:col-span-3">
+                            {/* <div className="col-span-6 sm:col-span-3">
                               <PropertySelectBox
                                 label="Current Hotel"
                                 name="currentHotel"
                                 onChange={handleChange}
                                 options={_.flattenDeep([null, options.map(hotel => hotel.city)])}
                               />
-                            </div>
-                            <div className="col-span-6 sm:col-span-3"></div>
+                            </div> */}
+                            {/* <div className="col-span-6 sm:col-span-3"></div> */}
                             <div style={{width: "65vw", marginTop: "3rem", marginLeft: 0}}>
                               <p style={{color: "black"}}>Passport size photo (Below 200kb)</p>
                               <div style={{margin: "auto", width: "70%"}}>
