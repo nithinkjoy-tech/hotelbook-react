@@ -3,6 +3,7 @@ import Calendar from "./../landingPageComponent/Calendar";
 import HotelDetails from "./../../pages/HotelDetails";
 import {Formik, Form} from "formik";
 import * as Yup from "yup";
+import {getHotelInfo} from "../../api/guest"
 import auth from "../../services/authService";
 
 function BookNow() {
@@ -23,9 +24,13 @@ function BookNow() {
     // rooms: Yup.number().min(1).max(9999).required(),
   });
 
-  const handleSubmit = values => {
+  const handleSubmit = async values => {
     console.log(values, "vls");
+    values["hotelId"]=auth.getCurrentUser()?.hotelId
     localStorage.setItem("selectedDays",JSON.stringify(values.selectedDayRange))
+    const {data} = await getHotelInfo(values);
+    let {hotels,numberOfDays}=data
+    localStorage.setItem("numberOfDays",numberOfDays)
     window.location=`/hoteldetails/${auth.getCurrentUser()?.hotelId}`
   };
 

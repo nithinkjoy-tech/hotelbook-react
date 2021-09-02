@@ -499,6 +499,7 @@ function getStepContent(
                         value={getFieldProps(`roomFinalDetails[${index}].roomNumber`).value}
                       >
                         <MenuItem value="Select Room Number">Select Room Number</MenuItem>
+                        {console.log(p.availableRoomNumbers)}
                         {p.availableRoomNumbers.map((no, ind) => (
                           <MenuItem value={no} key={ind.toString()}>
                             {no}
@@ -561,7 +562,7 @@ function getStepContent(
                         }
                       >
                         <MenuItem value="Extra Bed- None">Extra Bed- None</MenuItem>
-                        {_.range(1, p.noOfExtraBeds + 1).map((no, ind) => (
+                        {initialValues.extraBed&&_.range(1, p.noOfExtraBeds + 1).map((no, ind) => (
                           <MenuItem value={no} key={ind.toString()}>
                             {no}
                           </MenuItem>

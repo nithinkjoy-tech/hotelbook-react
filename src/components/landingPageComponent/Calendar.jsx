@@ -7,7 +7,6 @@ const Calendar = ({selectedDayRange, name,minimumDate,placeholder}) => {
   const formik = useFormikContext();
   const field = formik.getFieldProps(name);
 
-
   const renderCustomInput = ({ref}) => (
     <input
       readOnly 
@@ -15,11 +14,11 @@ const Calendar = ({selectedDayRange, name,minimumDate,placeholder}) => {
       value={
         selectedDayRange?.from?.day
           ? `${selectedDayRange?.from?.day}/${selectedDayRange?.from?.month}/${
-              selectedDayRange?.from?.year
+            selectedDayRange?.from?.year
             }${selectedDayRange?.to?.day ? " - " + selectedDayRange?.to?.day + "/" : ""}${
               selectedDayRange?.to?.month ? selectedDayRange?.to?.month + "/" : ""
             }${selectedDayRange?.to?.year ? selectedDayRange?.to?.year +"📅": ""}`
-          : (placeholder||"📅  Check-in - Check-out")
+          : (placeholder||"📅  Select nights of stay")
       }
       style={{
         cursor: "pointer",

@@ -24,8 +24,8 @@ export function getRoomBoy(roomBoyId){
     return apiClient.get(`/admin/roomBoy/${roomBoyId}`);
 }
 
-export function getRoomBoys(){
-    return apiClient.get(`/admin/roomBoy`);
+export function getRoomBoys(hotelId){
+    return apiClient.get(`/admin/roomBoy?hotelId=${hotelId}`);
 }
 
 export function addRoomBoy(values){

@@ -100,8 +100,8 @@ function ManageRoomBoy({hotelId}) {
     if(resStatus !== 200) return displayNotification("error","Invalid URL")
     }
 
-    const {data, status} = await getRoomBoys();
-    if (status !== 200) return;
+    const {data, status} = await getRoomBoys(hotelId);
+    if (status !== 200) return displayNotification("error",data);
     setRoomBoys(data);
     setFullRoomBoys([...data]);
   };

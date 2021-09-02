@@ -80,7 +80,7 @@ function App() {
           component={RestaurantDashboard}
         />
         <Route exact path="/admin/signin" component={SigninPage} />
-        {/* <Route exact path="/admin/signup" component={SignupPage} /> */}
+        <Route exact path="/admin/signup" component={SignupPage} />
         <Route exact path="/admin/dashboard" component={AdminDashboard} />
         <Route exact path="/admin/room/:hotelId" component={RoomCard} />
         <Route exact path="/admin/addHotel/:id" component={ListPropertyPage} />
