@@ -30,6 +30,11 @@ function CompletedStays() {
   const columns = useMemo(
     () => [
       {
+        name: "Booking ID",
+        selector: "hotelBookingId",
+        sortable: true,
+      },
+      {
         name: "Name",
         selector: "name",
         sortable: true,
@@ -46,6 +51,11 @@ function CompletedStays() {
       {
         name: "Check In",
         selector: "startingDayOfStay",
+        sortable: true,
+      },
+      {
+        name: "Check Out",
+        selector: "endingDayOfStay",
         sortable: true,
       },
       {

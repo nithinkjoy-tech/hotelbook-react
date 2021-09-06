@@ -8,6 +8,14 @@ export function getHotelsName(){
     return apiClient.get("/guest/gethotels");
 }
 
+export function forgotGuestPassword(values){
+    return apiClient.post("/guest/forgot",values);
+}
+
+export function resetGuestPassword(values,token){
+    return apiClient.put(`/guest/forgot/${token}`,values);
+}
+
 // export function getHotelInfo(id){
 //     return apiClient.get(`/guest/book/${id}`);
 // }

@@ -1,19 +1,21 @@
 import React, {useState} from "react";
-import InputBox from "./../components/common/InputBox";
+import InputBox from "./InputBox";
 import {Formik, Form} from "formik";
-import {guestSignin} from "../api/guest";
-import {renterSignin} from "../api/renter";
-import {restaurantSignin} from "../api/restaurant";
-import {adminSignin} from "../api/admin";
+import {resetGuestPassword} from "../../api/guest";
+import {renterSignin} from "../../api/renter";
+import {restaurantSignin} from "../../api/restaurant";
+import {adminSignin} from "../../api/admin";
 import * as Yup from "yup";
-import {setAuthToken} from "./../services/authService";
+import {setAuthToken} from "../../services/authService";
+import { displayNotification } from './../../services/notificationService';
 
 const validationSchema = Yup.object().shape({
-  userId: Yup.string().required("Email or Username is required").label("Email or Username"),
-  password: Yup.string().required("Password is required").label("Password"),
+  newPassword: Yup.string().required("Email or Username is required").label("Email or Username"),
+  confirmPassword: Yup.string().required("Password is required").label("Password"),
 });
 
-function SigninPage({location}) {
+function ResetPassword({location,match}) {
+    const token=match.params.token
   const [passwordType, setPasswordType] = useState("password");
 
   let bgcolor = "";
@@ -32,23 +34,16 @@ function SigninPage({location}) {
   }
 
   const handleSubmit = async (values, setFieldError) => {
-    if (location.search) {
-      const {data, status} = await guestSignin(values);
-      if (status === 400) setFieldError("userId", data);
-      else {
-        let url=new URLSearchParams(location.search).get('redirecturl')
-        setAuthToken(data);
-        return window.location = url;
-      }
-    }
 
-    if (location.pathname === "/signin") {
-      const {data, status} = await guestSignin(values);
+    if (location.pathname.includes("/resetpassword/")) {
+      const {data, status} = await resetGuestPassword(values,token);
       if (status === 400) setFieldError("userId", data);
+      if(status!==200) return displayNotification("error","Something went wrong")
       else {
-        console.log(location)
-        setAuthToken(data);
-        window.location = "/dashboard";
+        displayNotification("success","Successfully updated password")
+        setTimeout(()=>{
+            window.location = "/signin";
+        },1000)
       }
     }
  
@@ -83,8 +78,8 @@ function SigninPage({location}) {
   return (
     <Formik
       initialValues={{
-        userId: "",
-        password: "",
+        newPassword: "",
+        confirmPassword: "",
       }}
       validationSchema={validationSchema}
       onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
@@ -111,15 +106,15 @@ function SigninPage({location}) {
                       <div style={{marginTop: "20px"}} className="rounded-t mb-0 px-6 py-6">
                         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                           <div className="relative w-full mb-3">
-                            <InputBox
+                          <InputBox
                               error={errors}
                               handleBlur={handleBlur}
                               touched={touched}
-                              label="Email or Username"
+                              label="Password"
                               values={values}
-                              type="text"
-                              name="userId"
-                              placeholder="Email or Username"
+                              type={passwordType}
+                              name="newPassword"
+                              placeholder="Password"
                               handleChange={handleChange}
                               style={{transition: "all .15s ease"}}
                             />
@@ -132,7 +127,7 @@ function SigninPage({location}) {
                               label="Password"
                               values={values}
                               type={passwordType}
-                              name="password"
+                              name="confirmPassword"
                               placeholder="Password"
                               handleChange={handleChange}
                               style={{transition: "all .15s ease"}}
@@ -163,29 +158,10 @@ function SigninPage({location}) {
                               type="submit"
                               style={{transition: "all .15s ease"}}
                             >
-                              Sign In
+                              Update Password
                             </button>
                           </div>
-                          {location.pathname ==="/signin"&&<div className="flex flex-wrap mt-6">
-                            <div className="w-1/2">
-                              <a
-                                href="/forgotpassword"
-                                // onClick={e => e.preventDefault()}
-                                className="text-blue-800"
-                              >
-                                <small>Forgot password?</small>
-                              </a>
-                            </div>
-                            <div className="w-1/2 text-right">
-                              <a
-                                href="/signup"
-                                
-                                className="text-blue-800"
-                              >
-                                <small>Create new account</small>
-                              </a>
-                            </div>
-                          </div>}
+                          
                         </div>
                       </div>
                     </div>
@@ -200,4 +176,4 @@ function SigninPage({location}) {
   );
 }
 
-export default SigninPage;
+export default ResetPassword;

@@ -7,7 +7,7 @@ import FormCheckBox from "../components/common/FormCheckBox";
 // import Error from "../../forms/Error";
 import {Delete} from "@material-ui/icons";
 import {Formik, Form, ErrorMessage, getIn} from "formik";
-import {addRoomBoy, getRoomBoy,editRoomBoy,getHotelRooms} from "../api/admin";
+import {addRoomBoy, getRoomBoy, editRoomBoy, getHotelRooms} from "../api/admin";
 import {getHotelsName} from "../api/guest";
 import Error from "../components/forms/Error";
 import {toast} from "react-toastify";
@@ -25,6 +25,7 @@ const validationSchema = Yup.object().shape({
     .matches(/^[0-9]+$/, "Mobile number must include only numbers")
     .label("Mobile Number"),
   address: Yup.string().required().min(8).max(255),
+  city: Yup.string().required().min(1).max(50),
   aadharNumber: Yup.string()
     .required()
     .length(12)
@@ -34,23 +35,23 @@ const validationSchema = Yup.object().shape({
   currentHotelId: Yup.string().required().label("Current Hotel Id"),
 });
 
-function AddRoomBoy({match,hotelId}) {
+function AddRoomBoy({match, hotelId}) {
   const roomBoyId = match?.params?.roomBoyId;
   console.log(hotelId, "rbid");
 
   // let mongoIdRegex=new RegExp("^[0-9a-fA-F]{24}$")
-  
+
   // if(!mongoIdRegex.test(roomBoyId)) return displayNotification("error","Invalid ")
 
   const [initialValues, setInitialValues] = useState({
     name: "",
     phoneNumber: "",
     address: "",
+    city: "",
     aadharNumber: "",
     photo: "",
-    currentHotelId:hotelId||""
+    currentHotelId: hotelId || "",
   });
-
 
   const [options, setOptions] = useState();
   const [prev, setPrev] = useState();
@@ -61,9 +62,9 @@ function AddRoomBoy({match,hotelId}) {
     // // console.log(data,"dt")
     // setOptions(data);
 
-    if(hotelId){
-      const {data:validHotel,status:resStatus}=await getHotelRooms(hotelId);
-    if(resStatus !== 200) return displayNotification("error","Invalid URL")
+    if (hotelId) {
+      const {data: validHotel, status: resStatus} = await getHotelRooms(hotelId);
+      if (resStatus !== 200) return displayNotification("error", "Invalid URL");
     }
 
     if (roomBoyId) {
@@ -86,11 +87,11 @@ function AddRoomBoy({match,hotelId}) {
     if (!roomBoyId) {
       const {data, status} = await addRoomBoy(values);
       if (status !== 200) return displayNotification("error", data);
-      displayNotification("info","Successfully saved")
+      displayNotification("info", "Successfully saved");
     } else {
-      const {data, status} = await editRoomBoy(roomBoyId,values);
+      const {data, status} = await editRoomBoy(roomBoyId, values);
       if (status !== 200) return displayNotification("error", data);
-      displayNotification("info","Successfully updated")
+      displayNotification("info", "Successfully updated");
     }
   };
 
@@ -107,7 +108,6 @@ function AddRoomBoy({match,hotelId}) {
     };
     reader.readAsDataURL(data[0]);
   };
-
 
   return (
     <div className={roomBoyId ? "" : "dashboard-items"}>
@@ -152,6 +152,18 @@ function AddRoomBoy({match,hotelId}) {
                               <PropertyInputBox label="Address" name="address" />
                             </div>
                             <div className="col-span-6 sm:col-span-3">
+                              <PropertyInputBox label="City" type="text" name="city" />
+                            </div>
+                            
+                            
+                            <div className="col-span-6 sm:col-span-3">
+                              <PropertyInputBox
+                                label="Aadhar Number"
+                                name="aadharNumber"
+                                placeholder="Aadhar Number"
+                              />
+                            </div>
+                            <div className="col-span-6 sm:col-span-3">
                               <label className="block text-sm font-medium text-gray-700">
                                 Phone Number
                               </label>
@@ -173,13 +185,7 @@ function AddRoomBoy({match,hotelId}) {
                                   <div style={{color: "red"}}>{getIn(errors, "phoneNumber")}</div>
                                 )}
                             </div>
-                            <div className="col-span-6 sm:col-span-3">
-                              <PropertyInputBox
-                                label="Aadhar Number"
-                                name="aadharNumber"
-                                placeholder="Aadhar Number"
-                              />
-                            </div>
+                            <div className="col-span-6 sm:col-span-3"></div>
                             {/* <div className="col-span-6 sm:col-span-3">
                               <PropertySelectBox
                                 label="Current Hotel"
@@ -198,11 +204,11 @@ function AddRoomBoy({match,hotelId}) {
                                   showPreviews={true}
                                   maxFileSize={204900}
                                   filesLimit={1}
-                                  onDelete={()=>{
-                                    if(prev){
-                                        setFieldValue("photo",prev)
-                                    }}
-                                    }  
+                                  onDelete={() => {
+                                    if (prev) {
+                                      setFieldValue("photo", prev);
+                                    }
+                                  }}
                                 />
                                 {getIn(errors, `photo`) && getFieldMeta("photo").touched && (
                                   <div style={{color: "red"}}>{getIn(errors, "photo")}</div>

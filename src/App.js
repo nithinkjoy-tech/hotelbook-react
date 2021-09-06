@@ -34,6 +34,8 @@ import AddFoodItem from "./components/restaurantArea/AddFoodItem.jsx";
 import AddItemsToBill from "./components/restaurantArea/AddItemsToBill";
 import HotelSidebar from "./pages/HotelSidebar";
 import AddRoomBoy from './pages/AddRoomBoy';
+import ForgotPassword from './components/common/ForgotPassword';
+import ResetPassword from './components/common/ResetPassword';
 
 function App() {
   return (
@@ -48,6 +50,8 @@ function App() {
         <Route exact path="/dashboard" component={GuestDashboard} />
         <Route exact path="/signup" component={SignupPage} />
         <Route exact path="/bookedroomdetails" component={BookedRoomDetails} />
+        <Route exact path="/forgotpassword" component={ForgotPassword} />
+        <Route exact path="/resetpassword/:token" component={ResetPassword} />
         <Route exact path="/hoteldetails/:hotelId" component={HotelDetails} />
         <Route exact path="/hotel/roomdetails/:roomId" component={RoomDetails} />
         <Route exact path="/renter/welcome" component={ListPropertyWelcomePage} />

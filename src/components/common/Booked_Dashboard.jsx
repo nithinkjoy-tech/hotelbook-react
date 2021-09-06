@@ -96,7 +96,13 @@ function Booked_Dashboard() {
               <div className="book-details">
                 <div className="book-details-right">
                   {/* <h5 className="book-details-desc">Hotel Booking ID : 5897458631</h5> */}
-                  <h5 className="pay">
+                  <h5 className="pay">Booking ID: {booking?.hotelBookingId}</h5>
+                  <h5 className="book-details-desc">Booked On : {booking?.bookedOn}</h5>
+                  <h5 className="book-details-desc">Check In : {booking?.startingDayOfStay}</h5>
+                  <h5 className="book-details-desc">Check Out : {booking?.endingDayOfStay}</h5>
+                </div>
+                <div className="book-details-left">
+                <h5 className="pay">
                     Total: Rs.{" "}
                     {booking?.totalPrice *
                       (diffBetweenDays(booking.startingDayOfStay, booking.endingDayOfStay) + 1)}
@@ -104,11 +110,6 @@ function Booked_Dashboard() {
                   <h5 className="pay">Total Beds: {booking?.totalBeds}</h5>
                   <h5 className="pay">Total Guests: {booking?.totalGuests}</h5>
                   <h5 className="pay">Total Rooms: {booking?.totalRooms}</h5>
-                </div>
-                <div className="book-details-left">
-                  <h5 className="book-details-desc">Booked On : {booking?.bookedOn}</h5>
-                  <h5 className="book-details-desc">Check In : {booking?.startingDayOfStay}</h5>
-                  <h5 className="book-details-desc">Check Out : {booking?.endingDayOfStay}</h5>
                 </div>
               </div>
               <div style={{display: "flex", justifyContent: "space-between"}}>
