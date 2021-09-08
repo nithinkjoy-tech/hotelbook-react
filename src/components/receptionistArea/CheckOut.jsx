@@ -65,6 +65,7 @@ function CheckOut({match}) {
     const d = new Date();
     let month = d.getMonth() + 1;
     const date = d.getDate() + "/" + month + "/" + d.getFullYear();
+    console.log(inputFields)
     Invoice(
       details?.name,
       details?.address,
