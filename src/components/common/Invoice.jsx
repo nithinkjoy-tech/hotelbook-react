@@ -12,6 +12,9 @@ export default function Invoice(
   restaurantBillAmount,
   accomodationTotal,roomDetails
 ) {
+  console.log('restaurant bill',restaurantBillAmount);
+  console.log('accomodationTotal',accomodationTotal);
+  console.log(inputFields)
 // roomNumber:56,roomBoy:'ravi',roomType:'king'
 
   var props = {
@@ -51,7 +54,7 @@ export default function Invoice(
         headerBorder: false,
         tableBodyBorder: false,
         header: ["#", "Title", "Amount"],
-        table: inputFields.map((data,index) =>([
+        table: inputFields?.items.map((data,index) =>([
              index+=1,
              data.item,
              data.amount
@@ -80,7 +83,7 @@ export default function Invoice(
 
         invDescLabel: "Room Details",
         
-        invDesc: `${roomDetails.map(details=>([
+        invDesc: `${roomDetails?.map(details=>([
            'Room Number - ', details.roomNumber,
             ' Room Type -', details.roomType,
             ' Room Boy - ', details.roomBoy
