@@ -15,6 +15,11 @@ function ArrivalList() {
   const columns = useMemo(
     () => [
       {
+        name: "Booking ID",
+        selector: "hotelBookingId",
+        sortable: true,
+      },
+      {
         name: "Name",
         selector: "name",
         sortable: true,

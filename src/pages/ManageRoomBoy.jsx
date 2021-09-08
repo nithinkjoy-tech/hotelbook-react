@@ -62,6 +62,10 @@ function ManageRoomBoy({hotelId}) {
         selector: "address",
       },
       {
+        name: "City",
+        selector: "city",
+      },
+      {
         name: "",
         cell: row => (
           <td data-label="Edit">
@@ -89,7 +93,7 @@ function ManageRoomBoy({hotelId}) {
   const handleChange = ({target}) => {
     let roomBoys = fullRoomBoys;
     setRoomBoys(
-      roomBoys.filter(roomBoy => _.includes(roomBoy.name.toLowerCase(), target.value.toLowerCase()))
+      roomBoys.filter(roomBoy => _.includes(roomBoy.city.toLowerCase(), target.value.toLowerCase()))
     );
   };
 
@@ -122,7 +126,7 @@ function ManageRoomBoy({hotelId}) {
             subHeaderComponent={[
               <input
                 onChange={e => handleChange(e)}
-                placeholder="Search by name"
+                placeholder="Search by city"
                 className="border-1 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
                 type="text"
               ></input>,

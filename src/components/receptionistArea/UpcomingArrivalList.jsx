@@ -33,6 +33,11 @@ function UpcomingArrivalList() {
   const columns = useMemo(
     () => [
       {
+        name: "Booking ID",
+        selector: "hotelBookingId",
+        sortable: true,
+      },
+      {
         name: "Name",
         selector: "name",
         sortable: true,
@@ -52,8 +57,8 @@ function UpcomingArrivalList() {
         sortable: true,
       },
       {
-        name: "Email",
-        selector: "email",
+        name: "Ckeck Out",
+        selector: "endingDayOfStay",
       },
       {
         name: "Booking Mode",
