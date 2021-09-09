@@ -15,8 +15,8 @@ const validateEmail=Yup.object().shape({
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(2).max(50).required("Name is required").label("Name"),
-  email: Yup.string().required("Email is required").email("Email must be valid").label("Email"),
-  phoneNumber: Yup.string().min(5).max(50).nullable(),
+  email: Yup.string().email("Email must be valid").nullable().label("Email"),
+  phoneNumber: Yup.string().required().min(5).max(50),
 });
 
 function GuestForm({setGuestExist}) {
