@@ -69,6 +69,12 @@ function CheckOut({match}) {
     // Dummy Room details
 
 let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
+console.log("name",details?.name)
+console.log("address",details?.address)
+console.log("inputFields",inputFields)
+console.log("date",date)
+console.log("grandTotal",grandTotal)
+console.log("roomDetails",roomDetails)
     Invoice(
       details?.name,
       details?.address,
