@@ -65,6 +65,10 @@ function CheckOut({match}) {
     const d = new Date();
     let month = d.getMonth() + 1;
     const date = d.getDate() + "/" + month + "/" + d.getFullYear();
+    console.log(inputFields)
+    // Dummy Room details
+
+let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
     Invoice(
       details?.name,
       details?.address,
@@ -73,7 +77,7 @@ function CheckOut({match}) {
       date,
       grandTotal,
       restaurantBillAmount,
-      accomodationTotal
+      accomodationTotal,roomDetails
     );
   }
 

@@ -1,4 +1,6 @@
-import {jsPDF} from "jspdf";
+
+import jsPDFInvoiceTemplate, { OutputType, jsPDF } from "jspdf-invoice-template";
+
 
 export default function Invoice(
   name,
@@ -8,46 +10,95 @@ export default function Invoice(
   date,
   grandTotal,
   restaurantBillAmount,
-  accomodationTotal
+  accomodationTotal,roomDetails
 ) {
-  if(restaurantBillAmount){
-      inputFields.items.splice(0,0,{itemName:"Restaurant Bill",itemPrice:restaurantBillAmount})
-    }
-    inputFields.items.splice(0,0,{itemName:"Accomodation Total",itemPrice:accomodationTotal})
-  
-  let i = 4;
-  const doc = new jsPDF({orientation: "p", unit: "in", format: "a4"});
+  console.log('restaurant bill',restaurantBillAmount);
+  console.log('accomodationTotal',accomodationTotal);
+  console.log(inputFields)
+// roomNumber:56,roomBoy:'ravi',roomType:'king'
 
-  doc.setFontSize(30);
-  doc.text(`Invoice`, 3.5, 0.5);
-  doc.setFontSize(15);
-  doc.text("Invoice From", 1, 1);
-  doc.setFontSize(12);
-  doc.text(`Hotel Adithya`, 1, 1.3);
-  doc.text("Dharmastala,D.k", 1, 1.5);
-  doc.setFontSize(15);
-  doc.text("Bill To", 1, 2);
-  doc.setFontSize(12);
-  doc.text(`${name}`, 1, 2.3);
-  doc.text(`${address}`, 1, 2.5);
-  doc.text(`${phone}`, 1, 2.7);
-  doc.setFontSize(15);
-  doc.text("Invoice Date", 5, 1);
-  doc.setFontSize(12);
-  doc.text(`${date}`, 5.2, 1.3);
-  doc.setFontSize(15);
-  if (inputFields?.items.length !== 0) {
-    doc.text("Item", 0.9, 3.9);
-    doc.text("Amount", 3.9, 3.9);
-    doc.text("-----------------------------------------------------------", 0.7, 4);
-  }
-  inputFields?.items.map(item => {
-    i += 0.3;
-    doc.text(`${item.itemName}`, 1, `${i}`);
-    doc.text(`${item.itemPrice}`, 4, `${i}`);
-  });
-  i += 1;
-  doc.text("Total Rs:-", 4, `${i}`);
-  doc.text(`${grandTotal}`, 5, `${i}`);
-  doc.save();
+  var props = {
+    // outputType: OutputType.Save,
+    returnJsPDFDocObject: true,
+    fileName: "Invoice",
+    orientationLandscape: false,
+    logo: {
+        src: '/HotelBook.png',
+        width: 53.33, //aspect ratio = width/height
+        height: 26.66,
+        margin: {
+            top: 0, //negative or positive num, from the current position
+            left: 0 //negative or positive num, from the current position
+        }
+    },
+    business: {
+        name: "Hotel Adithya",
+        address: "Bangalore Road, Dharmastala",
+        phone: "9874563210",
+        email: "info@adithyahotel.com",
+        website: "hoteladithya.com",
+    },
+    contact: {
+        label: "Invoice issued for:",
+        name: name,
+        address: address,
+        phone: phone,
+        email: "client@website.al",
+        otherInfo: "www.website.al",
+    },
+    invoice: {
+        label: "Invoice #: ",
+        num: 19,
+        invDate: "Payment Date: 01/01/2021 18:12",
+        invGenDate: `Invoice Date: ${date}`,
+        headerBorder: false,
+        tableBodyBorder: false,
+        header: ["#", "Title", "Amount"],
+        table: inputFields?.items.map((data,index) =>([
+             index+=1,
+             data.item,
+             data.amount
+        ]
+        )),
+        invTotalLabel: "Total:",
+        invTotal: `${grandTotal}`,
+        invCurrency: "ALL",
+        // row1: {
+        //     col1: 'VAT:',
+        //     col2: '20',
+        //     col3: '%',
+        //     style: {
+        //         fontSize: 10 //optional, default 12
+        //     }
+        // },
+        // row2: {
+        //     col1: 'SubTotal:',
+        //     col2: '116,199.90',
+        //     col3: 'ALL',
+        //     style: {
+        //         fontSize: 10 //optional, default 12
+        //     }
+        // },
+
+
+        invDescLabel: "Room Details",
+        
+        invDesc: `${roomDetails?.map(details=>([
+           'Room Number - ', details.roomNumber,
+            ' Room Type -', details.roomType,
+            ' Room Boy - ', details.roomBoy
+        ])
+        )}`,
+    },
+    footer: {
+        text: "The invoice is created on a computer and is valid without the signature and stamp.",
+    },
+    pageEnable: true,
+    pageLabel: "Page ",
+};
+
+jsPDFInvoiceTemplate(props);
+
 }
+
+
