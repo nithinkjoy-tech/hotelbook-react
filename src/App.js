@@ -36,6 +36,7 @@ import HotelSidebar from "./pages/HotelSidebar";
 import AddRoomBoy from './pages/AddRoomBoy';
 import ForgotPassword from './components/common/ForgotPassword';
 import ResetPassword from './components/common/ResetPassword';
+import LinkReview from './components/common/LinkReview';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
         <Route exact path="/forgotpassword" component={ForgotPassword} />
         <Route exact path="/resetpassword/:token" component={ResetPassword} />
         <Route exact path="/hoteldetails/:hotelId" component={HotelDetails} />
+        <Route exact path="/linkreview/:id" component={LinkReview} />
         <Route exact path="/hotel/roomdetails/:roomId" component={RoomDetails} />
         <Route exact path="/renter/welcome" component={ListPropertyWelcomePage} />
         {/* <Route path="/reception/dashboard/arrivals" component={ArrivalList} /> */}

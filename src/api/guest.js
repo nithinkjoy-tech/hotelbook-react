@@ -74,6 +74,14 @@ export function guestChangePassword(values){
     return apiClient.post("/guest/changePassword", values);
 }
 
+export function getLinkReview(linkId){
+    return apiClient.get(`/guest/linkReview/${linkId}`);
+}
+
+export function addLinkReview(linkId,values){
+    return apiClient.post(`/guest/linkReview/${linkId}`,values);
+}
+
 export function addReview(hotelId,values){
     return apiClient.post(`/guest/review/${hotelId}`, values);
 }

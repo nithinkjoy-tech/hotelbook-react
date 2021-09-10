@@ -125,9 +125,9 @@ function Booked_Dashboard() {
                 >
                   Get Details
                 </button>
-                <button onClick={() => cancelRoomBooking(booking._id)} className="btn btn-danger">
+                {booking?.status==="yettostay"?<button onClick={() => cancelRoomBooking(booking._id)} className="btn btn-danger">
                   Cancel Booking
-                </button>
+                </button>:""}
               </div>
             </div>
           </article>
