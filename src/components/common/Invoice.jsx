@@ -23,7 +23,7 @@ export default function Invoice(
     fileName: "Invoice",
     orientationLandscape: false,
     logo: {
-        src: '/HotelBook.png',
+        src: '/adithyalogo.png',
         width: 53.33, //aspect ratio = width/height
         height: 26.66,
         margin: {
