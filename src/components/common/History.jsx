@@ -8,8 +8,9 @@ import InputBox from "./InputBox";
 import "../../css/Booked_Dashboard.css";
 import {useHistory} from "react-router-dom";
 import Rating from "./Rating";
-import {getBookings, addReview,editReview,getReviewById} from "../../api/guest";
+import {getBookings, addReview, editReview, getReviewById, downloadInvoice} from "../../api/guest";
 import {displayNotification} from "./../../services/notificationService";
+import Invoice from "./Invoice";
 
 const reviewSchema = Yup.object().shape({
   review: Yup.string().min(2).max(100000).required(),
@@ -26,7 +27,6 @@ function History() {
   const [reviewValue, setReviewValue] = useState();
   const [initialValues, setInitialValues] = useState();
   const [revId, setRevId] = useState();
-  
 
   const getAllBookings = async () => {
     const {data, status} = await getBookings({isStayCompleted: true});
@@ -35,29 +35,53 @@ function History() {
     setBookings(data);
   };
 
-  const onReviewClick = async(hotelId,bookingId,reviewId) => {
+  const handleDownloadInvoice = async bookingId => {
+    console.log(bookingId, "download");
+    const {data, status} = await downloadInvoice(bookingId);
+    if (status !== 200)
+      return displayNotification("error", data || "Something unexpected happened");
+    generateInvoice(data);
+  };
+
+  function generateInvoice(details) {
+    let roomDetails = [{roomNumber: 56, roomBoy: "ravi", roomType: "king"}];
+    Invoice(
+      details?.name,
+      details?.address,
+      details?.phoneNumber,
+      details?.inputFields,
+      details?.endingDayOfStay,
+      details?.price,
+      details?.restaurantBillAmount,
+      details?.accomodationTotal,
+      details?.roomDetails || roomDetails,
+      details?.extraBedTotal
+    );
+  }
+
+  const onReviewClick = async (hotelId, bookingId, reviewId) => {
     setHotelId(hotelId);
-    setBookingId(bookingId)
-    
-    let datas={}
-    if(reviewId) {
-      const {data}=await getReviewById(reviewId)
-      console.log(data)
-      datas["review"]=data.review
-      datas["rating"]=data.rating
-      setRatingValue(data.rating)
+    setBookingId(bookingId);
+
+    let datas = {};
+    if (reviewId) {
+      const {data} = await getReviewById(reviewId);
+      console.log(data);
+      datas["review"] = data.review;
+      datas["rating"] = data.rating;
+      setRatingValue(data.rating);
     }
-    setInitialValues(datas)
-    setRevId(reviewId)
+    setInitialValues(datas);
+    setRevId(reviewId);
     setIsOpen(true);
   };
 
-  const setValues=(getFieldProps)=>{
-    const {value:ratingValue}=getFieldProps("rating")
-  if(ratingValue) setRatingValue(ratingValue)
-  const {value:reviewValue}=getFieldProps("review")
-  if(reviewValue) setReviewValue(reviewValue)
-  }
+  const setValues = getFieldProps => {
+    const {value: ratingValue} = getFieldProps("rating");
+    if (ratingValue) setRatingValue(ratingValue);
+    const {value: reviewValue} = getFieldProps("review");
+    if (reviewValue) setReviewValue(reviewValue);
+  };
 
   const diffBetweenDays = (startingDate, endingDate) => {
     const diffInMs = new Date(endingDate) - new Date(startingDate);
@@ -73,23 +97,28 @@ function History() {
     getAllBookings();
   }, []);
 
-  const handleSubmit = async (values,resetForm) => {
+  const handleSubmit = async (values, resetForm) => {
     console.log(values, "val");
-    values["bookingId"]=bookingId
-    if(!revId){
-      const {data,status}=await addReview(hotelId, values)
-      if(status !== 200) return displayNotification("error",data)
-      displayNotification("success","Review Posted Successfully")
-    }else{
-      const {data,status}=await editReview(revId, values)
-      if(status !== 200) return displayNotification("error",data)
-      displayNotification("success","Review Edited Successfully")
+    values["bookingId"] = bookingId;
+    if (!revId) {
+      const {data, status} = await addReview(hotelId, values);
+      if (status !== 200) return displayNotification("error", data);
+      displayNotification("success", "Review Posted Successfully");
+    } else {
+      const {data, status} = await editReview(revId, values);
+      if (status !== 200) return displayNotification("error", data);
+      displayNotification("success", "Review Edited Successfully");
     }
-    
+
     resetForm({values: ""});
   };
 
-  if (!bookings) return <h2 style={{marginTop:"150px",marginLeft:"20px"}} >There is no previous booking history.</h2>;
+  if (!bookings)
+    return (
+      <h2 style={{marginTop: "150px", marginLeft: "20px"}}>
+        There is no previous booking history.
+      </h2>
+    );
 
   return (
     <div className="history">
@@ -122,23 +151,24 @@ function History() {
               <h5 className="book-desc-more">Address :{booking.address} </h5>
             </p>
             <div className="book-details">
-            <div className="book-details-right">
-                  {/* <h5 className="book-details-desc">Hotel Booking ID : 5897458631</h5> */}
-                  <h5 className="pay">Booking ID: {booking?.hotelBookingId}</h5>
-                  <h5 className="book-details-desc">Booked On : {booking?.bookedOn}</h5>
-                  <h5 className="book-details-desc">Check In : {booking?.startingDayOfStay}</h5>
-                  <h5 className="book-details-desc">Check Out : {booking?.endingDayOfStay}</h5>
-                </div>
-                <div className="book-details-left">
+              <div className="book-details-right">
+                {/* <h5 className="book-details-desc">Hotel Booking ID : 5897458631</h5> */}
+                <h5 className="pay">Booking ID: {booking?.hotelBookingId}</h5>
+                <h5 className="book-details-desc">Booked On : {booking?.bookedOn}</h5>
+                <h5 className="book-details-desc">Check In : {booking?.startingDayOfStay}</h5>
+                <h5 className="book-details-desc">Check Out : {booking?.endingDayOfStay}</h5>
+              </div>
+              <div className="book-details-left">
                 <h5 className="pay">
-                    Total: Rs.{" "}
-                    {booking?.totalPrice *
-                      (diffBetweenDays(booking.startingDayOfStay, booking.endingDayOfStay) + 1)}
-                  </h5>
-                  <h5 className="pay">Total Beds: {booking?.totalBeds}</h5>
-                  <h5 className="pay">Total Guests: {booking?.totalGuests}</h5>
-                  <h5 className="pay">Total Rooms: {booking?.totalRooms}</h5>
-                </div>
+                  Total cost:{" "}
+                  {booking?.totalPrice *
+                    diffBetweenDays(booking.startingDayOfStay, booking.endingDayOfStay)}
+                </h5>
+                <h5 className="pay">Extra Cost: {booking?.additionalCharges}</h5>
+                <h5 className="pay">Total Beds: {booking?.totalBeds}</h5>
+                <h5 className="pay">Total Guests: {booking?.totalGuests}</h5>
+                <h5 className="pay">Total Rooms: {booking?.totalRooms}</h5>
+              </div>
             </div>
             <div style={{display: "flex", justifyContent: "space-between"}}>
               <button
@@ -153,7 +183,16 @@ function History() {
               >
                 Get Details
               </button>
-              <button onClick={() => onReviewClick(booking.hotelId,booking._id,booking.reviewId)} className="btn btn-secondary">
+              <button
+                onClick={() => handleDownloadInvoice(booking._id)}
+                className="btn btn-outline-secondary"
+              >
+                Download Invoice
+              </button>
+              <button
+                onClick={() => onReviewClick(booking.hotelId, booking._id, booking.reviewId)}
+                className="btn btn-secondary"
+              >
                 {booking?.reviewId ? "Edit Review" : "Add Review"}
               </button>
             </div>
@@ -161,14 +200,14 @@ function History() {
         </article>
       ))}
       <Formik
-        initialValues={initialValues||{
-          rating: "",
-          review: "",
-        }}
-        validationSchema={reviewSchema}
-        onSubmit={(values, { resetForm}) =>
-          handleSubmit(values,resetForm)
+        initialValues={
+          initialValues || {
+            rating: "",
+            review: "",
+          }
         }
+        validationSchema={reviewSchema}
+        onSubmit={(values, {resetForm}) => handleSubmit(values, resetForm)}
         enableReinitialize
       >
         {({handleSubmit, setFieldValue, getFieldProps}) => (
@@ -191,7 +230,7 @@ function History() {
                     fullIcon={<i className="fa fa-star"></i>}
                     activeColor="#ffd700"
                     half={setValues(getFieldProps)}
-                    value={Number(ratingValue)||0}
+                    value={Number(ratingValue) || 0}
                   />
                   <div></div>
                 </div>

@@ -28,6 +28,10 @@ export function getRenterHotelsbyId(id) {
   return apiClient.get(`/renter/hotel/${id}`);
 }
 
+export function downloadInvoice(bookingId) {
+  return apiClient.get(`/reception/booking/downloadInvoice/${bookingId}`);
+}
+
 export function editHotelById(values, id) {
   return apiClient.put(`/renter/hotel/${id}`, values);
 }

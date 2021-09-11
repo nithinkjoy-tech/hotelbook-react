@@ -36,6 +36,7 @@ function CheckOut({match}) {
   const [grandTotal, setGrandTotal] = useState();
   const [restaurantBillAmount, setRestaurantBillAmount] = useState();
   const [accomodationTotal, setAccomodationTotal] = useState();
+  const [extraBedTotal, setExtraBedTotal] = useState();
 
   const initialValues = {items: [{itemName: "", itemPrice: ""}]};
 
@@ -49,10 +50,11 @@ function CheckOut({match}) {
       }, 1000);
     }
     setDetails(data);
-    setTotal(Number(data.price));
+    setTotal(Number(data.price)+Number(data.extraBedTotal));
     setGrandTotal(Number(data.price));
     setRestaurantBillAmount(data.restaurantBillAmount);
     setAccomodationTotal(data.accomodationTotal);
+    setExtraBedTotal(data.extraBedTotal);
     if (removeButtonRef.current) {
       removeButtonRef.current.click();
     }
@@ -78,7 +80,9 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       date,
       grandTotal,
       restaurantBillAmount,
-      accomodationTotal,roomDetails
+      accomodationTotal,
+      roomDetails,
+      extraBedTotal
     );
   }
 
@@ -136,6 +140,13 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                 </div>
                 <div className="col font-bold" style={{fontSize: "20px"}}>
                   Rs. {accomodationTotal}
+                </div>
+                <div className="w-100"></div>
+                <div className="col" style={{fontSize: "20px"}}>
+                  Extra Bed Total
+                </div>
+                <div className="col font-bold" style={{fontSize: "20px"}}>
+                  Rs. {extraBedTotal}
                 </div>
                 <div className="w-100"></div>
                 <div className="col" style={{fontSize: "20px"}}>
@@ -243,6 +254,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                                         Number(total) -
                                           Number(getFieldProps(`items[${index}].itemPrice`).value)
                                       );
+                                      if(index==0) setGrandTotal(Number(total))
                                     }}
                                   >
                                     Delete

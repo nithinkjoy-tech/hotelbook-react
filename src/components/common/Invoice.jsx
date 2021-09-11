@@ -10,11 +10,17 @@ export default function Invoice(
   date,
   grandTotal,
   restaurantBillAmount,
-  accomodationTotal,roomDetails
+  accomodationTotal,
+  roomDetails,
+  extraBedTotal
 ) {
-  console.log('restaurant bill',restaurantBillAmount);
-  console.log('accomodationTotal',accomodationTotal);
-  console.log(inputFields)
+    if(restaurantBillAmount){
+        inputFields.items.splice(0,0,{itemName:"Restaurant Bill",itemPrice:restaurantBillAmount})
+      }
+    if(extraBedTotal){
+        inputFields.items.splice(0,0,{itemName:"Extra Bed Cost",itemPrice:extraBedTotal})
+      }
+      inputFields.items.splice(0,0,{itemName:"Accomodation Total",itemPrice:accomodationTotal})
 // roomNumber:56,roomBoy:'ravi',roomType:'king'
 
   var props = {
@@ -49,15 +55,15 @@ export default function Invoice(
     invoice: {
         label: "Invoice #: ",
         num: 19,
-        invDate: "Payment Date: 01/01/2021 18:12",
+        invDate: `Payment Date: ${date}`,
         invGenDate: `Invoice Date: ${date}`,
         headerBorder: false,
         tableBodyBorder: false,
         header: ["#", "Title", "Amount"],
         table: inputFields?.items.map((data,index) =>([
              index+=1,
-             data.item,
-             data.amount
+             data.itemName,
+             data.itemPrice
         ]
         )),
         invTotalLabel: "Total:",
@@ -98,6 +104,8 @@ export default function Invoice(
 };
 
 jsPDFInvoiceTemplate(props);
+// setTimeout(()=>{
+// },1000)
 
 }
 

@@ -103,10 +103,11 @@ function Booked_Dashboard() {
                 </div>
                 <div className="book-details-left">
                 <h5 className="pay">
-                    Total: Rs.{" "}
+                    Accomodtion Total: Rs.{" "}
                     {booking?.totalPrice *
-                      (diffBetweenDays(booking.startingDayOfStay, booking.endingDayOfStay) + 1)}
+                      (diffBetweenDays(booking.startingDayOfStay, booking.endingDayOfStay))}
                   </h5>
+                  <h5 className="pay">Extra Cost: {booking?.additionalCharges}</h5>
                   <h5 className="pay">Total Beds: {booking?.totalBeds}</h5>
                   <h5 className="pay">Total Guests: {booking?.totalGuests}</h5>
                   <h5 className="pay">Total Rooms: {booking?.totalRooms}</h5>
@@ -125,9 +126,9 @@ function Booked_Dashboard() {
                 >
                   Get Details
                 </button>
-                <button onClick={() => cancelRoomBooking(booking._id)} className="btn btn-danger">
+                {booking?.status==="yettostay"?<button onClick={() => cancelRoomBooking(booking._id)} className="btn btn-danger">
                   Cancel Booking
-                </button>
+                </button>:""}
               </div>
             </div>
           </article>

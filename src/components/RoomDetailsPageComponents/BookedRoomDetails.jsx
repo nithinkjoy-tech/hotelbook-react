@@ -137,11 +137,11 @@ function BookedRoomDetails({}) {
                 </div>
               </td>
               <td>
-                <p>{`${room.pricePerRoom} x ${days+1} Nights = ${room.pricePerRoom*(days+1)}`}</p>
-                <p>{`${room.pricePerRoom*(days+1)} x ${room.numberOfRoomsBooked} Rooms = ${room.pricePerRoom*(days+1)*room.numberOfRoomsBooked}`}</p>
+                <p>{`${room.pricePerRoom} x ${days} Nights = ${room.pricePerRoom*(days)}`}</p>
+                <p>{`${room.pricePerRoom*(days)} x ${room.numberOfRoomsBooked} Rooms = ${room.pricePerRoom*(days)*room.numberOfRoomsBooked}`}</p>
                 
                 Rs.{" "}
-                {(room.pricePerRoom*room.numberOfRoomsBooked)*(days+1)}
+                {(room.pricePerRoom*room.numberOfRoomsBooked)*(days)}
               </td>
             </tr> 
           ))}
