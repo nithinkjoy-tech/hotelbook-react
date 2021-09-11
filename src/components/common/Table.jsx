@@ -10,6 +10,7 @@ import _ from "lodash";
 import {bookHotel} from "./../../api/guest";
 import {bookOfflineHotel} from "./../../api/renter";
 import {getCurrentUser} from "../../services/authService";
+import {confirmAlert} from "react-confirm-alert";
 
 function Table({rooms}) {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -34,43 +35,62 @@ function Table({rooms}) {
 
   // const object = {};
   const handleBooking = async hotelId => {
-    if (!getCurrentUser()?.isGuest && !getCurrentUser()?.isReception)
-      return (window.location = `/signin?redirecturl=${window.location.href}`);
-    console.log(object);
-    if (_.isEmpty(object)) return displayNotification("error", "Please select rooms for booking");
-    let roomsArray = [];
-    for (let [key, value] of Object.entries(object)) {
-      console.log(key, "key");
-      console.log(object, "obj");
-      roomsArray.push({roomId: key, noOfRooms: value});
-    }
+    confirmAlert({
+      title: "Confirm Booking",
+      message: "Are you sure want to make this booking.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            if (!getCurrentUser()?.isGuest && !getCurrentUser()?.isReception)
+              return (window.location = `/signin?redirecturl=${window.location.href}`);
+            console.log(object);
+            if (_.isEmpty(object))
+              return displayNotification("error", "Please select rooms for booking");
+            let roomsArray = [];
+            for (let [key, value] of Object.entries(object)) {
+              console.log(key, "key");
+              console.log(object, "obj");
+              roomsArray.push({roomId: key, noOfRooms: value});
+            }
 
-    let finalData = {
-      roomDetails: roomsArray,
-      selectedDayRange: JSON.parse(localStorage.getItem("selectedDays")),
-      hotelId,
-    };
-    console.log(finalData, "dtt");
-    if (getCurrentUser()?.isGuest) {
-      const {data, status} = await bookHotel(finalData);
-      if (status !== 200) return displayNotification("error", data);
-      displayNotification("success", data);
-      setTimeout(()=>{
-        window.location="/dashboard"
-      },1000)
-    }
+            let finalData = {
+              roomDetails: roomsArray,
+              selectedDayRange: JSON.parse(localStorage.getItem("selectedDays")),
+              hotelId,
+            };
+            console.log(finalData, "dtt");
+            if (getCurrentUser()?.isGuest) {
+              const {data, status} = await bookHotel(finalData);
+              if (status !== 200) return displayNotification("error", data);
+              displayNotification("success", data);
+              setTimeout(() => {
+                window.location = "/dashboard";
+              }, 1000);
+            }
 
-    if (getCurrentUser()?.isReception) {
-      if (!JSON.parse(localStorage.getItem("offlineGuestId")))
-        return displayNotification("error", "Check if user is registered");
-      finalData["offlineGuestId"] = JSON.parse(localStorage.getItem("offlineGuestId"));
-      const {data, status} = await bookOfflineHotel(finalData);
-      if (status !== 200) return displayNotification("error", data);
-      displayNotification("success", data);
-      setTimeout(()=>{
-        window.location="/reception/dashboard"
-      },1000)
-    }
+            if (getCurrentUser()?.isReception) {
+              if (!JSON.parse(localStorage.getItem("offlineGuestId")))
+                return displayNotification("error", "Check if user is registered");
+              finalData["offlineGuestId"] = JSON.parse(localStorage.getItem("offlineGuestId"));
+              const {data, status} = await bookOfflineHotel(finalData);
+              if (status !== 200) return displayNotification("error", data);
+              displayNotification("success", data);
+              setTimeout(() => {
+                window.location = "/reception/dashboard";
+              }, 1000);
+            }
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {
+            return null;
+          },
+        },
+      ],
+    });
+
     // setTimeout(() => {
     //   window.location="/dashboard"
     // },1000)

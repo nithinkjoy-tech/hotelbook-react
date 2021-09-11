@@ -36,6 +36,7 @@ function CheckOut({match}) {
   const [grandTotal, setGrandTotal] = useState();
   const [restaurantBillAmount, setRestaurantBillAmount] = useState();
   const [accomodationTotal, setAccomodationTotal] = useState();
+  const [extraBedTotal, setExtraBedTotal] = useState();
 
   const initialValues = {items: [{itemName: "", itemPrice: ""}]};
 
@@ -48,10 +49,11 @@ function CheckOut({match}) {
       }, 1000);
     }
     setDetails(data);
-    setTotal(Number(data.price));
+    setTotal(Number(data.price)+Number(data.extraBedTotal));
     setGrandTotal(Number(data.price));
     setRestaurantBillAmount(data.restaurantBillAmount);
     setAccomodationTotal(data.accomodationTotal);
+    setExtraBedTotal(data.extraBedTotal);
     if (removeButtonRef.current) {
       removeButtonRef.current.click();
     }
@@ -69,12 +71,6 @@ function CheckOut({match}) {
     // Dummy Room details
 
 let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
-console.log("name",details?.name)
-console.log("address",details?.address)
-console.log("inputFields",inputFields)
-console.log("date",date)
-console.log("grandTotal",grandTotal)
-console.log("roomDetails",roomDetails)
     Invoice(
       details?.name,
       details?.address,
@@ -83,7 +79,9 @@ console.log("roomDetails",roomDetails)
       date,
       grandTotal,
       restaurantBillAmount,
-      accomodationTotal,roomDetails
+      accomodationTotal,
+      roomDetails,
+      extraBedTotal
     );
   }
 
@@ -141,6 +139,13 @@ console.log("roomDetails",roomDetails)
                 </div>
                 <div className="col font-bold" style={{fontSize: "20px"}}>
                   Rs. {accomodationTotal}
+                </div>
+                <div className="w-100"></div>
+                <div className="col" style={{fontSize: "20px"}}>
+                  Extra Bed Total
+                </div>
+                <div className="col font-bold" style={{fontSize: "20px"}}>
+                  Rs. {extraBedTotal}
                 </div>
                 <div className="w-100"></div>
                 <div className="col" style={{fontSize: "20px"}}>
@@ -248,6 +253,7 @@ console.log("roomDetails",roomDetails)
                                         Number(total) -
                                           Number(getFieldProps(`items[${index}].itemPrice`).value)
                                       );
+                                      if(index==0) setGrandTotal(Number(total))
                                     }}
                                   >
                                     Delete

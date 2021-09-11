@@ -38,7 +38,7 @@ function LinkReview({match}) {
         displayNotification("error", data)
         return window.location ="/"
     };
-    setInitialValues(data);
+    if(data) setInitialValues(data);
   };
 
   useEffect(() => {

@@ -1,13 +1,15 @@
 import React, {useEffect, useState, useMemo} from "react";
 import "../../css/ArrivalList.css";
 import Sidebar from "./Sidebar";
-import {getCompletedStays} from "../../api/renter";
+import {getCompletedStays,downloadInvoice} from "../../api/renter";
 import DataTable, {createTheme} from "react-data-table-component";
 import InputBox from "./../common/InputBox";
 import _ from "lodash";
 import Calendar from "./../landingPageComponent/Calendar";
 import * as Yup from "yup";
 import {Formik,Form} from "formik"
+import Invoice from './../common/Invoice';
+import { displayNotification } from './../../services/notificationService';
 
 const dateValidator = Yup.object()
     .shape({
@@ -27,12 +29,37 @@ const dateValidator = Yup.object()
 
 function CompletedStays() {
 
+  const handleDownloadInvoice=async(bookingId)=>{
+    console.log(bookingId,"download")
+    const {data,status}=await downloadInvoice(bookingId)
+    if(status !== 200) return displayNotification("error", data||"Something unexpected happened");
+    generateInvoice(data)
+  }
+
+  function generateInvoice(details) {
+
+let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
+    Invoice(
+      details?.name,
+      details?.address,
+      details?.phoneNumber,
+      details?.inputFields,
+      details?.endingDayOfStay,
+      details?.price,
+      details?.restaurantBillAmount,
+      details?.accomodationTotal,
+      details?.roomDetails||roomDetails,
+      details?.extraBedTotal
+    );
+  }
+
   const columns = useMemo(
     () => [
       {
         name: "Booking ID",
         selector: "hotelBookingId",
         sortable: true,
+        grow:0
       },
       {
         name: "Name",
@@ -42,6 +69,7 @@ function CompletedStays() {
       {
         name: "Phone Number",
         selector: "phoneNumber",
+        grow:1
       },
       {
         name: "Booked Date",
@@ -52,11 +80,13 @@ function CompletedStays() {
         name: "Check In",
         selector: "startingDayOfStay",
         sortable: true,
+        grow:0
       },
       {
         name: "Check Out",
         selector: "endingDayOfStay",
         sortable: true,
+        grow:0
       },
       {
         name: "Email",
@@ -66,12 +96,17 @@ function CompletedStays() {
         name: "Booking Mode",
         sortable: true,
         selector: "bookingMode",
+        grow:0,
         cell: row =>
           row.bookingMode === "online" ? (
             <span className="badge badge-success">Online</span>
           ) : (
             <span className="badge badge-secondary">Offline</span>
           ),
+      },
+      {
+        name: "Download Invoice",
+        cell: row =><button onClick={()=>handleDownloadInvoice(row._id)} className="btn btn-secondary">Download</button>
       },
     ],
     []
