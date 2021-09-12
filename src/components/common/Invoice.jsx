@@ -27,13 +27,13 @@ export default function Invoice(
     fileName: "Invoice",
     orientationLandscape: false,
     logo: {
-      src: "/HotelBook.png",
-      width: 53.33, //aspect ratio = width/height
-      height: 26.66,
-      margin: {
-        top: 0, //negative or positive num, from the current position
-        left: 0, //negative or positive num, from the current position
-      },
+        src: '/adithyalogo.png',
+        width: 53.33, //aspect ratio = width/height
+        height: 26.66,
+        margin: {
+            top: 0, //negative or positive num, from the current position
+            left: 0 //negative or positive num, from the current position
+        }
     },
     business: {
       name: "Hotel Adithya",

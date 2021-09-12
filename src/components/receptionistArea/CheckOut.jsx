@@ -43,6 +43,7 @@ function CheckOut({match}) {
 
   const getDetails = async () => {
     const {data, status} = await checkOutDetails(bookingId);
+    console.log('checkout data',data)
     if (status !== 200) {
       displayNotification("error", data);
       setTimeout(() => {
