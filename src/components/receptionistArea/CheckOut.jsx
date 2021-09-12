@@ -29,6 +29,7 @@ function CheckOut({match}) {
   const bookingId = match.params.bookingId;
   const [inputFields, setInputFields] = useState([]);
   const [details, setDetails] = useState();
+  const [roomNumbers, setRoomNumbers] = useState();
   let removeButtonRef = useRef(null);
 
   const [total, setTotal] = useState();
@@ -54,6 +55,7 @@ function CheckOut({match}) {
     setRestaurantBillAmount(data.restaurantBillAmount);
     setAccomodationTotal(data.accomodationTotal);
     setExtraBedTotal(data.extraBedTotal);
+    setRoomNumbers(data.roomNumbers)
     if (removeButtonRef.current) {
       removeButtonRef.current.click();
     }
@@ -80,12 +82,13 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       grandTotal,
       restaurantBillAmount,
       accomodationTotal,
-      roomDetails,
+      details?.roomDetails||roomDetails,
       extraBedTotal
     );
   }
 
   const handleSubmit = async values => {
+    values["roomNumbers"]=roomNumbers
     confirmAlert({
       title: "Confirm Payment",
       message: "Are you sure want to pay.",
