@@ -2,7 +2,9 @@
 import { Fragment,useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import logo from "../../images/HotelBook.png"
+// import logo from "../../images/HotelBook.png"
+import logo from "../../images/adithyalogo.png"
+
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', current: false },
@@ -34,7 +36,7 @@ export default function NavBar() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+              <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start" style={{alignItems: 'center'}}>
                 <a href="/" style={{textDecoration:"none"}} >
                 <div className="flex-shrink-0 flex items-center">
                   <img
