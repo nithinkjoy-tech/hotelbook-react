@@ -7,12 +7,16 @@ const settings = {
     apiUrl: "http://localhost:3800/api",
   },
   prod: {
-    apiUrl: "http://localhost:3800/api",
+    apiUrl: "https://hotelbook-api.herokuapp.com/api",
   },
 };
 
 const getCurrentSettings = () => {
-  return settings.prod;
+  if(process.env.NODE_ENV=="production") {
+    return settings.prod;
+  }else{
+    return settings.dev
+  }
 };
 
 export default getCurrentSettings();
