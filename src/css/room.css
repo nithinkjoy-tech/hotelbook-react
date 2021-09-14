@@ -1788,7 +1788,7 @@ textarea.form-control {
     .form-inline .custom-control-label {
       margin-bottom: 0; } }
 
-.btn {
+/* .btn {
   display: inline-block;
   font-weight: 400;
   color: #212529;
@@ -1820,7 +1820,7 @@ textarea.form-control {
 
 a.btn.disabled,
 fieldset:disabled a.btn {
-  pointer-events: none; }
+  pointer-events: none; } */
 
 /* .btn-primary {
   color: #fff;
