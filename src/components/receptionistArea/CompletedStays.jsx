@@ -172,7 +172,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                             name="selectedDayRange"
                             onChange={handleChange}
                             selectedDayRange={values.selectedDayRange}
-                            minimumDate={true}
+                            minimumDate={false}
                             placeholder="Select date 📅"
                           />
                         </div>
