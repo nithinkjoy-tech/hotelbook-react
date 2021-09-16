@@ -37,6 +37,8 @@ import AddRoomBoy from './pages/AddRoomBoy';
 import ForgotPassword from './components/common/ForgotPassword';
 import ResetPassword from './components/common/ResetPassword';
 import LinkReview from './components/common/LinkReview';
+import Logout from '../src/components/common/Logout'
+
 
 function App() {
   return (
@@ -50,6 +52,7 @@ function App() {
         <Route exact path="/signin" component={SigninPage} />
         <Route exact path="/dashboard" component={GuestDashboard} />
         <Route exact path="/signup" component={SignupPage} />
+        <Route exact path="/logout" component={Logout} />
         <Route exact path="/bookedroomdetails" component={BookedRoomDetails} />
         <Route exact path="/forgotpassword" component={ForgotPassword} />
         <Route exact path="/resetpassword/:token" component={ResetPassword} />
