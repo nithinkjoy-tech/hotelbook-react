@@ -25,7 +25,7 @@ export default function NavBar() {
 
 
   useEffect(() => {
-     getCurrentUser?.name ? setSigned(true) : setSigned(false)
+     getCurrentUser.name ? setSigned(true) : setSigned(false)
   },[])
 
   
