@@ -37,7 +37,7 @@ import AddRoomBoy from './pages/AddRoomBoy';
 import ForgotPassword from './components/common/ForgotPassword';
 import ResetPassword from './components/common/ResetPassword';
 import LinkReview from './components/common/LinkReview';
-import Logout from '../src/components/common/Logout'
+import NotFound from './components/common/NotFound';
 
 
 function App() {
@@ -99,6 +99,7 @@ function App() {
         <Route exact path="/admin/addroom/:hotelId" component={AddRoom} />
         <Route exact path="/admin/editroom/:roomId" component={AddRoom} />
         <Route exact path="/" component={LandingPage} />
+        <Route component={NotFound} />
       </Switch>
       {window.location.pathname.includes("/reception/dashboard") ||
       window.location.pathname.includes("/restaurant/dashboard") ||
