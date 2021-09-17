@@ -1,24 +1,34 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment,useState } from 'react'
+import { Fragment,useState,useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 // import logo from "../../images/HotelBook.png"
 import logo from "../../images/adithyalogo.png"
-
+import {getCurrentUser} from '../../services/authService';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', current: false },
-//   { name: 'Calendar', href: '#', current: false },
+  // { name: 'Dashboard', href: '/dashboard', current: false },
+  // {name:'About',href:'/about',current:false}
 ]
+if(getCurrentUser.name){
+   navigation.push({name: 'Dashboard', href: '/dashboard', current: false })
+}
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function NavBar() {
+  
+  const [login,setLogin] = useState(false);
+  const [signed,setSigned] = useState(false);
 
-  const [login,setLogin]=useState(false)
 
+  useEffect(() => {
+     getCurrentUser.name ? setSigned(true) : setSigned(false)
+  },[])
+
+  
   return (
     <Disclosure as="nav" className="bg-gray-800 fixed-top">
       {({ open }) => (
@@ -144,16 +154,20 @@ export default function NavBar() {
                   )}
                 </Menu> 
               </div>:<div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-                <a style={{textDecoration:"none"}} href="/signin" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
-                  Sign in
-                </a>
-                <a
+               { signed ? (<a
                 style={{textDecoration:"none"}}
-                  href="/signup"
+                  href="/logout"
                   className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-                >
-                  Sign up
-                </a>
+                >Sign Out</a>) : (<><a style={{textDecoration:"none"}} href="/signin" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+                Sign in
+              </a>
+              <a
+              style={{textDecoration:"none"}}
+                href="/signup"
+                className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+              >
+                Sign up
+              </a> </>) }
               </div>}
             </div>
           </div>

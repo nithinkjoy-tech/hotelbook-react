@@ -39,6 +39,7 @@ import ResetPassword from './components/common/ResetPassword';
 import LinkReview from './components/common/LinkReview';
 import NotFound from './components/common/NotFound';
 
+
 function App() {
   return (
     <React.Fragment>
@@ -51,6 +52,7 @@ function App() {
         <Route exact path="/signin" component={SigninPage} />
         <Route exact path="/dashboard" component={GuestDashboard} />
         <Route exact path="/signup" component={SignupPage} />
+        <Route exact path="/logout" component={Logout} />
         <Route exact path="/bookedroomdetails" component={BookedRoomDetails} />
         <Route exact path="/forgotpassword" component={ForgotPassword} />
         <Route exact path="/resetpassword/:token" component={ResetPassword} />

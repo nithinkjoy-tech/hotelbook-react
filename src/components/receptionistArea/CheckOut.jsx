@@ -302,7 +302,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                             color="primary"
                             type="submit"
                           >
-                            pay amount
+                            Check Out
                           </Button>
                         )}
                         {isPaid && (

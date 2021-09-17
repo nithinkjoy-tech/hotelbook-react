@@ -53,8 +53,8 @@ export default function Invoice(
     invoice: {
       label: "Invoice #: ",
       num: 19,
-      invDate: `Payment Date: ${date}`,
-      invGenDate: `Invoice Date: ${date}`,
+      invDate: `CheckIn Date: ${date}`,
+      invGenDate: `CheckOut Date: ${date}`,
       headerBorder: false,
       tableBodyBorder: false,
       header: ["#", "Title", "Amount"],
