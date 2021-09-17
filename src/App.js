@@ -38,7 +38,7 @@ import ForgotPassword from './components/common/ForgotPassword';
 import ResetPassword from './components/common/ResetPassword';
 import LinkReview from './components/common/LinkReview';
 import NotFound from './components/common/NotFound';
-
+import Logout from './components/common/Logout';
 
 function App() {
   return (
