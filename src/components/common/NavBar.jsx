@@ -10,8 +10,17 @@ const navigation = [
   // { name: 'Dashboard', href: '/dashboard', current: false },
   // {name:'About',href:'/about',current:false}
 ]
-if(getCurrentUser.name){
+if(getCurrentUser()?.isGuest){
    navigation.push({name: 'Dashboard', href: '/dashboard', current: false })
+}
+if(getCurrentUser()?.isAdmin){
+   navigation.push({name: 'Dashboard', href: '/admin/dashboard', current: false })
+}
+if(getCurrentUser()?.isRestaurant){
+   navigation.push({name: 'Dashboard', href: '/restaurant/dashboard', current: false })
+}
+if(getCurrentUser()?.isReception){
+   navigation.push({name: 'Dashboard', href: '/reception/dashboard', current: false })
 }
 
 function classNames(...classes) {
@@ -25,7 +34,8 @@ export default function NavBar() {
 
 
   useEffect(() => {
-     getCurrentUser.name ? setSigned(true) : setSigned(false)
+    console.log(getCurrentUser(),"gcu")
+     getCurrentUser()?.username ? setSigned(true) : setSigned(false)
   },[])
 
   

@@ -122,7 +122,7 @@ function ManageRoomBoy({hotelId}) {
             title="Room Boys"
             pagination
             subHeader
-            noDataComponent="No bookings available for today"
+            noDataComponent="No Room Boys in this list"
             subHeaderComponent={[
               <input
                 onChange={e => handleChange(e)}

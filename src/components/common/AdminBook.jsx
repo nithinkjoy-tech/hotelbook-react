@@ -76,7 +76,7 @@ function AdminBook() {
                 <div className="book-details-left">
                   <h5 className="book-details-desc">Booked On : {booking?.bookedOn}</h5>
                   <h5 className="book-details-desc">Check In : {booking?.startingDayOfStay}</h5>
-                  <h5 className="book-details-desc">Check Out : {booking?.endingDayOfStay}</h5>
+                  <h5 className="book-details-desc">Check Out : {booking?.earlyEndingDayOfStay||booking?.endingDayOfStay}</h5>
                 </div>
               </div>
               <button
@@ -84,7 +84,7 @@ function AdminBook() {
                   handleDetails(
                     booking.roomDetails,
                     booking.startingDayOfStay,
-                    booking.endingDayOfStay
+                    booking?.earlyEndingDayOfStay||booking.endingDayOfStay
                   )
                 }
                 className="btn btn-primary"

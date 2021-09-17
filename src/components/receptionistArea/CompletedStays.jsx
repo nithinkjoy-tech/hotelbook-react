@@ -44,7 +44,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       details?.address,
       details?.phoneNumber,
       details?.inputFields,
-      details?.endingDayOfStay,
+      details?.earlyEndingDayOfStay||details?.endingDayOfStay,
       details?.price,
       details?.restaurantBillAmount,
       details?.accomodationTotal,
@@ -84,7 +84,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       },
       {
         name: "Check Out",
-        selector: "endingDayOfStay",
+        selector: booking?.earlyEndingDayOfStay?"earlyEndingDayOfStay":"endingDayOfStay",
         sortable: true,
         grow:0
       },
