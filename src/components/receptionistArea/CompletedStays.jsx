@@ -53,6 +53,9 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
     );
   }
 
+  const [booking, setBooking] = useState();
+  const [fullBooking, setFullBooking] = useState();
+
   const columns = useMemo(
     () => [
       {
@@ -78,7 +81,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       },
       {
         name: "Check In",
-        selector: "startingDayOfStay",
+        selector: booking?.lateStartingDayOfStay?"lateStartingDayOfStay":"startingDayOfStay",
         sortable: true,
         grow:0
       },
@@ -112,8 +115,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
     []
   );
 
-  const [booking, setBooking] = useState();
-  const [fullBooking, setFullBooking] = useState();
+  
 
   const handleChange = ({target}) => {
     let booking = fullBooking;

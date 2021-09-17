@@ -155,7 +155,7 @@ function History() {
                 {/* <h5 className="book-details-desc">Hotel Booking ID : 5897458631</h5> */}
                 <h5 className="pay">Booking ID: {booking?.hotelBookingId}</h5>
                 <h5 className="book-details-desc">Booked On : {booking?.bookedOn}</h5>
-                <h5 className="book-details-desc">Check In : {booking?.startingDayOfStay}</h5>
+                <h5 className="book-details-desc">Check In : {booking?.lateStartingDayOfStay||booking?.startingDayOfStay}</h5>
                 <h5 className="book-details-desc">Check Out : {booking?.earlyEndingDayOfStay||booking?.endingDayOfStay}</h5>
               </div>
               <div className="book-details-left">

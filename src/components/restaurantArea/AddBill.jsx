@@ -25,7 +25,7 @@ function AddBill() {
       },
       {
         name: "Checked In",
-        selector: "startingDayOfStay",
+        selector: booking?.lateStartingDayOfStay?"lateStartingDayOfStay":"startingDayOfStay",
         sortable: true,
       },
       {
