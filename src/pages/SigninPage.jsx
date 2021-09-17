@@ -44,7 +44,7 @@ function SigninPage({location}) {
 
     if (location.pathname === "/signin") {
       const {data, status} = await guestSignin(values);
-      if (status === 400) setFieldError("userId", data);
+      if (status !== 200) setFieldError("userId", data);
       else {
         console.log(location)
         setAuthToken(data);

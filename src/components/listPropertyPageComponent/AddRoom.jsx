@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
   roomNumbers:Yup.string().required().matches(/^[0-9,]+$/,"Only number seperated by commas allowed"),
   kindOfBed: Yup.string()
     .required()
-    .oneOf(["Single bed", "Double bed", "Large bed", "Extra large bed"]),
+    .oneOf(["Single bed", "Double bed"]),
   numberOfBeds: Yup.number().min(1).max(10).required(),
   basePricePerNight: Yup.number().min(10).max(2500000).required(),
   numberOfGuestsInaRoom: Yup.number().min(1).max(50),
@@ -189,7 +189,7 @@ function AddRoom({match}) {
                             <PropertySelectBox
                               label="Kind of Bed"
                               name="kindOfBed"
-                              options={["Single bed", "Double bed", "Large bed", "Extra large bed"]}
+                              options={["Single bed", "Double bed"]}
                             />
                           </div>
                           

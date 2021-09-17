@@ -47,14 +47,14 @@ function Step2({saveAsDraft}) {
                     <PropertySelectBox
                       label="Parking"
                       name="parking"
-                      options={["No", "Yes, Free", "Yes, Paid"]}
+                      options={["No", "Yes"]}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
                     <PropertySelectBox
-                      label="Breakfast"
-                      name="breakfast"
-                      options={["No", "Yes, Free", "Yes, Paid"]}
+                      label="Restaurant"
+                      name="restaurant"
+                      options={["No", "Yes"]}
                     />
                   </div>
                   

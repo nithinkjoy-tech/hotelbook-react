@@ -14,7 +14,7 @@ let pincodeDirectory = require("india-pincode-lookup");
 
 const validationSchema = Yup.object().shape({
   hotelName: Yup.string().min(1).max(50).required(),
-  starRating: Yup.string().oneOf(["1", "2", "3", "4", "5"]).nullable(),
+  starRating: Yup.string().oneOf(["", "1", "2", "3", "4", "5"]).nullable(),
   phoneNumber: Yup.string()
     .required()
     .length(12)
@@ -25,31 +25,22 @@ const validationSchema = Yup.object().shape({
     .required()
     .length(6)
     .matches(/^[0-9]+$/, "Postal code must include only numbers"),
-  parking: Yup.string().required().oneOf(["No", "Yes, Free", "Yes, Paid"]),
-  breakfast: Yup.string().required().oneOf(["No", "Yes, Free", "Yes, Paid"]),
+  parking: Yup.string().required().oneOf(["No", "Yes"]),
+  restaurant: Yup.string().required().oneOf(["No", "Yes"]),
   facilities: Yup.array(),
   extraBed: Yup.string().required().oneOf(["No", "Yes"]),
-  noOfExtraBeds: Yup.number().min(1).max(4).nullable(),
+  noOfExtraBeds: Yup.number().min(1).max(4),
   pricePerExtraBed: Yup.number().min(0).max(10000).nullable(),
   mainPhoto: Yup.mixed().required(),
   photos: Yup.array().nullable(),
-  freeCancellationAvailable: Yup.string().required(),
-  ifNotCancelledBeforeDate: Yup.string(),
   checkInStart: Yup.string().required(),
   checkInEnd: Yup.string().required(),
   checkOutStart: Yup.string().required(),
   checkOutEnd: Yup.string().required(),
-  accomodateChildren: Yup.string().required().oneOf(["No", "Yes"]),
   allowPets: Yup.string().required().oneOf(["No", "Yes"]),
-  provideDormitoryForDriver: Yup.string().required().oneOf(["No", "Yes"]),
 });
 
-const booleanKeys = [
-  "extraBed",
-  "accomodateChildren",
-  "allowPets",
-  "provideDormitoryForDriver",
-];
+const booleanKeys = ["parking", "restaurant", "extraBed", "allowPets"];
 
 function ListPropertyPage({match}) {
   let hotelId = match.params.id;
@@ -61,22 +52,18 @@ function ListPropertyPage({match}) {
     city: "",
     postalCode: "",
     parking: "No",
-    breakfast: "No",
+    restaurant: "No",
     facilities: [],
     extraBed: "No",
     noOfExtraBeds: 1,
-    pricePerExtraBed:0,
+    pricePerExtraBed: 0,
     mainPhoto: "",
     photos: [],
-    freeCancellationAvailable: "None.(Guest cannot cancel once booked)",
-    ifNotCancelledBeforeDate: "of the first day",
     checkInStart: "00 : 00",
     checkInEnd: "00 : 00",
     checkOutStart: "00 : 00",
     checkOutEnd: "00 : 00",
-    accomodateChildren: "No",
     allowPets: "No",
-    provideDormitoryForDriver: "No",
   });
 
   async function getHotels(id) {
@@ -118,7 +105,7 @@ function ListPropertyPage({match}) {
   };
 
   const handleSubmit = async (values, setFieldError) => {
-    console.log(values,"initialValues")
+    console.log(values, "initialValues");
     // if (pincodeDirectory.lookup(values.postalCode).length === 0) {
     //   setFieldError("postalCode", "No place with given postal code");
     //   return displayNotification("error", "Please check your form. You missed something");
@@ -134,15 +121,17 @@ function ListPropertyPage({match}) {
       isEdited = true;
     } else {
       const {data, status} = await registerHotels(transform(values));
-      console.log(data,"gere")
+      console.log(data, "gere");
       if (status === 400) return setFieldError(data.property, data.msg);
     }
     toast.dismiss();
     if (isEdited) toast.info("Successfully modified details");
-    else toast.info("Successfully added hotel");
-    localStorage.removeItem("coverPhoto");
-    localStorage.removeItem("numberOfImages");
-    localStorage.removeItem("saveAsDraft");
+    else {
+      toast.info("Successfully added hotel");
+      localStorage.removeItem("coverPhoto");
+      localStorage.removeItem("numberOfImages");
+      localStorage.removeItem("saveAsDraft");
+    }
     setTimeout(() => {
       window.location = "/admin/dashboard";
     }, 1000);
@@ -219,7 +208,11 @@ function ListPropertyPage({match}) {
           )}
           {currentPage === 3 && (
             <>
-              <Step3 saveAsDraft={saveAsDraft} preview={initialValues.mainPhoto} count={initialValues.photos.length} />
+              <Step3
+                saveAsDraft={saveAsDraft}
+                preview={initialValues.mainPhoto}
+                count={initialValues.photos.length}
+              />
               <div style={{display: "flex", justifyContent: "space-between"}}>
                 <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
                   Back

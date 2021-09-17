@@ -71,16 +71,6 @@ function UpcomingArrivalList() {
             <span className="badge badge-secondary">Offline</span>
           ),
       },
-      {
-        name: "",
-        cell: row => (
-          <td data-label="CheckIn">
-            <button onClick={() => handleClick(row._id)} className="checkin-button">
-              CheckIn
-            </button>
-          </td>
-        ),
-      },
     ],
     []
   );
