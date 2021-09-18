@@ -58,7 +58,7 @@ function Booked_Dashboard() {
   if (!bookings)
     return (
       <h2 style={{marginTop: "150px", marginLeft: "20px"}}>
-        You currently don't have any booking.
+        You currently don't have any booking. <a href="/">Book Now</a>
       </h2>
     );
 

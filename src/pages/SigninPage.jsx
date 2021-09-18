@@ -16,20 +16,20 @@ const validationSchema = Yup.object().shape({
 function SigninPage({location}) {
   const [passwordType, setPasswordType] = useState("password");
 
-  let bgcolor = "";
-  let traycolor = "";
-  if (location.pathname === "/signin") {
-    traycolor = "";
-    bgcolor = "";
-  }
-  if (location.pathname === "/renter/signin") {
-    traycolor = "red";
-    bgcolor = "red";
-  }
-  if (location.pathname === "/admin/signin") {
-    traycolor = "blue";
-    bgcolor = "blue";
-  }
+  // let bgcolor = "";
+  // let traycolor = "";
+  // if (location.pathname === "/signin") {
+  //   traycolor = "";
+  //   bgcolor = "";
+  // }
+  // if (location.pathname === "/renter/signin") {
+  //   traycolor = "red";
+  //   bgcolor = "red";
+  // }
+  // if (location.pathname === "/admin/signin") {
+  //   traycolor = "blue";
+  //   bgcolor = "blue";
+  // }
 
   const handleSubmit = async (values, setFieldError) => {
     if (location.search) {
@@ -91,7 +91,7 @@ function SigninPage({location}) {
     >
       {({errors, touched, values, handleChange, handleBlur}) => (
         <Form>
-          <main style={{backgroundColor: bgcolor}}>
+          <main style={{backgroundColor: "white"}}>
             <section className="w-full h-full">
               <div
                 className="top-0 w-full h-full bg-gray-900"
@@ -105,7 +105,7 @@ function SigninPage({location}) {
                 <div className="flex content-center items-center justify-center h-full">
                   <div className="w-full lg:w-4/12 px-4">
                     <div
-                      style={{backgroundColor: traycolor, width: "110%"}}
+                      style={{width: "110%"}}
                       className="mt-24 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0"
                     >
                       <div style={{marginTop: "20px"}} className="rounded-t mb-0 px-6 py-6">

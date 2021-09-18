@@ -38,7 +38,7 @@ function SearchResultComponent({hotels,user}) {
                     <div>
                       <h4 className="top-text">
                         {hotel.hotelName}
-                        <Rating value={hotel?.reviewScore} />
+                        <Rating value={Number(hotel?.reviewScore?.$numberDecimal)} />
                       </h4>
                     </div>
                   </figcaption>
@@ -48,16 +48,16 @@ function SearchResultComponent({hotels,user}) {
                     <a href="#url">{hotel?.city}</a> 
                   </h3>
                   <ul className="mb-3">
-                    <li key={hotel?.guests}>
+                    {/* <li key={hotel?.guests}>
                       <span className="fa fa-users"></span>
                       {hotel.guests} Guests
                     </li>
                     <li key={hotel?.roomSize}>
                       <span className="fa fa-bed"></span> {hotel?.roomSize}sqft
-                    </li>
+                    </li> */}
                   </ul>
-                  {/* <p>{hotel?.description}</p> */}
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit itaque fuga consequatur molestias quo, eaque animi tempore facilis quae autem vitae est repellendus.</p>
+                  <p>{hotel?.description}</p>
+                  {/* <p>ggg ggggggggggggg ggg  gggggg gggggg gggg g gg gggggggg g ggggggggg ggggggg  gghhhhh hhhhhh hhhgerth geth rh fdb eb et ge ge r ge rg e rg er g errth rt h rthr t</p> */}
                   <p style={{color:"purple",fontWeight:"bold"}} >Book for Rs.{hotel?.startingRatePerDay} </p>
                 <div style={{display:"flex",justifyContent:"space-between"}}>
                 {user==="admin"?<Link to={`/admin/addHotel/${hotel._id}`} >
@@ -91,7 +91,7 @@ function SearchResultComponent({hotels,user}) {
                 </div>
                   <div className="room-info-bottom">
                     <ul className="room-amenities">
-                      <li>
+                      {/* <li>
                         <a href="#url">
                           <span className="fa fa-bed" title="Beds"></span>
                         </a>
@@ -105,7 +105,7 @@ function SearchResultComponent({hotels,user}) {
                         <a href="#url">
                           <span className="fa fa-bath" title="Private Bathroom"></span>
                         </a>
-                      </li>
+                      </li> */}
                     </ul>
                     <a onClick={()=>handleHotelClick(hotel._id)} className="btn view">
                       Full Info →

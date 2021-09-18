@@ -195,7 +195,8 @@ function BookedCheckIn({match}) {
   };
 
   const getDetails = async () => {
-    const {data} = await getBookingDetails(match.params.bookingId);
+    const {data,status} = await getBookingDetails(match.params.bookingId);
+    if(status!==200) return displayNotification("error",data||"Could not checkin!")
     data.startingDayOfStay = data.startingDayOfStay.replaceAll("-", "/");
     data.endingDayOfStay = data.endingDayOfStay.replaceAll("-", "/");
     setInitialValues(data);

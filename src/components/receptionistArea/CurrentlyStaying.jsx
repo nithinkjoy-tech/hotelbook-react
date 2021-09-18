@@ -33,7 +33,7 @@ function CurrentlyStaying() {
       },
       {
         name: "Checked In",
-        selector: booking?.lateStartingDayOfStay?"lateStartingDayOfStay":"startingDayOfStay",
+        selector: "startingDayOfStay",
         sortable: true,
       },
       {
@@ -81,6 +81,14 @@ function CurrentlyStaying() {
   const getAllBookings = async () => {
     const {data,status} = await getCurrentlyStaying();
     if(status!==200) return
+    data.map(ele=>{
+      if(ele.lateStartingDayOfStay){
+        ele.startingDayOfStay=ele.lateStartingDayOfStay
+      }
+      if(ele.earlyEndingDayOfStay){
+        ele.endingDayOfStay=ele.earlyEndingDayOfStay
+      }
+    })
     setBooking(data);
     setFullBooking([...data]);
   };

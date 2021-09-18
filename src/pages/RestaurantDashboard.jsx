@@ -24,7 +24,7 @@ function RestaurantDashboard({match}) {
                 </ul>
             </div>
            
-            {(() => { if (selectOption === 'profile') return (<RestaurantProfile restaurantId={match.params.restaurantId} title={"Restaurant Profile"} description={"Basic info, for a faster booking experience"}/>)
+            {(() => { if (selectOption === 'profile') return (<RestaurantProfile restaurantId={match.params.restaurantId} title={"Restaurant Profile"} description={"Basic info about restaurant account"}/>)
              else if (selectOption === 'password') return (<ChangePassword restaurantId={match.params.restaurantId} receptionId={null} title="Change Password" />)
              })()}
 

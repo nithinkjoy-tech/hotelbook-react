@@ -16,11 +16,25 @@ import {Formik, Form, ErrorMessage} from "formik";
 import {addRoom, getAdminRoomById, editRoomById} from "../../api/admin";
 import {toast} from "react-toastify";
 import { displayNotification } from './../../services/notificationService';
+import _ from "lodash"
 
 const validationSchema = Yup.object().shape({
   roomType: Yup.string().min(1).max(50).required(),
   numberOfRoomsOfThisType: Yup.number().min(1).max(9999).required(),
-  roomNumbers:Yup.string().required().matches(/^[0-9,]+$/,"Only number seperated by commas allowed"),
+  roomNumbers:Yup.string().required().matches(/^[0-9,]+$/,"Only number seperated by commas allowed").test({
+    name: "duplicate",
+    test: values => {
+      let roomNos=values.split(",");
+
+      let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
+
+      let duplicateVal = findDuplicates(roomNos);
+
+      if (_.isEmpty(duplicateVal)) return true;
+      else return false;
+    },
+    message: "Repeated Room Numbers!",
+  }),
   kindOfBed: Yup.string()
     .required()
     .oneOf(["Single bed", "Double bed"]),
@@ -110,6 +124,7 @@ function AddRoom({match}) {
     console.log(roomNos.length,Number(values.numberOfRoomsOfThisType))
     if(roomNos.length>Number(values.numberOfRoomsOfThisType)) return setFieldError("roomNumbers", "You added extra room numbers")
     if(roomNos.length<Number(values.numberOfRoomsOfThisType)) return setFieldError("roomNumbers", "You added less room numbers")
+
     values["hotelId"] = match.params.hotelId || initialValues.hotelId;
     let isEdited = false;
     if (roomId) {
