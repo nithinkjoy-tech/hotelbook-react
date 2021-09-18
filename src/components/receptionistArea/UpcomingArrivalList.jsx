@@ -1,13 +1,15 @@
 import React, {useEffect, useState, useMemo} from "react";
 import "../../css/ArrivalList.css";
 import Sidebar from "./Sidebar";
-import {getUpcomingBookings} from "../../api/renter";
+import {getUpcomingBookings,cancelBooking} from "../../api/renter";
 import DataTable, {createTheme} from "react-data-table-component";
 import InputBox from "./../common/InputBox";
 import _ from "lodash";
 import Calendar from "./../landingPageComponent/Calendar";
 import * as Yup from "yup";
 import {Formik,Form} from "formik"
+import {displayNotification} from "./../../services/notificationService";
+import {confirmAlert} from "react-confirm-alert";
 
 const dateValidator = Yup.object()
     .shape({
@@ -28,6 +30,30 @@ const dateValidator = Yup.object()
 function UpcomingArrivalList() {
   const handleClick = id => {
     console.log(id);
+  };
+
+  const handleCancel = async bookingId => {
+    confirmAlert({
+      title: "Cancel Booking",
+      message: "Are you sure want to cancel this booking.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            const {data, status} = await cancelBooking(bookingId);
+            if (status !== 200)
+              return displayNotification("error", data || "Could not cancel booking");
+            displayNotification("success", data);
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {
+            return null;
+          },
+        },
+      ],
+    });
   };
 
   const columns = useMemo(
@@ -70,6 +96,16 @@ function UpcomingArrivalList() {
           ) : (
             <span className="badge badge-secondary">Offline</span>
           ),
+      },
+      {
+        name: "",
+        cell: row => (
+          <td data-label="CheckIn">
+            <button onClick={() => handleCancel(row._id)} className="btn btn-danger">
+              Cancel
+            </button>
+          </td>
+        ),
       },
     ],
     []

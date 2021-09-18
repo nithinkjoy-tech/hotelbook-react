@@ -55,7 +55,8 @@ function History() {
       details?.restaurantBillAmount,
       details?.accomodationTotal,
       details?.roomDetails || roomDetails,
-      details?.extraBedTotal
+      details?.extraBedTotal,
+      details?.lateStartingDayOfStay||details?.startingDayOfStay
     );
   }
 

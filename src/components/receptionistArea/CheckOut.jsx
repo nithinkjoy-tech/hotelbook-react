@@ -16,8 +16,7 @@ const validationSchema = Yup.object().shape({
       itemName: Yup.string().min(1).max(50).required().label("Item Name"),
       itemPrice: Yup.number()
         .typeError("Must be a Number")
-        .positive()
-        .min(1)
+        .min(-1000000)
         .max(1000000)
         .required()
         .label("Item Price"),
@@ -84,7 +83,8 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       restaurantBillAmount,
       accomodationTotal,
       details?.roomDetails||roomDetails,
-      extraBedTotal
+      extraBedTotal,
+      details?.lateStartingDayOfStay||details?.startingDayOfStay
     );
   }
 
@@ -275,7 +275,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                                 push({itemName: "", itemPrice: ""});
                               }}
                             >
-                              Add Additional Charges
+                              Add or Deduct Charges
                             </Button>
                           </div>
                         )}
@@ -297,7 +297,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                         </div>
                         {!isPaid && (
                           <Button
-                            className="mb-2 ml-5"
+                            className="mb-2 ml-5 mr-5"
                             variant="contained"
                             color="primary"
                             type="submit"
@@ -314,6 +314,9 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                             Download Invoice
                           </button>
                         )}
+                        <div>
+                          <p>Note: For Deducting charges add - sign</p>
+                        </div>
                       </div>
                     </Form>
                   )}
