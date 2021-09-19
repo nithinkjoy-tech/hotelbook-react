@@ -32,7 +32,10 @@ function PriceandImageSection({hotelDetails}) {
               </div>
               <div className="text-center mt-3">
                 <h3 className="title-small"><span className="fa fa-map-marker" style={{color:"red"}} /> Address</h3>
-                <p>Dummy Address place </p>
+                <p>{hotelDetails.address}</p>
+                <p>Contact: {hotelDetails.phoneNumber}</p>
+                <p>Pincode: {hotelDetails.postalCode}</p>
+                <p>{hotelDetails.description}</p>
                 </div>
             </div>
           </div>
