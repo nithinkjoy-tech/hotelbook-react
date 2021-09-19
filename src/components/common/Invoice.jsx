@@ -10,7 +10,8 @@ export default function Invoice(
   restaurantBillAmount,
   accomodationTotal,
   roomDetails,
-  extraBedTotal
+  extraBedTotal,
+  checkinDate
 ) {
   if (restaurantBillAmount) {
     inputFields.items.splice(0, 0, {itemName: "Restaurant Bill", itemPrice: restaurantBillAmount});

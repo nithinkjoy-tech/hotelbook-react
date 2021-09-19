@@ -16,6 +16,10 @@ export function offlineGuestCheck(values) {
   return apiClient.get("/reception/offlinesignup", values);
 }
 
+export function cancelBooking(bookingId) {
+  return apiClient.delete(`/reception/booking/${bookingId}`);
+}
+
 export function bookOfflineHotel(values) {
   return apiClient.post("/reception/booking", values);
 }

@@ -22,20 +22,20 @@ const validationSchema = Yup.object().shape({
 function SignupPage({location,match}) {
   const [passwordType, setPasswordType] = useState("password");
 
-  let pagecolor = "";
-  let traycolor = "";
-  if (location.pathname === "/signup") {
-    traycolor = "white";
-    pagecolor = "white";
-  }
-  if (location.pathname === "/admin/dashboard/createreception") {
-    traycolor = "";
-    pagecolor = "#fc5c65";
-  }
-  if (location.pathname === "/admin/signup") {
-    traycolor = "";
-    pagecolor = "#fc5c65";
-  }
+  // let pagecolor = "";
+  // let traycolor = "";
+  // if (location.pathname === "/signup") {
+  //   traycolor = "white";
+  //   pagecolor = "white";
+  // }
+  // if (location.pathname === "/admin/dashboard/createreception") {
+  //   traycolor = "";
+  //   pagecolor = "#fc5c65";
+  // }
+  // if (location.pathname === "/admin/signup") {
+  //   traycolor = "";
+  //   pagecolor = "#fc5c65";
+  // }
 
   const handleSubmit = async (values, setFieldError) => {
     if (location.pathname === "/signup") {
@@ -101,7 +101,7 @@ function SignupPage({location,match}) {
     >
       {({errors, touched, values, handleChange, handleBlur}) => (
         <Form>
-          <main style={{backgroundColor: pagecolor}}>
+          <main style={{backgroundColor: "white"}}>
             <section className="top-10 w-full h-full">
               <div
                 className="top-0 w-full h-full bg-gray-900"
@@ -115,7 +115,7 @@ function SignupPage({location,match}) {
                 <div className="flex content-center items-center justify-center h-full">
                   <div className="w-full lg:w-4/12 px-4">
                     <div
-                      style={{backgroundColor: traycolor, width: "110%"}}
+                      style={{ width: "110%"}}
                       className="mt-24 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0"
                     >
                       <div className="rounded-t mb-0 px-6 py-6">

@@ -12,6 +12,9 @@ function CurrentlyStaying() {
     console.log(data);
   };
 
+  const [booking, setBooking] = useState();
+  const [fullBooking, setFullBooking] = useState();
+
   const columns = useMemo(
     () => [
       {
@@ -66,8 +69,7 @@ function CurrentlyStaying() {
     ],
     []
   );
-  const [booking, setBooking] = useState();
-  const [fullBooking, setFullBooking] = useState();
+  
   console.log(booking, "bknh");
   const handleChange = ({target}) => {
     let booking = fullBooking;
@@ -79,6 +81,14 @@ function CurrentlyStaying() {
   const getAllBookings = async () => {
     const {data,status} = await getCurrentlyStaying();
     if(status!==200) return
+    data.map(ele=>{
+      if(ele.lateStartingDayOfStay){
+        ele.startingDayOfStay=ele.lateStartingDayOfStay
+      }
+      if(ele.earlyEndingDayOfStay){
+        ele.endingDayOfStay=ele.earlyEndingDayOfStay
+      }
+    })
     setBooking(data);
     setFullBooking([...data]);
   };

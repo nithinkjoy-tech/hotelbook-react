@@ -75,7 +75,7 @@ function AdminBook() {
                 </div>
                 <div className="book-details-left">
                   <h5 className="book-details-desc">Booked On : {booking?.bookedOn}</h5>
-                  <h5 className="book-details-desc">Check In : {booking?.startingDayOfStay}</h5>
+                  <h5 className="book-details-desc">Check In : {booking?.lateStartingDayOfStay||booking?.startingDayOfStay}</h5>
                   <h5 className="book-details-desc">Check Out : {booking?.earlyEndingDayOfStay||booking?.endingDayOfStay}</h5>
                 </div>
               </div>
@@ -83,7 +83,7 @@ function AdminBook() {
                 onClick={() =>
                   handleDetails(
                     booking.roomDetails,
-                    booking.startingDayOfStay,
+                    booking?.lateStartingDayOfStay||booking.startingDayOfStay,
                     booking?.earlyEndingDayOfStay||booking.endingDayOfStay
                   )
                 }

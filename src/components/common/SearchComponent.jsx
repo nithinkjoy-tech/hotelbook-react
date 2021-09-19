@@ -18,7 +18,7 @@ const dateValidator = Yup.object()
   .nullable();
 
 const validationSchema = Yup.object().shape({
-  placeForSearch: Yup.string().min(1).required(),
+  placeForSearch: Yup.string().min(1).required().label("Place"),
   selectedDayRange: Yup.object().shape({
     from: dateValidator,
     to: dateValidator,
@@ -88,7 +88,7 @@ function SearchComponent({initialValues}) {
                             label={null}
                             name="placeForSearch"
                             onChange={handleChange}
-                            options={_.flattenDeep([null,options.map(hotel=>hotel.city)])}
+                            options={_.flattenDeep([options.map(hotel=>hotel.city)])}
                           />
                         </div>
                         <div className="form-input col-md-4 col-sm-6 mt-3 ">

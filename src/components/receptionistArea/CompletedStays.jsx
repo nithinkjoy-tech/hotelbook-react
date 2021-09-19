@@ -49,9 +49,41 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       details?.restaurantBillAmount,
       details?.accomodationTotal,
       details?.roomDetails||roomDetails,
-      details?.extraBedTotal
+      details?.extraBedTotal,
+      details?.lateStartingDayOfStay||details?.startingDayOfStay
     );
   }
+
+  const [booking, setBooking] = useState();
+  const [fullBooking, setFullBooking] = useState();
+
+  const handleChange = ({target}) => {
+    let booking = fullBooking;
+    setBooking(
+      booking.filter(book => _.includes(book.name.toLowerCase(), target.value.toLowerCase()))
+    );
+  };
+
+  
+
+  const getAllBookings = async () => {
+    const {data, status} = await getCompletedStays();
+    if (status !== 200) return;
+    data.map(ele=>{
+      if(ele.lateStartingDayOfStay){
+        ele.startingDayOfStay=ele.lateStartingDayOfStay
+      }
+      if(ele.earlyEndingDayOfStay){
+        ele.endingDayOfStay=ele.earlyEndingDayOfStay
+      }
+    })
+    setBooking(data);
+    setFullBooking([...data]);
+  };
+
+  useEffect(() => {
+    getAllBookings();
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -84,7 +116,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       },
       {
         name: "Check Out",
-        selector: booking?.earlyEndingDayOfStay?"earlyEndingDayOfStay":"endingDayOfStay",
+        selector: "endingDayOfStay",
         sortable: true,
         grow:0
       },
@@ -112,15 +144,9 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
     []
   );
 
-  const [booking, setBooking] = useState();
-  const [fullBooking, setFullBooking] = useState();
+  
 
-  const handleChange = ({target}) => {
-    let booking = fullBooking;
-    setBooking(
-      booking.filter(book => _.includes(book.name.toLowerCase(), target.value.toLowerCase()))
-    );
-  };
+  
 
   const handleSubmit=async(values)=>{
     const {data, status} = await getCompletedStays(values);
@@ -132,17 +158,6 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
     setBooking(data);
     setFullBooking([...data]);
   }
-
-  const getAllBookings = async () => {
-    const {data, status} = await getCompletedStays();
-    if (status !== 200) return;
-    setBooking(data);
-    setFullBooking([...data]);
-  };
-
-  useEffect(() => {
-    getAllBookings();
-  }, []);
 
   return (
     <React.Fragment>

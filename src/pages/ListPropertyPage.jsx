@@ -20,6 +20,7 @@ const validationSchema = Yup.object().shape({
     .length(12)
     .matches(/^[0-9]+$/, "Mobile number must include only numbers"),
   address: Yup.string().required().min(8).max(255),
+  description:Yup.string().required().min(80).max(160),
   city: Yup.string().required().min(1).max(50),
   postalCode: Yup.string()
     .required()
@@ -49,6 +50,7 @@ function ListPropertyPage({match}) {
     starRating: "",
     phoneNumber: "",
     address: "",
+    description: "",
     city: "",
     postalCode: "",
     parking: "No",

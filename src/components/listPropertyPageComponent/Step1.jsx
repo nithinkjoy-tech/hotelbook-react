@@ -56,6 +56,9 @@ function Step1({saveAsDraft}) {
                   <div className="col-span-6 ">
                     <PropertyInputBox label="Address" type="text" name="address" />
                   </div>
+                  <div className="col-span-6 ">
+                    <PropertyInputBox label="Description" type="text" name="description" />
+                  </div>
                   <div className="col-span-6 sm:col-span-3">
                     <PropertyInputBox label="City" type="text" name="city" />
                   </div>

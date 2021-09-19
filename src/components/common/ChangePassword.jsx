@@ -8,9 +8,14 @@ import {adminChangePassword} from "./../../api/admin";
 import {displayNotification} from "./../../services/notificationService";
 import {setAuthToken} from "./../../services/authService";
 
-const validationSchema = Yup.object().shape({
-  oldPassword: Yup.string().required("Password is required").min(6).max(256).label("Old Password"),
-  newPassword: Yup.string().required("Password is required").min(6).max(256).label("New Password"),
+const validationSchema = Yup.object({
+  oldPassword: Yup.string().required().min(6).max(256).label("Old Password"),
+  newPassword: Yup.string()
+    .notOneOf([Yup.ref("oldPassword"), null], "Old Password Should not be same as new password")
+    .required("Password is required")
+    .min(6)
+    .max(256)
+    .label("Password"),
   confirmPassword: Yup.string().oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
 });
 

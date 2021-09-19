@@ -58,7 +58,7 @@ function Booked_Dashboard() {
   if (!bookings)
     return (
       <h2 style={{marginTop: "150px", marginLeft: "20px"}}>
-        You currently don't have any booking.
+        You currently don't have any booking. <a href="/">Book Now</a>
       </h2>
     );
 
@@ -98,7 +98,7 @@ function Booked_Dashboard() {
                   {/* <h5 className="book-details-desc">Hotel Booking ID : 5897458631</h5> */}
                   <h5 className="pay">Booking ID: {booking?.hotelBookingId}</h5>
                   <h5 className="book-details-desc">Booked On : {booking?.bookedOn}</h5>
-                  <h5 className="book-details-desc">Check In : {booking?.startingDayOfStay}</h5>
+                  <h5 className="book-details-desc">Check In : {booking?.lateStartingDayOfStay||booking?.startingDayOfStay}</h5>
                   <h5 className="book-details-desc">Check Out : {booking?.endingDayOfStay}</h5>
                 </div>
                 <div className="book-details-left">

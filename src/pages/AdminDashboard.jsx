@@ -40,7 +40,7 @@ function AdminDashboard() {
                 </ul>
             </div>
          
-            {(() => { if (selectOption === 'profile') return (<AdminProfile title={"Profile"} description={"Basic info, for a faster booking experience"}/>)
+            {(() => { if (selectOption === 'profile') return (<AdminProfile title={"Profile"} description={"Basic info about the administrator"}/>)
             //  else if (selectOption === 'history') return (<AdminHistory />)
             //  else if (selectOption === 'booked') return (<AdminBook />)
              else if (selectOption === 'hotels') return (<AdminHotels />)

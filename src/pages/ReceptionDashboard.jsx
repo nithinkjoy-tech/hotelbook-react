@@ -24,7 +24,7 @@ function ReceptionDashboard({match}) {
                 </ul>
             </div>
            
-            {(() => { if (selectOption === 'profile') return (<ReceptionProfile receptionId={match.params.receptionId} title={"Reception Profile"} description={"Basic info, for a faster booking experience"}/>)
+            {(() => { if (selectOption === 'profile') return (<ReceptionProfile receptionId={match.params.receptionId} title={"Reception Profile"} description={"Basic info about reception account"}/>)
              else if (selectOption === 'password') return (<ChangePassword receptionId={match.params.receptionId} title="Change Password" />)
              })()}
 

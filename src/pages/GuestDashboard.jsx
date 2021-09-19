@@ -28,7 +28,7 @@ function GuestDashboard() {
                 </ul>
             </div>
            
-            {(() => { if (selectOption === 'profile') return (<Profile title={"Profile"} description={"Basic info, for a faster booking experience"}/>)
+            {(() => { if (selectOption === 'profile') return (<Profile title={"Profile"} description={"Basic info about the guest"}/>)
              else if (selectOption === 'history') return (<History />)
              else if (selectOption === 'booked') return (<Booked_Dashboard />)
              else if (selectOption === 'password') return (<ChangePassword title="Change Password" />)
