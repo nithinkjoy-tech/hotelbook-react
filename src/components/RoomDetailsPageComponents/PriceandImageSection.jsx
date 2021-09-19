@@ -7,6 +7,8 @@ function PriceandImageSection({hotelDetails}) {
 
   let images=hotelDetails.photos.map(photo=>({original:photo}))
 
+  console.log('hotel details',hotelDetails)
+
   return (
     <section className="room-single-block" style={{marginTop: "30px"}}>
       <div className="content-with-slider">
@@ -28,6 +30,10 @@ function PriceandImageSection({hotelDetails}) {
                   </div>
                 </div>
               </div>
+              <div className="text-center mt-3">
+                <h3 className="title-small"><span className="fa fa-map-marker" style={{color:"red"}} /> Address</h3>
+                <p>Dummy Address place </p>
+                </div>
             </div>
           </div>
         </div>
