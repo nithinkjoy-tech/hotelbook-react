@@ -14,6 +14,25 @@ function ArrivalList() {
     console.log(data);
   };
 
+  const [booking, setBooking] = useState();
+  const [fullBooking, setFullBooking] = useState();
+
+  var dateObj = new Date();
+  let month = dateObj.getUTCMonth() + 1; //months from 1-12
+  let date = dateObj.getUTCDate();
+  let year = dateObj.getUTCFullYear();
+  month = month.toString();
+  if (month.length == 1) {
+    month = "0" + month;
+  }
+
+  date = date.toString();
+  if (date.length == 1) {
+    date = "0" + date;
+  }
+
+  let newdate = year + "-" + month + "-" + date;
+
   const handleCancel = async bookingId => {
     confirmAlert({
       title: "Cancel Booking",
@@ -25,6 +44,7 @@ function ArrivalList() {
             const {data, status} = await cancelBooking(bookingId);
             if (status !== 200)
               return displayNotification("error", data || "Could not cancel booking");
+            setBooking(data)  
             displayNotification("success", data);
           },
         },
@@ -44,6 +64,7 @@ function ArrivalList() {
         name: "Booking ID",
         selector: "hotelBookingId",
         sortable: true,
+        grow:0
       },
       {
         name: "Name",
@@ -58,6 +79,19 @@ function ArrivalList() {
         name: "Booked Date",
         selector: "bookedOn",
         sortable: true,
+        grow:1
+      },
+      {
+        name: "Check In",
+        selector: "startingDayOfStay",
+        sortable: true,
+        grow:0,
+      },
+      {
+        name: "Check Out",
+        selector: "endingDayOfStay",
+        sortable: true,
+        grow:0
       },
       {
         name: "Email",
@@ -67,6 +101,7 @@ function ArrivalList() {
         name: "Booking Mode",
         sortable: true,
         selector: "bookingMode",
+        grow:0,
         cell: row =>
           row.bookingMode === "online" ? (
             <span className="badge badge-success">Online</span>
@@ -97,8 +132,7 @@ function ArrivalList() {
     ],
     []
   );
-  const [booking, setBooking] = useState();
-  const [fullBooking, setFullBooking] = useState();
+  
   console.log(booking, "bknh");
   const handleChange = ({target}) => {
     let booking = fullBooking;
@@ -106,6 +140,34 @@ function ArrivalList() {
       booking.filter(book => _.includes(book.name.toLowerCase(), target.value.toLowerCase()))
     );
   };
+
+  let conditionalRowStyles=[
+    {
+    when: row => row.startingDayOfStay < newdate,
+    style: {
+      backgroundColor: '#BB2D3B',
+      color: 'white',
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
+  },
+  //   {
+  //   when: row => row.startingDayOfStay >= newdate,
+  //   style: {
+  //     backgroundColor: "#52C98C",
+  //     color: 'white',
+  //     '&:hover': {
+  //       cursor: 'pointer',
+  //     },
+  //   },
+  // },
+  // You can also pass a callback to style for additional customization
+  // {
+  //   when: row => row.startingDayOfStay >= newdate,
+  //   style: row => ({ backgroundColor: row.isSpecial ? 'pink' : 'inerit' }),
+  // },
+]
 
   const getAllBookings = async () => {
     const {data, status} = await getBookings();
@@ -126,6 +188,7 @@ function ArrivalList() {
             title="Todays Arrivals List"
             pagination
             subHeader
+            conditionalRowStyles={conditionalRowStyles}
             noDataComponent="No bookings available for today"
             subHeaderComponent={[
               <input
