@@ -57,6 +57,7 @@ function SearchResultComponent({hotels,user}) {
                     </li> */}
                   </ul>
                   <p>{hotel?.description}</p>
+                  {hotel?.starRating>0&&<p>{hotel?.starRating} Hotel</p>}
                   {/* <p>ggg ggggggggggggg ggg  gggggg gggggg gggg g gg gggggggg g ggggggggg ggggggg  gghhhhh hhhhhh hhhgerth geth rh fdb eb et ge ge r ge rg e rg er g errth rt h rthr t</p> */}
                   <p style={{color:"purple",fontWeight:"bold"}} >Book for Rs.{hotel?.startingRatePerDay} </p>
                 <div style={{display:"flex",justifyContent:"space-between"}}>

@@ -26,6 +26,7 @@ const HotelDetails = ({match,location}) => {
   const getHotelbyId = async () => {
     let {data, status} = await getHotel(hotelId);
     console.log(data, status, "dt");
+    // if(data.)
     setHotel(data);
     let selectedDayRange=JSON.parse(localStorage.getItem("selectedDays"))
     console.log(selectedDayRange,"sdrg")

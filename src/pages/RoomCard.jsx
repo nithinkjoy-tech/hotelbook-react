@@ -44,7 +44,7 @@ function RoomCard({hotelId}) {
               <div className="room_card__body">
                 <h2 className="room_card__title">{room?.roomType}</h2>
                 <p className="room_card__description">{room?.kindOfBed}</p>
-                <p className="room_card__description">{room?.numberOfBeds}</p>
+                <p className="room_card__description">{room?.numberOfBeds} Bed</p>
                 <h3 className="room_card__price">{room?.basePricePerNight}</h3>
                 <button onClick={()=>editRoom(room?._id)} className="room_card__btn">Edit Room</button>
               </div>

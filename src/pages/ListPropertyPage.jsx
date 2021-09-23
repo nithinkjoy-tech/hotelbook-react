@@ -20,7 +20,7 @@ const validationSchema = Yup.object().shape({
     .length(12)
     .matches(/^[0-9]+$/, "Mobile number must include only numbers"),
   address: Yup.string().required().min(8).max(255),
-  description:Yup.string().required().min(80).max(160),
+  description:Yup.string().required().min(120).max(160),
   city: Yup.string().required().min(1).max(50),
   postalCode: Yup.string()
     .required()
@@ -170,10 +170,10 @@ function ListPropertyPage({match}) {
           <Stepper
             steps={sections}
             activeStep={currentPage - 1}
-            activeColor="green"
-            defaultBarColor="green"
-            completeColor="red"
-            completeBarColor="red"
+            activeColor="#28a745"
+            defaultBarColor="#28a745"
+            completeColor="#4F96FF"
+            completeBarColor="#4F96FF"
           />
 
           {currentPage === 1 && (

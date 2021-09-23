@@ -407,7 +407,7 @@ function getStepContent(
               fullWidth
               name="startingDayOfStay"
               component={TextField}
-              label="Arrival Date (YYYY/MM/DD)"
+              label="Checkin Date (YYYY/MM/DD)"
               className="fields"
               disabled
             />
@@ -417,7 +417,7 @@ function getStepContent(
               fullWidth
               name="endingDayOfStay"
               component={TextField}
-              label="Departure Date (YYYY/MM/DD)"
+              label="Checkout Date (YYYY/MM/DD)"
               className="fields"
               disabled
             />

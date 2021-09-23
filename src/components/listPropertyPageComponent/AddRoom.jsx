@@ -15,29 +15,46 @@ import {Delete} from "@material-ui/icons";
 import {Formik, Form, ErrorMessage} from "formik";
 import {addRoom, getAdminRoomById, editRoomById} from "../../api/admin";
 import {toast} from "react-toastify";
-import { displayNotification } from './../../services/notificationService';
-import _ from "lodash"
+import {displayNotification} from "./../../services/notificationService";
+import _ from "lodash";
 
 const validationSchema = Yup.object().shape({
   roomType: Yup.string().min(1).max(50).required(),
-  numberOfRoomsOfThisType: Yup.number().min(1).max(9999).required(),
-  roomNumbers:Yup.string().required().matches(/^[0-9,]+$/,"Only number seperated by commas allowed").test({
-    name: "duplicate",
-    test: values => {
-      let roomNos=values.split(",");
-
-      let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
-
-      let duplicateVal = findDuplicates(roomNos);
-
-      if (_.isEmpty(duplicateVal)) return true;
-      else return false;
-    },
-    message: "Repeated Room Numbers!",
-  }),
-  kindOfBed: Yup.string()
+  numberOfRoomsOfThisType: Yup.number().typeError("This field cannot be a string").positive().min(1).max(9999).required(),
+  roomNumbers: Yup.string()
     .required()
-    .oneOf(["Single bed", "Double bed"]),
+    .matches(/^[0-9,]+$/, "Only number seperated by commas allowed")
+    .test({
+      name: "duplicate",
+      test: (values, params) => {
+        if(values){
+          let invalidNos
+          if (values[values.length - 1] == ",") {
+            values = values.substring(0, values.length - 1);
+          }
+          let roomNos = values.split(",");
+
+          roomNos.forEach(no=>{
+            if(no=='') invalidNos=true
+          })
+
+          if(invalidNos) return params.createError({message: "Comma(, ,) without a number between is not allowed"});
+
+          if (roomNos.length > Number(params.parent.numberOfRoomsOfThisType))
+            return params.createError({message: "You added extra room numbers"});
+          if (roomNos.length < Number(params.parent.numberOfRoomsOfThisType))
+            return params.createError({message: "You added less room numbers"});
+  
+          let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
+  
+          let duplicateVal = findDuplicates(roomNos);
+  
+          if (_.isEmpty(duplicateVal)) return true;
+          else return params.createError({message: "Repeated Room Numbers!"});
+        }
+      },
+    }),
+  kindOfBed: Yup.string().required().oneOf(["Single bed", "Double bed"]),
   numberOfBeds: Yup.number().min(1).max(10).required(),
   basePricePerNight: Yup.number().min(10).max(2500000).required(),
   numberOfGuestsInaRoom: Yup.number().min(1).max(50),
@@ -117,13 +134,15 @@ function AddRoom({match}) {
   };
 
   const handleSubmit = async (values, setFieldError) => {
-    if(values.roomNumbers[values.roomNumbers.length - 1]==","){
-      values.roomNumbers=values.roomNumbers.substring(0,values.roomNumbers.length-1)
-  }
-    let roomNos=values.roomNumbers.split(",");
-    console.log(roomNos.length,Number(values.numberOfRoomsOfThisType))
-    if(roomNos.length>Number(values.numberOfRoomsOfThisType)) return setFieldError("roomNumbers", "You added extra room numbers")
-    if(roomNos.length<Number(values.numberOfRoomsOfThisType)) return setFieldError("roomNumbers", "You added less room numbers")
+    // if (values.roomNumbers[values.roomNumbers.length - 1] == ",") {
+    //   values.roomNumbers = values.roomNumbers.substring(0, values.roomNumbers.length - 1);
+    // }
+    // let roomNos = values.roomNumbers.split(",");
+    // console.log(roomNos.length, Number(values.numberOfRoomsOfThisType));
+    // if (roomNos.length > Number(values.numberOfRoomsOfThisType))
+    //   return setFieldError("roomNumbers", "You added extra room numbers");
+    // if (roomNos.length < Number(values.numberOfRoomsOfThisType))
+    //   return setFieldError("roomNumbers", "You added less room numbers");
 
     values["hotelId"] = match.params.hotelId || initialValues.hotelId;
     let isEdited = false;
@@ -131,8 +150,9 @@ function AddRoom({match}) {
       values["isMainPhotoChanged"] = values.mainPhoto == prev ? false : true;
       const {data, status} = await editRoomById(values, roomId);
       if (status === 400) {
-        displayNotification("Error","You missed something in your form, please check")
-        setFieldError(data.property, data.msg);}
+        displayNotification("Error", "You missed something in your form, please check");
+        setFieldError(data.property, data.msg);
+      }
       isEdited = true;
     } else {
       const {data, status} = await addRoom(values);
@@ -207,7 +227,7 @@ function AddRoom({match}) {
                               options={["Single bed", "Double bed"]}
                             />
                           </div>
-                          
+
                           <div className="col-span-6 sm:col-span-3">
                             <PropertyInputBox
                               label="Number of Rooms of this Type"
@@ -221,7 +241,6 @@ function AddRoom({match}) {
                               placeholder="Enter room numbers seperated by commas ex: 101,102"
                             />
                           </div>
-                          
 
                           <div className="col-span-6 sm:col-span-3">
                             <PropertyInputBox label="Number of Beds" name="numberOfBeds" />
@@ -239,11 +258,8 @@ function AddRoom({match}) {
                               name="basePricePerNight"
                             />
                           </div>
-                          <div className="col-span-6 sm:col-span-3">
-                            
-                          </div>
-                          
-                          
+                          <div className="col-span-6 sm:col-span-3"></div>
+
                           <div className="col-span-6 sm:col-span-3">
                             <label
                               htmlFor="hotelName"
@@ -303,8 +319,6 @@ function AddRoom({match}) {
                                         </div>
                                       </div>
                                     </div>
-
-                                    
 
                                     <div style={{width: "80vw", marginTop: "3rem"}}>
                                       <div className="col-span-6 sm:col-span-6">

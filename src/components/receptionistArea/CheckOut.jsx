@@ -91,15 +91,15 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
   const handleSubmit = async values => {
     values["roomNumbers"]=roomNumbers
     confirmAlert({
-      title: "Confirm Payment",
-      message: "Are you sure want to pay.",
+      title: "Confirm Checkout",
+      message: "Are you sure want to checkout.",
       buttons: [
         {
           label: "Yes",
           onClick: async () => {
             const {data, status} = await checkOut(bookingId, values);
             if (status !== 200) return displayNotification("error", "Something went wrong");
-            displayNotification("info", "Payment successfull");
+            displayNotification("info", "Checkout successfull");
             setIsPaid(true);
           },
         },
