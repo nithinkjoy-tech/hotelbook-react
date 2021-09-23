@@ -55,6 +55,7 @@ function App() {
         <Route exact path="/logout" component={Logout} />
         <Route exact path="/bookedroomdetails" component={BookedRoomDetails} />
         <Route exact path="/forgotpassword" component={ForgotPassword} />
+        <Route exact path="/admin/forgotpassword" component={ForgotPassword} />
         <Route exact path="/resetpassword/:token" component={ResetPassword} />
         <Route exact path="/hoteldetails/:hotelId" component={HotelDetails} />
         <Route exact path="/linkreview/:id" component={LinkReview} />

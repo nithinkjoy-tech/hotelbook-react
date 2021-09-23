@@ -105,10 +105,12 @@ function History() {
       const {data, status} = await addReview(hotelId, values);
       if (status !== 200) return displayNotification("error", data);
       displayNotification("success", "Review Posted Successfully");
+      getAllBookings()
     } else {
       const {data, status} = await editReview(revId, values);
       if (status !== 200) return displayNotification("error", data);
       displayNotification("success", "Review Edited Successfully");
+      getAllBookings()
     }
 
     resetForm({values: ""});

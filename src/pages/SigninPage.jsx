@@ -36,9 +36,9 @@ function SigninPage({location}) {
       const {data, status} = await guestSignin(values);
       if (status === 400) setFieldError("userId", data);
       else {
-        let url=new URLSearchParams(location.search).get('redirecturl')
+        let url = new URLSearchParams(location.search).get("redirecturl");
         setAuthToken(data);
-        return window.location = url;
+        return (window.location = url);
       }
     }
 
@@ -46,12 +46,12 @@ function SigninPage({location}) {
       const {data, status} = await guestSignin(values);
       if (status !== 200) setFieldError("userId", data);
       else {
-        console.log(location)
+        console.log(location);
         setAuthToken(data);
         window.location = "/dashboard";
       }
     }
- 
+
     if (location.pathname === "/reception/signin") {
       const {data, status} = await renterSignin(values);
       if (status === 400) setFieldError("userId", data);
@@ -69,7 +69,7 @@ function SigninPage({location}) {
         window.location = "/restaurant/dashboard";
       }
     }
-    
+
     if (location.pathname === "/admin/signin") {
       const {data, status} = await adminSignin(values);
       if (status === 400) setFieldError("userId", data);
@@ -166,33 +166,38 @@ function SigninPage({location}) {
                               Sign In
                             </button>
                           </div>
-                          {location.pathname ==="/signin"&&<div className="flex flex-wrap mt-6">
-                            <div className="w-1/2">
-                              <a
-                                href="/forgotpassword"
-                                // onClick={e => e.preventDefault()}
-                                className="text-blue-800"
-                              >
-                                <small>Forgot password?</small>
-                              </a>
+                          {(location.pathname === "/signin" ||
+                            location.pathname === "/admin/signin") && (
+                            <div className="flex flex-wrap mt-6">
+                              <div className="w-1/2">
+                                <a
+                                  href={
+                                    location.pathname === "/signin"
+                                      ? "/forgotpassword"
+                                      : "/admin/forgotpassword"
+                                  }
+                                  // onClick={e => e.preventDefault()}
+                                  className="text-blue-800"
+                                >
+                                  <small>Forgot password?</small>
+                                </a>
+                              </div>
+                              {location.pathname !== "/admin/signin" && (
+                                <div className="w-1/2 text-right">
+                                  <a href="/signup" className="text-blue-800">
+                                    <small>Create new account</small>
+                                  </a>
+                                </div>
+                              )}
                             </div>
-                            <div className="w-1/2 text-right">
-                              <a
-                                href="/signup"
-                                
-                                className="text-blue-800"
-                              >
-                                <small>Create new account</small>
-                              </a>
-                            </div>
-                          </div>}
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-          </section>
+            </section>
           </main>
         </Form>
       )}

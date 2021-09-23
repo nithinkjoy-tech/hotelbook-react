@@ -6,16 +6,21 @@ import {confirmAlert} from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import {getBookings, cancelBooking} from "../../api/guest";
 import {displayNotification} from "./../../services/notificationService";
+import ReactLoading from "react-loading";
 
 function Booked_Dashboard() {
   const history = useHistory();
   const [bookings, setBookings] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   const getAllBookings = async () => {
     const {data, status} = await getBookings({isStayCompleted: false});
     if (status !== 200) return displayNotification("error", data);
     // console.log(data,"dtt")
     setBookings(data);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   };
 
   const diffBetweenDays = (startingDate, endingDate) => {
@@ -55,6 +60,15 @@ function Booked_Dashboard() {
     getAllBookings();
   }, []);
 
+  if (isLoading)
+    return (
+      <center>
+        <div className="center-loader">
+          <ReactLoading type={"spin"} color={`#357EDD`} height={"10%"} width={"20%"} />
+        </div>
+      </center>
+    );
+
   if (!bookings)
     return (
       <h2 style={{marginTop: "150px", marginLeft: "20px"}}>
@@ -80,9 +94,12 @@ function Booked_Dashboard() {
                 >
                   <a>{booking?.hotelName}</a>{" "}
                 </h1>
-                <span className="badge badge-warning">
-                  <p style={{margin: 0, color: "#000"}}>Stay not completed</p>
-                </span>
+                {booking?.status==="yettostay"?<span className="badge badge-warning">
+                  <p style={{margin: 0, color: "#000"}}>Yet to Stay</p>
+                </span>:""}
+                {booking?.status==="checkedin"?<span className="badge badge-success">
+                  <p style={{margin: 0, color: "#000"}}>Checked In</p>
+                </span>:""}
               </div>
 
               <p className="book-metadata">

@@ -11,6 +11,7 @@ import {getRoombyId} from "../../api/guest";
 import ModalComponent from "../common/ModalComponent";
 import { bookHotel } from './../../api/guest';
 import {getCurrentUser} from "../../services/authService";
+import ReactLoading from "react-loading";
 
 function BookedRoomDetails({}) { 
   const [rooms, setRooms] = useState();
@@ -22,6 +23,8 @@ function BookedRoomDetails({}) {
   const [price, setPrice] = useState();
   const [roomsNumber, setRoomsNumber] = useState();
   const [object, setObject] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
   const history = useHistory();
   const {data: roomDetails,days} = history.location.state;
 
@@ -46,6 +49,9 @@ function BookedRoomDetails({}) {
     });
 
     setRooms(data);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   };
 
   const getRoomDetails = async roomId => {
@@ -63,6 +69,15 @@ function BookedRoomDetails({}) {
   useEffect(() => {
     getBookedRoomDetails();
   }, []);
+
+  if (isLoading)
+    return (
+      <center>
+        <div className="center-loader">
+          <ReactLoading type={"spin"} color={`#357EDD`} height={"10%"} width={"20%"} />
+        </div>
+      </center>
+    );
 
   if (!rooms) return null;
 

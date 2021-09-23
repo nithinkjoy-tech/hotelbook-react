@@ -3,15 +3,15 @@ import InputBox from "./InputBox";
 import {Formik, Form} from "formik";
 import * as Yup from "yup";
 import {guestChangePassword} from "./../../api/guest";
-import {receptionChangePassword,restaurantChangePassword} from "./../../api/renter";
+import {receptionChangePassword, restaurantChangePassword} from "./../../api/renter";
 import {adminChangePassword} from "./../../api/admin";
 import {displayNotification} from "./../../services/notificationService";
 import {setAuthToken} from "./../../services/authService";
 
 const validationSchema = Yup.object({
-  oldPassword: Yup.string().required().min(6).max(256).label("Old Password"),
+  oldPassword: Yup.string().required().min(6).max(256).label((window.location.pathname.includes("admin/reception/account")||window.location.pathname.includes("admin/restaurant/account"))?"Admin Password":"Old Password"),
   newPassword: Yup.string()
-    .notOneOf([Yup.ref("oldPassword"), null], "Old Password Should not be same as new password")
+    .notOneOf([Yup.ref("oldPassword"), null], `${(window.location.pathname.includes("admin/reception/account")||window.location.pathname.includes("admin/restaurant/account"))?"Admin Password":"Old Password"} Should not be same as new password`)
     .required("Password is required")
     .min(6)
     .max(256)
@@ -19,11 +19,11 @@ const validationSchema = Yup.object({
   confirmPassword: Yup.string().oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
 });
 
-function ChangePassword({title,receptionId,restaurantId}) {
+function ChangePassword({title, receptionId, restaurantId}) {
   const [passwordType, setPasswordType] = useState("password");
-  
+
   const handleSubmit = async (values, setFieldError, resetForm) => {
-    if(window.location.pathname ==="/dashboard"){
+    if (window.location.pathname === "/dashboard") {
       const {data, status} = await guestChangePassword(values);
       if (status !== 200) setFieldError(data.property, data.msg);
       else {
@@ -33,9 +33,9 @@ function ChangePassword({title,receptionId,restaurantId}) {
       }
     }
 
-    if(window.location.pathname.includes("admin/reception/account")){
-      values["receptionId"]=receptionId;
-      console.log(values,"vls")
+    if (window.location.pathname.includes("admin/reception/account")) {
+      values["receptionId"] = receptionId;
+      console.log(values, "vls");
       const {data, status} = await receptionChangePassword(values);
       if (status !== 200) setFieldError(data.property, data.msg);
       else {
@@ -45,9 +45,9 @@ function ChangePassword({title,receptionId,restaurantId}) {
       }
     }
 
-    if(window.location.pathname.includes("admin/restaurant/account")){
-      values["restaurantId"]=restaurantId;
-      console.log(values,"vls")
+    if (window.location.pathname.includes("admin/restaurant/account")) {
+      values["restaurantId"] = restaurantId;
+      console.log(values, "vls");
       const {data, status} = await restaurantChangePassword(values);
       if (status !== 200) setFieldError(data.property, data.msg);
       else {
@@ -57,7 +57,7 @@ function ChangePassword({title,receptionId,restaurantId}) {
       }
     }
 
-    if(window.location.pathname ==="/admin/dashboard"){
+    if (window.location.pathname === "/admin/dashboard") {
       const {data, status} = await adminChangePassword(values);
       if (status !== 200) setFieldError(data.property, data.msg);
       else {
@@ -66,7 +66,6 @@ function ChangePassword({title,receptionId,restaurantId}) {
         resetForm({values: ""});
       }
     }
-
   };
 
   return (
@@ -90,11 +89,21 @@ function ChangePassword({title,receptionId,restaurantId}) {
                 error={errors}
                 handleBlur={handleBlur}
                 touched={touched}
-                label="Old Password"
+                label={
+                  window.location.pathname.includes("admin/reception/account") ||
+                  window.location.pathname.includes("admin/restaurant/account")
+                    ? "Admin Password"
+                    : "Old Password"
+                }
                 values={values}
                 type={passwordType}
                 name="oldPassword"
-                placeholder="Old Password"
+                placeholder={
+                  window.location.pathname.includes("admin/reception/account") ||
+                  window.location.pathname.includes("admin/restaurant/account")
+                    ? "Admin Password"
+                    : "Old Password"
+                }
                 handleChange={handleChange}
                 style={{transition: "all .15s ease"}}
               />

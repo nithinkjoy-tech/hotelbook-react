@@ -37,6 +37,7 @@ function CheckOut({match}) {
   const [restaurantBillAmount, setRestaurantBillAmount] = useState();
   const [accomodationTotal, setAccomodationTotal] = useState();
   const [extraBedTotal, setExtraBedTotal] = useState();
+  const [enableAddorDeduct, setEnableAddorDeduct] = useState(true);
 
   const initialValues = {items: [{itemName: "", itemPrice: ""}]};
 
@@ -97,6 +98,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
         {
           label: "Yes",
           onClick: async () => {
+            setEnableAddorDeduct(false)
             const {data, status} = await checkOut(bookingId, values);
             if (status !== 200) return displayNotification("error", "Something went wrong");
             displayNotification("info", "Checkout successfull");
@@ -265,7 +267,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                                 </div>
                               );
                             })}
-                            <Button
+                            {enableAddorDeduct&&<Button
                               type="button"
                               className="mt-3"
                               style={{marginRight: "130px"}}
@@ -276,7 +278,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                               }}
                             >
                               Add or Deduct Charges
-                            </Button>
+                            </Button>}
                           </div>
                         )}
                       </FieldArray>

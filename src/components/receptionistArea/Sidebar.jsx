@@ -71,7 +71,6 @@ const Sidebar = () => {
                 <MenuItem icon={<FaList />}>
                 <a onClick={()=>setChoice("completedStays")}>Completed Stays</a>
                 </MenuItem> 
-                <MenuItem icon={<BiCog />}>etc</MenuItem>
               </Menu>
             </SidebarContent>
           </ProSidebar>

@@ -24,6 +24,10 @@ export function getRoomBoy(roomBoyId){
     return apiClient.get(`/admin/roomBoy/${roomBoyId}`);
 }
 
+export function forgotAdminPassword(values){
+    return apiClient.post("/admin/forgot",values);
+}
+
 export function getRoomBoys(hotelId){
     return apiClient.get(`/admin/roomBoy?hotelId=${hotelId}`);
 }
