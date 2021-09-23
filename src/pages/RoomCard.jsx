@@ -1,34 +1,47 @@
 import React, {useEffect, useState} from "react";
 import slide1 from "../images/slide1.jpg";
-import {getHotelRooms} from "./../api/admin";
+import {getHotelRooms, toggleVisibility} from "./../api/admin";
 import "../css/Card.css";
-import { Link } from 'react-router-dom';
-import { displayNotification } from './../services/notificationService';
+import {Link} from "react-router-dom";
+import {displayNotification} from "./../services/notificationService";
 
 function RoomCard({hotelId}) {
   const [rooms, setRooms] = useState();
 
   const getRooms = async () => {
-    const {data,status} = await getHotelRooms(hotelId);
-    if(status !==200) return displayNotification("error", "Invalid Url");
+    const {data, status} = await getHotelRooms(hotelId);
+    if (status !== 200) return displayNotification("error", "Invalid Url");
     console.log(data, "dt");
     setRooms(data);
   };
 
-  const editRoom=(roomId)=>{
-    window.location=`/admin/editroom/${roomId}`
-  }
+  const hideUnhideRoom = async roomId => {
+    const {data, status} = await toggleVisibility(roomId);
+    if (status !== 200)
+      return displayNotification("error", data || "Something unexpected happened");
+      console.log(data,"vfd")
+    if (data) {
+      displayNotification("success", "Succesfully made room hidden");
+    } else {
+      displayNotification("success", "Succesfully made room visible");
+    }
+    getRooms();
+  };
+
+  const editRoom = roomId => {
+    window.location = `/admin/editroom/${roomId}`;
+  };
 
   useEffect(() => {
     getRooms();
   }, []);
 
-  if(!rooms) return null
+  if (!rooms) return null;
 
   return (
     <div className="dashboard-items">
       <h1 style={{marginTop: "70px", textAlign: "center"}}>Rooms</h1>
-      <Link 
+      <Link
         to={`/admin/addroom/${hotelId}`}
         className="btn btn-primary btn-lg btn-block"
         style={{marginBottom: "2rem", marginLeft: "5rem"}}
@@ -46,7 +59,19 @@ function RoomCard({hotelId}) {
                 <p className="room_card__description">{room?.kindOfBed}</p>
                 <p className="room_card__description">{room?.numberOfBeds} Bed</p>
                 <h3 className="room_card__price">{room?.basePricePerNight}</h3>
-                <button onClick={()=>editRoom(room?._id)} className="room_card__btn">Edit Room</button>
+                <button onClick={() => editRoom(room?._id)} className="room_card__btn">
+                  Edit Room
+                </button>
+                <button
+                  onClick={() => hideUnhideRoom(room?._id)}
+                  className={
+                    room?.isVisible
+                      ? "room_card__btn__hideunhide btnbgcolor-hide"
+                      : "room_card__btn__hideunhide btnbgcolor-unhide"
+                  }
+                >
+                  {room?.isVisible ? "Hide Room" : "Unhide Room"}
+                </button>
               </div>
             </div>
           ))

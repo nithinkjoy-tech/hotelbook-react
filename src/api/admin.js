@@ -56,6 +56,10 @@ export function getAdminRoomById(id){
     return apiClient.get(`/admin/room/${id}`);
 }
 
+export function toggleVisibility(id){
+    return apiClient.patch(`/admin/room/${id}`);
+}
+
 export function addRoom(values){
     return apiClient.post("/admin/room", values);
 }

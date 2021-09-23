@@ -32,6 +32,7 @@ import RoomCard from './RoomCard';
 
 const HotelSidebar = ({match}) => {
     const hotelId=match.params.hotelId
+    localStorage.setItem("viewHotelId", hotelId);
   const [menuCollapse, setMenuCollapse] = useState(false);
 
   const menuIconClick = () => {

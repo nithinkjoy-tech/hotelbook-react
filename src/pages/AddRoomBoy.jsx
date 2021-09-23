@@ -88,10 +88,16 @@ function AddRoomBoy({match, hotelId}) {
       const {data, status} = await addRoomBoy(values);
       if (status !== 200) return displayNotification("error", data);
       displayNotification("info", "Successfully saved");
+      setTimeout(() => {
+        window.location=`/admin/manageHotel/${localStorage.getItem("viewHotelId")}`
+      },1000)
     } else {
       const {data, status} = await editRoomBoy(roomBoyId, values);
       if (status !== 200) return displayNotification("error", data);
       displayNotification("info", "Successfully updated");
+      setTimeout(() => {
+        window.location=`/admin/manageHotel/${localStorage.getItem("viewHotelId")}`
+      },1000)
     }
   };
 
