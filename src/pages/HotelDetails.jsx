@@ -10,10 +10,10 @@ import {displayNotification} from "./../services/notificationService";
 import GuestForm from "./../components/RoomDetailsPageComponents/GuestForm";
 import auth from "../services/authService";
 import CheckRegistration from "./../components/RoomDetailsPageComponents/CheckRegistration";
-import ReactLoading from "react-loading";
+import Loader from './../components/common/Loader';
 
 const HotelDetails = ({match, location}) => {
-  const hotelId = match?.params?.hotelId || "60fd4bdd633e1c6bf453ee16";
+  const hotelId = match?.params?.hotelId;
   // localStorage.removeItem("offlineGuestId")
   const [hotel, setHotel] = useState();
   const [rooms, setRooms] = useState();
@@ -30,6 +30,10 @@ const HotelDetails = ({match, location}) => {
     let {data, status} = await getHotel(hotelId);
     console.log(data, status, "dt");
     // if(data.)
+    if(data?.parking) data.facilities.push("Parking")
+    if(data?.extraBed) data.facilities.push("Extra Bed")
+    if(data?.restaurant) data.facilities.push("Restaurant")
+    if(data?.allowPets) data.facilities.push("Pets Allowed")
     setHotel(data);
     let selectedDayRange = JSON.parse(localStorage.getItem("selectedDays"));
     console.log(selectedDayRange, "sdrg");
@@ -55,11 +59,7 @@ const HotelDetails = ({match, location}) => {
 
   if (isLoading)
     return (
-      <center>
-        <div className="center-loader">
-          <ReactLoading type={"spin"} color={`#357EDD`} height={"10%"} width={"20%"} />
-        </div>
-      </center>
+      <Loader />
     );
 
   // if (!hotel||!rooms) return null;
@@ -75,6 +75,7 @@ const HotelDetails = ({match, location}) => {
           phoneNumber: hotel.phoneNumber,
           description: hotel.description,
           postalCode: hotel.postalCode,
+          starRating:hotel.starRating
         }}
       />
       {/* <RoomDescription description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris rutrum, dolor volutpat malesuada vulputate, diam libero tristique augue, et euismod dolor eros vitae ligula. Praesent cursus mi non nibh convallis, eget pharetra velit ornare. Fusce vel malesuada ex. Proin vitae leo rhoncus, dictum nulla molestie, condimentum libero. Etiam id mollis ipsum. Quisque tincidunt sagittis nisl, suscipit ullamcorper dolor ullamcorper eget. Cras non tortor id erat tempus interdum.'}/> */}

@@ -17,6 +17,7 @@ import {addRoom, getAdminRoomById, editRoomById} from "../../api/admin";
 import {toast} from "react-toastify";
 import {displayNotification} from "./../../services/notificationService";
 import _ from "lodash";
+import Loader from './../common/Loader';
 
 const validationSchema = Yup.object().shape({
   roomType: Yup.string().min(1).max(50).required(),
@@ -79,13 +80,17 @@ function AddRoom({match}) {
     photos: [],
     hotelId: null,
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   async function getRoom(id) {
     const {data} = await getAdminRoomById(id);
+    data.roomNumbers=data.roomNumbers.toString()
     setInitialValues(data);
-
     setPrev(data.mainPhoto);
     setNumberOfImages(data.photos.length);
+    setTimeout(() => {
+      setIsLoading(false)
+    },1000)
   }
 
   useEffect(() => {
@@ -149,13 +154,21 @@ function AddRoom({match}) {
     if (roomId) {
       values["isMainPhotoChanged"] = values.mainPhoto == prev ? false : true;
       const {data, status} = await editRoomById(values, roomId);
+      if(status===422) {
+        displayNotification("error", "Room Numbers already taken");
+        return setFieldError(data.property, data.msg);
+      }
       if (status === 400) {
-        displayNotification("Error", "You missed something in your form, please check");
+        displayNotification("error", "You missed something in your form, please check");
         setFieldError(data.property, data.msg);
       }
       isEdited = true;
     } else {
       const {data, status} = await addRoom(values);
+      if(status===422) {
+        displayNotification("error", "Room Numbers already taken");
+        return setFieldError(data.property, data.msg);
+      }
       if (status === 400 && data.property === "toast") return toast.error(data.msg);
       if (status === 400) return setFieldError(data.property, data.msg);
     }
@@ -191,6 +204,8 @@ function AddRoom({match}) {
     "Hot & Cold Water",
   ];
 
+  if(isLoading) return <Loader/>
+
   if (roomId && !initialValues?.roomType) return null;
 
   return (
@@ -203,7 +218,7 @@ function AddRoom({match}) {
       {({setFieldValue, getFieldProps}) => (
         <Form>
           <div style={{marginTop: "60px"}}>
-            <h1 style={{textAlign: "center", marginTop: "70px", marginBottom: "0"}}>Add room</h1>
+            <h1 style={{textAlign: "center", marginTop: "70px", marginBottom: "0"}}>{roomId?"Edit Room":"Add Room"}</h1>
             <div
               style={{marginLeft: "7.75vw", width: "85%", marginBottom: "2rem"}}
               className="md:grid md:grid-cols-1 md:gap-6"

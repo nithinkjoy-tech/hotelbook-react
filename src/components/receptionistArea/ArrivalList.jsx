@@ -45,7 +45,7 @@ function ArrivalList() {
             if (status !== 200)
               return displayNotification("error", data || "Could not cancel booking");
             setBooking(data)  
-            displayNotification("success", data);
+            displayNotification("success", "Booking cancelled");
           },
         },
         {

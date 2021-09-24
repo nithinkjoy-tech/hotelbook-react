@@ -9,7 +9,7 @@ import {displayNotification} from "./../../services/notificationService";
 import {setAuthToken} from "./../../services/authService";
 
 const validationSchema = Yup.object({
-  oldPassword: Yup.string().required().min(6).max(256).label((window.location.pathname.includes("admin/reception/account")||window.location.pathname.includes("admin/restaurant/account"))?"Admin Password":"Old Password"),
+  oldPassword: Yup.string().required().min(6).max(256).label((window.location.pathname.includes("/admin/reception/account")||window.location.pathname.includes("/admin/restaurant/account"))?"Admin Password":"Old Password"),
   newPassword: Yup.string()
     .notOneOf([Yup.ref("oldPassword"), null], `${(window.location.pathname.includes("admin/reception/account")||window.location.pathname.includes("admin/restaurant/account"))?"Admin Password":"Old Password"} Should not be same as new password`)
     .required("Password is required")
@@ -90,8 +90,8 @@ function ChangePassword({title, receptionId, restaurantId}) {
                 handleBlur={handleBlur}
                 touched={touched}
                 label={
-                  window.location.pathname.includes("admin/reception/account") ||
-                  window.location.pathname.includes("admin/restaurant/account")
+                  window.location.pathname.includes("/admin/reception/account") ||
+                  window.location.pathname.includes("/admin/restaurant/account")
                     ? "Admin Password"
                     : "Old Password"
                 }
@@ -99,8 +99,8 @@ function ChangePassword({title, receptionId, restaurantId}) {
                 type={passwordType}
                 name="oldPassword"
                 placeholder={
-                  window.location.pathname.includes("admin/reception/account") ||
-                  window.location.pathname.includes("admin/restaurant/account")
+                  window.location.pathname.includes("/admin/reception/account") ||
+                  window.location.pathname.includes("/admin/restaurant/account")
                     ? "Admin Password"
                     : "Old Password"
                 }

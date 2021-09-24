@@ -7,6 +7,7 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import {getBookings, cancelBooking} from "../../api/guest";
 import {displayNotification} from "./../../services/notificationService";
 import ReactLoading from "react-loading";
+import Loader from './Loader';
 
 function Booked_Dashboard() {
   const history = useHistory();
@@ -16,7 +17,10 @@ function Booked_Dashboard() {
   const getAllBookings = async () => {
     const {data, status} = await getBookings({isStayCompleted: false});
     if (status !== 200) return displayNotification("error", data);
-    // console.log(data,"dtt")
+    if(data==="No bookings found") {
+      setBookings(null);
+      return setIsLoading(false);
+    }
     setBookings(data);
     setTimeout(() => {
       setIsLoading(false);
@@ -62,11 +66,7 @@ function Booked_Dashboard() {
 
   if (isLoading)
     return (
-      <center>
-        <div className="center-loader">
-          <ReactLoading type={"spin"} color={`#357EDD`} height={"10%"} width={"20%"} />
-        </div>
-      </center>
+      <Loader />
     );
 
   if (!bookings)

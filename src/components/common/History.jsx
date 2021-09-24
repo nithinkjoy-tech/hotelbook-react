@@ -27,12 +27,21 @@ function History() {
   const [reviewValue, setReviewValue] = useState();
   const [initialValues, setInitialValues] = useState();
   const [revId, setRevId] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const getAllBookings = async () => {
     const {data, status} = await getBookings({isStayCompleted: true});
     if (status !== 200) return displayNotification("error", data);
     // console.log(data,"dtt")
+    if(data==="No bookings found") {
+      setBookings(null);
+      return setIsLoading(false);
+    }
     setBookings(data);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+
   };
 
   const handleDownloadInvoice = async bookingId => {

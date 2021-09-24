@@ -87,6 +87,8 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       extraBedTotal,
       details?.lateStartingDayOfStay||details?.startingDayOfStay
     );
+
+    window.location="/reception/dashboard"
   }
 
   const handleSubmit = async values => {

@@ -2,6 +2,7 @@ import React from "react";
 import "../../css/room.css";
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
+import _ from "lodash"
 
 function PriceandImageSection({hotelDetails}) {
 
@@ -36,6 +37,7 @@ function PriceandImageSection({hotelDetails}) {
                 <p>Contact: {hotelDetails.phoneNumber}</p>
                 <p>Pincode: {hotelDetails.postalCode}</p>
                 <p>{hotelDetails.description}</p>
+                <p>{_.range(hotelDetails.starRating).map(range=><span>⭐</span>)}</p>
                 </div>
             </div>
           </div>

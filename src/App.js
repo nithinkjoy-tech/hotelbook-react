@@ -53,25 +53,26 @@ function App() {
         <Route exact path="/dashboard" component={GuestDashboard} />
         <Route exact path="/signup" component={SignupPage} />
         <Route exact path="/logout" component={Logout} />
-        <Route exact path="/bookedroomdetails" component={BookedRoomDetails} />
+        {/* <Route exact path="/bookedroomdetails" component={BookedRoomDetails} /> */}
         <Route exact path="/forgotpassword" component={ForgotPassword} />
         <Route exact path="/admin/forgotpassword" component={ForgotPassword} />
         <Route exact path="/resetpassword/:token" component={ResetPassword} />
         <Route exact path="/hoteldetails/:hotelId" component={HotelDetails} />
         <Route exact path="/linkreview/:id" component={LinkReview} />
         <Route exact path="/hotel/roomdetails/:roomId" component={RoomDetails} />
-        <Route exact path="/renter/welcome" component={ListPropertyWelcomePage} />
+        {/* <Route exact path="/renter/welcome" component={ListPropertyWelcomePage} /> */}
         {/* <Route path="/reception/dashboard/arrivals" component={ArrivalList} /> */}
         <Route exact path="/reception/dashboard/checkin/:bookingId" component={BookedCheckIn} />
         <Route exact path="/reception/dashboard/checkout/:bookingId" component={CheckOut} />
         <Route exact path="/reception/dashboard" component={Sidebar} />
-        <Route exact path="/restaurant/dashboard" component={RestaurantSidebar} />
         <Route exact path="/reception/signin" component={SigninPage} />
+
+        <Route exact path="/restaurant/dashboard" component={RestaurantSidebar} />
         <Route exact path="/restaurant/signin" component={SigninPage} />
         <Route exact path="/restaurant/addfooditem" component={AddFoodItem} />
         <Route exact path="/restaurant/additemstobill/:bookingId" component={AddItemsToBill} />
-        <Route exact path="/renter/signup" component={SignupPage} />
-        <Route exact path="/renter/prof" component={AdminBook} />
+        {/* <Route exact path="/renter/signup" component={SignupPage} />
+        <Route exact path="/renter/prof" component={AdminBook} /> */}
         {/* <Route exact path="reception/dashboard/book" component={CheckIn}/> 
          <Route exact path="/arrivalslist" component={ArrivalList} />
      <Route exact path="/" component={OverView} /> */}
