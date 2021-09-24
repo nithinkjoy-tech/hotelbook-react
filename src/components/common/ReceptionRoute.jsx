@@ -2,16 +2,16 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import auth from "../../services/authService";
 
-const RenterRoute = ({ component: Component, render, ...rest }) => {
+const ReceptionRoute = ({ component: Component, render, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (!auth.getCurrentUser()?.isAdmin)
+        if (!auth.getCurrentUser()?.isReception)
           return (
             <Redirect
               to={{
-                pathname: "/admin/signin",
+                pathname: "/reception/signin",
                 state: { from: props.location },
               }}
             />
@@ -22,4 +22,4 @@ const RenterRoute = ({ component: Component, render, ...rest }) => {
   );
 };
 
-export default RenterRoute;
+export default ReceptionRoute;

@@ -9,11 +9,12 @@ import ImageGallery from "react-image-gallery";
 import "../../css/Table.css";
 import {getRoombyId} from "../../api/guest";
 import ModalComponent from "../common/ModalComponent";
-import { bookHotel } from './../../api/guest';
+import {bookHotel} from "./../../api/guest";
 import {getCurrentUser} from "../../services/authService";
 import ReactLoading from "react-loading";
+import Loader from "./../common/Loader";
 
-function BookedRoomDetails({}) { 
+function BookedRoomDetails({}) {
   const [rooms, setRooms] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [images, setImages] = useState([]);
@@ -26,7 +27,7 @@ function BookedRoomDetails({}) {
   const [isLoading, setIsLoading] = useState(true);
 
   const history = useHistory();
-  const {data: roomDetails,days} = history.location.state;
+  const {data: roomDetails, days} = history.location.state;
 
   const getBookedRoomDetails = async () => {
     let roomIds = [];
@@ -51,7 +52,7 @@ function BookedRoomDetails({}) {
     setRooms(data);
     setTimeout(() => {
       setIsLoading(false);
-    }, 500);
+    }, 1000);
   };
 
   const getRoomDetails = async roomId => {
@@ -70,24 +71,18 @@ function BookedRoomDetails({}) {
     getBookedRoomDetails();
   }, []);
 
-  if (isLoading)
-    return (
-      <center>
-        <div className="center-loader">
-          <ReactLoading type={"spin"} color={`#357EDD`} height={"10%"} width={"20%"} />
-        </div>
-      </center>
-    );
+  if (isLoading) {
+    return <Loader />;
+  }
 
   if (!rooms) return null;
 
   console.log(rooms);
 
   // return null
-  
 
   return (
-    <div style={{margin: "auto", width: "85%",marginTop:"70px"}}>
+    <div style={{margin: "auto", width: "85%", marginTop: "70px"}}>
       <table className="table table-bordered">
         <thead className="table-dark">
           <tr>
@@ -152,13 +147,13 @@ function BookedRoomDetails({}) {
                 </div>
               </td>
               <td>
-                <p>{`${room.pricePerRoom} x ${days} Nights = ${room.pricePerRoom*(days)}`}</p>
-                <p>{`${room.pricePerRoom*(days)} x ${room.numberOfRoomsBooked} Rooms = ${room.pricePerRoom*(days)*room.numberOfRoomsBooked}`}</p>
-                
-                Rs.{" "}
-                {(room.pricePerRoom*room.numberOfRoomsBooked)*(days)}
+                <p>{`${room.pricePerRoom} x ${days} Nights = ${room.pricePerRoom * days}`}</p>
+                <p>{`${room.pricePerRoom * days} x ${room.numberOfRoomsBooked} Rooms = ${
+                  room.pricePerRoom * days * room.numberOfRoomsBooked
+                }`}</p>
+                Rs. {room.pricePerRoom * room.numberOfRoomsBooked * days}
               </td>
-            </tr> 
+            </tr>
           ))}
           {/* <tr>
             <td style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
