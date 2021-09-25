@@ -1,24 +1,24 @@
 import React from "react";
-import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import DatePicker, {utils} from "@hassanmojab/react-modern-calendar-datepicker";
 import {useFormikContext} from "formik";
-     
-const Calendar = ({selectedDayRange, name,minimumDate,placeholder}) => {
+import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
+
+const Calendar = ({selectedDayRange, name, minimumDate, placeholder}) => {
   const formik = useFormikContext();
   const field = formik.getFieldProps(name);
 
   const renderCustomInput = ({ref}) => (
     <input
-      readOnly 
+      readOnly
       ref={ref}
       value={
         selectedDayRange?.from?.day
           ? `${selectedDayRange?.from?.day}/${selectedDayRange?.from?.month}/${
-            selectedDayRange?.from?.year
+              selectedDayRange?.from?.year
             }${selectedDayRange?.to?.day ? " - " + selectedDayRange?.to?.day + "/" : ""}${
               selectedDayRange?.to?.month ? selectedDayRange?.to?.month + "/" : ""
-            }${selectedDayRange?.to?.year ? selectedDayRange?.to?.year +"📅": ""}`
-          : (placeholder||"📅  Select nights of stay")
+            }${selectedDayRange?.to?.year ? selectedDayRange?.to?.year + "📅" : ""}`
+          : placeholder || "📅  Select nights of stay"
       }
       style={{
         cursor: "pointer",
@@ -36,7 +36,7 @@ const Calendar = ({selectedDayRange, name,minimumDate,placeholder}) => {
       }}
       inputPlaceholder="Select days"
       shouldHighlightWeekends
-      minimumDate={minimumDate?utils().getToday():""}
+      minimumDate={minimumDate ? utils().getToday() : ""}
     />
   );
 };
