@@ -1,29 +1,21 @@
 import React, {useEffect, useState} from "react";
+import PersonIcon from "@material-ui/icons/Person";
+import ImageGallery from "react-image-gallery";
+import ModalComponent from "../common/ModalComponent";
+import Loader from "./../common/Loader";
+import _ from "lodash";
 import {useHistory} from "react-router-dom";
 import {getBookedRoomsbyId} from "./../../api/guest";
 import {displayNotification} from "./../../services/notificationService";
-import _ from "lodash";
-import PersonIcon from "@material-ui/icons/Person";
-import "bootstrap/dist/css/bootstrap.css";
-import ImageGallery from "react-image-gallery";
-import "../../css/Table.css";
 import {getRoombyId} from "../../api/guest";
-import ModalComponent from "../common/ModalComponent";
-import {bookHotel} from "./../../api/guest";
-import {getCurrentUser} from "../../services/authService";
-import ReactLoading from "react-loading";
-import Loader from "./../common/Loader";
+import "bootstrap/dist/css/bootstrap.css";
+import "../../css/Table.css";
 
 function BookedRoomDetails({}) {
   const [rooms, setRooms] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [facilities, setFacilities] = useState();
-  const [beds, setBeds] = useState();
-  const [persons, setPersons] = useState();
-  const [price, setPrice] = useState();
-  const [roomsNumber, setRoomsNumber] = useState();
-  const [object, setObject] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   const history = useHistory();
@@ -32,13 +24,10 @@ function BookedRoomDetails({}) {
   const getBookedRoomDetails = async () => {
     let roomIds = [];
     for (let [key, value] of Object.entries(roomDetails)) {
-      console.log(key, value);
       roomIds.push(key);
     }
     const {data, status} = await getBookedRoomsbyId({roomIds});
     if (status !== 200) return displayNotification("error", data || "Something went wrong");
-    console.log(data, "dt1");
-    // for(let room of data){
     _.each(data, (room, index) => {
       for (let [key, value] of Object.entries(roomDetails)) {
         if (room._id == key) {
@@ -77,10 +66,6 @@ function BookedRoomDetails({}) {
 
   if (!rooms) return null;
 
-  console.log(rooms);
-
-  // return null
-
   return (
     <div style={{margin: "auto", width: "85%", marginTop: "70px"}}>
       <table className="table table-bordered">
@@ -89,10 +74,7 @@ function BookedRoomDetails({}) {
             <th scope="col">Room Type</th>
             <th scope="col">Beds</th>
             <th scope="col">Sleeps</th>
-            <th scope="col">
-              Total Price
-              {/* {`Price for ${days+1} nights`} */}
-            </th>
+            <th scope="col">Total Price</th>
           </tr>
         </thead>
         <tbody>
@@ -155,24 +137,6 @@ function BookedRoomDetails({}) {
               </td>
             </tr>
           ))}
-          {/* <tr>
-            <td style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-              <div>Total Booking details</div>
-
-            </td>
-            <td className="tdalign">
-              Beds:<span>{beds}</span>
-            </td>
-            <td className="tdalign">
-              Persons:<span>{persons}</span>
-            </td>
-            <td className="tdalign">
-              Price:<span>{price}</span>
-            </td>
-            <td className="tdalign">
-              Rooms:<span>{roomsNumber}</span>
-            </td>
-          </tr> */}
           {images.length > 0 ? (
             <ModalComponent modalIsOpen={modalIsOpen} setIsOpen={setIsOpen}>
               <div style={{display: "flex", justifyItems: "center", alignContent: "flex-start"}}>

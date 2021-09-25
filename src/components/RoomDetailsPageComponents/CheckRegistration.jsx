@@ -1,41 +1,29 @@
-import React,{useContext} from "react";
+import React from "react";
 import PropertyInputBox from "../common/PropertyInputBox";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
-import {useFormikContext, ErrorMessage} from "formik";
-import {Form, Formik} from "formik";
-import Error from "../forms/Error";
 import * as Yup from "yup";
+import {displayNotification} from "./../../services/notificationService";
 import {offlineGuestCheck} from "../../api/reception";
-import { displayNotification } from './../../services/notificationService';
-
+import {Form, Formik} from "formik";
+import "react-phone-input-2/lib/style.css";
 
 const validationSchema = Yup.object().shape({
   userId: Yup.string().min(2).max(50).required("This field is required"),
 });
 
 function CheckRegistration({setGuestExist}) {
+  const handleSubmit = async values => {
+    const {data, status} = await offlineGuestCheck(values);
+    if (status !== 200) return displayNotification("error", "Something went wrong");
+    setGuestExist(data);
+    localStorage.setItem("offlineGuestId", JSON.stringify(data?.userId));
 
-    // const {guestExist, setGuestExist}=useContext(OfflineGuestContext)
-
-  const handleSubmit = async (values, setFieldError) => {
-      const {data, status} = await offlineGuestCheck(values);
-    setGuestExist(data)
-    localStorage.setItem("offlineGuestId",JSON.stringify(data?.userId)) 
-    if(data?.isGuestExist) {
-      displayNotification("info","Guest logged In ,please book")}
-    else {
-      localStorage.setItem("guestUserId",values.userId)
-      displayNotification("warn","Guest Dont have account, please create one")}
+    if (data?.isGuestExist) {
+      displayNotification("info", "Guest logged In ,please book");
+    } else {
+      localStorage.setItem("guestUserId", values.userId);
+      displayNotification("warn", "Guest Dont have account, please create one");
+    }
   };
-
-  //   const {handleBlur, getFieldProps, values, setFieldValue} = useFormikContext();
-
-  //   let {value, name} = getFieldProps("phoneNumber");
-
-  //   const changePhoneNumber = number => {
-  //     setFieldValue(name, number);
-  //   };
 
   return (
     <Formik
@@ -45,7 +33,7 @@ function CheckRegistration({setGuestExist}) {
       validationSchema={validationSchema}
       onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
     >
-      {({errors, touched, values, handleChange, handleBlur}) => (
+      {({}) => (
         <Form>
           <div
             style={{marginLeft: "7.75vw", width: "85%"}}
@@ -62,7 +50,11 @@ function CheckRegistration({setGuestExist}) {
                       <h2>Check Registration</h2>
                       <div className="grid grid-cols-6 gap-6">
                         <div className="col-span-6 sm:col-span-6">
-                          <PropertyInputBox label="Email or Mobile (Include country code for mobile)" type="text" name="userId" />
+                          <PropertyInputBox
+                            label="Email or Mobile (Include country code for mobile)"
+                            type="text"
+                            name="userId"
+                          />
                         </div>
                       </div>
                       <div className="text-center mt-6">
