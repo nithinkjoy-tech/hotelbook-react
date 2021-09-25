@@ -1,18 +1,18 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
 import auth from "../../services/authService";
+import {Route, Redirect} from "react-router-dom";
 
-const RestaurantRoute = ({ component: Component, render, ...rest }) => {
+const RestaurantRoute = ({component: Component, render, ...rest}) => {
   return (
     <Route
       {...rest}
-      render={(props) => {
+      render={props => {
         if (!auth.getCurrentUser()?.isRestaurant)
           return (
             <Redirect
               to={{
                 pathname: "/restaurant/signin",
-                state: { from: props.location },
+                state: {from: props.location},
               }}
             />
           );

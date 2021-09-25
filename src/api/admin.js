@@ -12,8 +12,8 @@ export function getRoomBoys(hotelId){
     return apiClient.get(`/admin/roomBoy?hotelId=${hotelId}`);
 }
 
-export function getAdminHotels(values){
-    return apiClient.get("/admin/hotel",values);
+export function getAdminHotels(){
+    return apiClient.get("/admin/hotel");
 }
 
 export function getHotelRooms(id){

@@ -1,11 +1,10 @@
 import React from "react";
-import {ErrorMessage} from "formik";
 import Error from "./../forms/Error";
-import {useFormikContext} from "formik"
+import {ErrorMessage} from "formik";
+import {useFormikContext} from "formik";
 
-function PropertyInputBox({label, type="text", name,...other}) {
-
-  const {values,handleChange,handleBlur}=useFormikContext()
+function PropertyInputBox({label, type = "text", name, ...other}) {
+  const {values, handleChange, handleBlur} = useFormikContext();
 
   return (
     <div>
@@ -13,7 +12,7 @@ function PropertyInputBox({label, type="text", name,...other}) {
         <label htmlFor="hotelName" className="block text-sm font-medium text-gray-700">
           {label}
         </label>
-      )} 
+      )}
       <input
         onBlur={handleBlur}
         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"

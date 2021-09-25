@@ -1,18 +1,18 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
 import auth from "../../services/authService";
+import {Route, Redirect} from "react-router-dom";
 
-const AdminRoute = ({ component: Component, render, ...rest }) => {
+const AdminRoute = ({component: Component, render, ...rest}) => {
   return (
     <Route
       {...rest}
-      render={(props) => {
+      render={props => {
         if (!auth.getCurrentUser()?.isAdmin)
           return (
             <Redirect
               to={{
                 pathname: "/admin/signin",
-                state: { from: props.location },
+                state: {from: props.location},
               }}
             />
           );

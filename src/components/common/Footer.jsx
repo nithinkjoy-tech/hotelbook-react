@@ -67,11 +67,6 @@ const Footer = () => {
                   Enter your email and receive the latest news from us. We'll never share your email
                   address
                 </p>
-
-                 {/* <form action="#" className="subscribe" method="post">
-              <input type="email" name="email" placeholder="Your Email Address" required="">
-              <button><span className="fa fa-envelope-o"></span></button>
-            </form> */}
               </div>
             </div>
           </div>
@@ -81,7 +76,6 @@ const Footer = () => {
         <div className="container">
           <div className="row bottom-copies">
             <p className="col-lg-8 copy-footer-29">© 2021 HotelBook. All rights reserved </p>
-
             <div className="col-lg-4 main-social-footer-29">
               <a href="#facebook" className="facebook">
                 <span className="fa fa-facebook"></span>
@@ -99,7 +93,6 @@ const Footer = () => {
           </div>
         </div>
       </section>
-      
     </div>
   );
 };
