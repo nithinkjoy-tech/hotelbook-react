@@ -1,15 +1,12 @@
 import React, {useEffect, useState, useMemo} from "react";
-import "../../css/ArrivalList.css";
-import Sidebar from "./Sidebar";
-import {getCurrentlyStaying} from "../../api/reception";
-import DataTable, {createTheme} from "react-data-table-component";
-import InputBox from "./../common/InputBox";
+import DataTable from "react-data-table-component";
 import _ from "lodash";
+import {getCurrentlyStaying} from "../../api/reception";
+import "../../css/ArrivalList.css";
 
 function AddBill() {
   const handleClick = data => {
-    window.location=`/reception/dashboard/checkout/${data}`
-    console.log(data);
+    window.location = `/reception/dashboard/checkout/${data}`;
   };
 
   const columns = useMemo(
@@ -25,7 +22,7 @@ function AddBill() {
       },
       {
         name: "Checked In",
-        selector: booking?.lateStartingDayOfStay?"lateStartingDayOfStay":"startingDayOfStay",
+        selector: booking?.lateStartingDayOfStay ? "lateStartingDayOfStay" : "startingDayOfStay",
         sortable: true,
       },
       {
@@ -63,7 +60,7 @@ function AddBill() {
   );
   const [booking, setBooking] = useState();
   const [fullBooking, setFullBooking] = useState();
-  console.log(booking, "bknh");
+
   const handleChange = ({target}) => {
     let booking = fullBooking;
     setBooking(
@@ -72,8 +69,8 @@ function AddBill() {
   };
 
   const getAllBookings = async () => {
-    const {data,status} = await getCurrentlyStaying();
-    if(status!==200) return
+    const {data, status} = await getCurrentlyStaying();
+    if (status !== 200) return;
     setBooking(data);
     setFullBooking([...data]);
   };
