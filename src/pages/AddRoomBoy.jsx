@@ -1,22 +1,14 @@
 import React, {useState, useEffect} from "react";
 import PropertyInputBox from "../components/common/PropertyInputBox";
-import PropertySelectBox from "../components/common/PropertySelectBox";
-import "react-phone-input-2/lib/style.css";
+import PhoneInput from "react-phone-input-2";
+import _ from "lodash";
 import * as Yup from "yup";
-import FormCheckBox from "../components/common/FormCheckBox";
-// import Error from "../../forms/Error";
-import {Delete} from "@material-ui/icons";
-import {Formik, Form, ErrorMessage, getIn} from "formik";
 import {addRoomBoy, getRoomBoy, editRoomBoy, getHotelRooms} from "../api/admin";
-import {getHotelsName} from "../api/guest";
-import Error from "../components/forms/Error";
-import {toast} from "react-toastify";
+import {Formik, Form, getIn} from "formik";
 import {displayNotification} from "../services/notificationService";
 import {DropzoneArea} from "material-ui-dropzone";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import _ from "lodash";
-import "../css/Dashboard.css"
+import "../css/Dashboard.css";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(1).max(50).required(),
@@ -38,11 +30,6 @@ const validationSchema = Yup.object().shape({
 
 function AddRoomBoy({match, hotelId}) {
   const roomBoyId = match?.params?.roomBoyId;
-  console.log(hotelId, "rbid");
-
-  // let mongoIdRegex=new RegExp("^[0-9a-fA-F]{24}$")
-
-  // if(!mongoIdRegex.test(roomBoyId)) return displayNotification("error","Invalid ")
 
   const [initialValues, setInitialValues] = useState({
     name: "",
@@ -51,29 +38,20 @@ function AddRoomBoy({match, hotelId}) {
     city: "",
     aadharNumber: "",
     photo: "",
-    currentHotelId: hotelId || "",
+    currentHotelId: hotelId,
   });
 
-  const [options, setOptions] = useState();
   const [prev, setPrev] = useState();
 
   const getRoomBoyDetails = async () => {
-    // const {data, status} = await getHotelsName();
-    // if (status !== 200) return displayNotification("error", "Something went wrong");
-    // // console.log(data,"dt")
-    // setOptions(data);
-
     if (hotelId) {
-      const {data: validHotel, status: resStatus} = await getHotelRooms(hotelId);
+      const {status: resStatus} = await getHotelRooms(hotelId);
       if (resStatus !== 200) return displayNotification("error", "Invalid URL");
     }
 
     if (roomBoyId) {
-      console.log("here");
       const {data, status} = await getRoomBoy(roomBoyId);
-      console.log("done");
       if (status !== 200) return displayNotification("error", "Something went wrong");
-      console.log(data, "rb");
       setInitialValues(data);
       setPrev(data.photo);
     }
@@ -83,30 +61,27 @@ function AddRoomBoy({match, hotelId}) {
     getRoomBoyDetails();
   }, []);
 
-  const handleSubmit = async (values, setFieldError) => {
-    // values["currentHotelId"]=options.filter(option=>option.city===values["currentHotel"])[0]._id
+  const handleSubmit = async values => {
     if (!roomBoyId) {
       const {data, status} = await addRoomBoy(values);
       if (status !== 200) return displayNotification("error", data);
       displayNotification("info", "Successfully saved");
       setTimeout(() => {
-        window.location=`/admin/manageHotel/${localStorage.getItem("viewHotelId")}`
-      },1000)
+        window.location = `/admin/manageHotel/${localStorage.getItem("viewHotelId")}`;
+      }, 1000);
     } else {
       const {data, status} = await editRoomBoy(roomBoyId, values);
       if (status !== 200) return displayNotification("error", data);
       displayNotification("info", "Successfully updated");
       setTimeout(() => {
-        window.location=`/admin/manageHotel/${localStorage.getItem("viewHotelId")}`
-      },1000)
+        window.location = `/admin/manageHotel/${localStorage.getItem("viewHotelId")}`;
+      }, 1000);
     }
   };
 
   const handleImageChange = (data, setFieldValue) => {
     if (!data[0]) return;
-    // console.log(data,"dta")
     const reader = new FileReader();
-    // setPrev(null)
     reader.onload = () => {
       if (reader.readyState === 2) {
         let imageBase64 = reader.result;
@@ -124,16 +99,7 @@ function AddRoomBoy({match, hotelId}) {
         onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
         enableReinitialize
       >
-        {({
-          setFieldValue,
-          getFieldProps,
-          errors,
-          getFieldMeta,
-          handleBlur,
-          values,
-          setFieldTouched,
-          handleChange,
-        }) => (
+        {({setFieldValue, errors, getFieldMeta, handleBlur, values, setFieldTouched}) => (
           <Form>
             <div style={{marginTop: "60px"}}>
               <h1 style={{textAlign: "center", marginTop: "70px", marginBottom: "0"}}>
@@ -161,8 +127,7 @@ function AddRoomBoy({match, hotelId}) {
                             <div className="col-span-6 sm:col-span-3">
                               <PropertyInputBox label="City" type="text" name="city" />
                             </div>
-                            
-                            
+
                             <div className="col-span-6 sm:col-span-3">
                               <PropertyInputBox
                                 label="Aadhar Number"
@@ -193,15 +158,6 @@ function AddRoomBoy({match, hotelId}) {
                                 )}
                             </div>
                             <div className="col-span-6 sm:col-span-3"></div>
-                            {/* <div className="col-span-6 sm:col-span-3">
-                              <PropertySelectBox
-                                label="Current Hotel"
-                                name="currentHotel"
-                                onChange={handleChange}
-                                options={_.flattenDeep([null, options.map(hotel => hotel.city)])}
-                              />
-                            </div> */}
-                            {/* <div className="col-span-6 sm:col-span-3"></div> */}
                             <div style={{width: "65vw", marginTop: "3rem", marginLeft: 0}}>
                               <p style={{color: "black"}}>Passport size photo (Below 200kb)</p>
                               <div style={{margin: "auto", width: "70%"}}>

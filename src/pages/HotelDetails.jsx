@@ -1,48 +1,35 @@
 import React, {useEffect, useState} from "react";
-import {ImportContactsTwoTone} from "@material-ui/icons";
 import PriceandImageSection from "../components/RoomDetailsPageComponents/PriceandImageSection";
-// import RoomDescription from "../components/RoomDetailsPageComponents/RoomDescription";
 import Amenities from "../components/RoomDetailsPageComponents/Amenities";
 import Reviews from "../components/RoomDetailsPageComponents/Reviews";
-import {getHotel, getRoomsbyId} from "./../api/guest";
 import Table from "./../components/common/Table";
-import {displayNotification} from "./../services/notificationService";
 import GuestForm from "./../components/RoomDetailsPageComponents/GuestForm";
 import auth from "../services/authService";
 import CheckRegistration from "./../components/RoomDetailsPageComponents/CheckRegistration";
-import Loader from './../components/common/Loader';
+import Loader from "./../components/common/Loader";
+import {getHotel, getRoomsbyId} from "./../api/guest";
+import {displayNotification} from "./../services/notificationService";
 
 const HotelDetails = ({match, location}) => {
   const hotelId = match?.params?.hotelId;
-  // localStorage.removeItem("offlineGuestId")
   const [hotel, setHotel] = useState();
   const [rooms, setRooms] = useState();
   const [guestExist, setGuestExist] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  // setGuestExist(JSON.parse(localStorage.getItem("isGuestExist")))
-  // const getRoomsbyId=async(hotelRoomIds)=>{
-  //   console.log(hotelRoomIds,"ff")
-
-  // }
-
   const getHotelbyId = async () => {
     let {data, status} = await getHotel(hotelId);
-    console.log(data, status, "dt");
-    // if(data.)
-    if(data?.parking) data.facilities.push("Parking")
-    if(data?.extraBed) data.facilities.push("Extra Bed")
-    if(data?.restaurant) data.facilities.push("Restaurant")
-    if(data?.allowPets) data.facilities.push("Pets Allowed")
+    if (data?.parking) data.facilities.push("Parking");
+    if (data?.extraBed) data.facilities.push("Extra Bed");
+    if (data?.restaurant) data.facilities.push("Restaurant");
+    if (data?.allowPets) data.facilities.push("Pets Allowed");
     setHotel(data);
     let selectedDayRange = JSON.parse(localStorage.getItem("selectedDays"));
-    console.log(selectedDayRange, "sdrg");
     let {data: roomData, status: reqStatus} = await getRoomsbyId({
       roomIds: data.hotelRooms,
       selectedDayRange,
       hotelId,
     });
-    console.log(roomData, "dtnj");
     setRooms(roomData);
     setTimeout(() => {
       setIsLoading(false);
@@ -50,20 +37,14 @@ const HotelDetails = ({match, location}) => {
     let numberOfDays = Number(localStorage.getItem("numberOfDays"));
     if (numberOfDays === 0 || !numberOfDays)
       displayNotification("info", "Select date of your stay for clear details");
-    // getRoomsbyId(data.hotelRooms)
   };
 
   useEffect(() => {
     getHotelbyId();
   }, []);
 
-  if (isLoading)
-    return (
-      <Loader />
-    );
+  if (isLoading) return <Loader />;
 
-  // if (!hotel||!rooms) return null;
-  // console.log(hotel.photos,"bb")
   return (
     <React.Fragment>
       <PriceandImageSection
@@ -75,10 +56,9 @@ const HotelDetails = ({match, location}) => {
           phoneNumber: hotel.phoneNumber,
           description: hotel.description,
           postalCode: hotel.postalCode,
-          starRating:hotel.starRating
+          starRating: hotel.starRating,
         }}
       />
-      {/* <RoomDescription description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris rutrum, dolor volutpat malesuada vulputate, diam libero tristique augue, et euismod dolor eros vitae ligula. Praesent cursus mi non nibh convallis, eget pharetra velit ornare. Fusce vel malesuada ex. Proin vitae leo rhoncus, dictum nulla molestie, condimentum libero. Etiam id mollis ipsum. Quisque tincidunt sagittis nisl, suscipit ullamcorper dolor ullamcorper eget. Cras non tortor id erat tempus interdum.'}/> */}
       <Amenities mainPhoto={hotel.mainPhoto} facilities={hotel.facilities} />
       {auth.getCurrentUser()?.isReception && !guestExist ? (
         <CheckRegistration setGuestExist={setGuestExist} />

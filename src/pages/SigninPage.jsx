@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import InputBox from "./../components/common/InputBox";
+import * as Yup from "yup";
+import {restaurantSignin} from "../api/restaurant";
+import {receptionSignin} from "../api/reception";
+import {setAuthToken} from "./../services/authService";
 import {Formik, Form} from "formik";
 import {guestSignin} from "../api/guest";
-import {receptionSignin} from "../api/reception";
-import {restaurantSignin} from "../api/restaurant";
 import {adminSignin} from "../api/admin";
-import * as Yup from "yup";
-import {setAuthToken} from "./../services/authService";
 
 const validationSchema = Yup.object().shape({
   userId: Yup.string().required("Email or Username is required").label("Email or Username"),
@@ -15,21 +15,6 @@ const validationSchema = Yup.object().shape({
 
 function SigninPage({location}) {
   const [passwordType, setPasswordType] = useState("password");
-
-  // let bgcolor = "";
-  // let traycolor = "";
-  // if (location.pathname === "/signin") {
-  //   traycolor = "";
-  //   bgcolor = "";
-  // }
-  // if (location.pathname === "/renter/signin") {
-  //   traycolor = "red";
-  //   bgcolor = "red";
-  // }
-  // if (location.pathname === "/admin/signin") {
-  //   traycolor = "blue";
-  //   bgcolor = "blue";
-  // }
 
   const handleSubmit = async (values, setFieldError) => {
     if (location.search) {
@@ -46,7 +31,6 @@ function SigninPage({location}) {
       const {data, status} = await guestSignin(values);
       if (status !== 200) setFieldError("userId", data);
       else {
-        console.log(location);
         setAuthToken(data);
         window.location = "/dashboard";
       }
@@ -96,7 +80,6 @@ function SigninPage({location}) {
               <div
                 className="top-0 w-full h-full bg-gray-900"
                 style={{
-                  // backgroundColor: "red",
                   backgroundSize: "100%",
                   backgroundRepeat: "no-repeat",
                 }}
@@ -176,7 +159,6 @@ function SigninPage({location}) {
                                       ? "/forgotpassword"
                                       : "/admin/forgotpassword"
                                   }
-                                  // onClick={e => e.preventDefault()}
                                   className="text-blue-800"
                                 >
                                   <small>Forgot password?</small>

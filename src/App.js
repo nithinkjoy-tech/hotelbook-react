@@ -2,7 +2,7 @@ import "./App.css";
 import React from "react";
 import {Switch, Route, Redirect} from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import SearchPage from "./pages/SearchPage";
+// import SearchPage from "./pages/SearchPage";
 import NavBar from "./components/common/NavBar.jsx";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
@@ -51,7 +51,7 @@ function App() {
 
       <Switch>
         <Route exact path="/about" component={AboutPage} />
-        <Route exact path="/search" component={SearchPage} />
+        {/* <Route exact path="/search" component={SearchPage} /> */}
         <Route exact path="/signin" component={SigninPage} />
         <GuestRoute exact path="/dashboard" component={GuestDashboard} />
         <Route exact path="/signup" component={SignupPage} />

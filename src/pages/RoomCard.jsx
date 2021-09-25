@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
-import slide1 from "../images/slide1.jpg";
 import {getHotelRooms, toggleVisibility} from "./../api/admin";
-import "../css/Card.css";
-import {Link} from "react-router-dom";
 import {displayNotification} from "./../services/notificationService";
+import {Link} from "react-router-dom";
+import "../css/Card.css";
 
 function RoomCard({hotelId}) {
   const [rooms, setRooms] = useState();
@@ -11,7 +10,6 @@ function RoomCard({hotelId}) {
   const getRooms = async () => {
     const {data, status} = await getHotelRooms(hotelId);
     if (status !== 200) return displayNotification("error", "Invalid Url");
-    console.log(data, "dt");
     setRooms(data);
   };
 
@@ -19,7 +17,6 @@ function RoomCard({hotelId}) {
     const {data, status} = await toggleVisibility(roomId);
     if (status !== 200)
       return displayNotification("error", data || "Something unexpected happened");
-      console.log(data,"vfd")
     if (data) {
       displayNotification("success", "Succesfully made room hidden");
     } else {

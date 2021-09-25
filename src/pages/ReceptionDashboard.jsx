@@ -1,16 +1,9 @@
 import React,{useState} from 'react'
 import PersonIcon from '@material-ui/icons/Person';
-import HistoryIcon from '@material-ui/icons/History';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import EventAvailableIcon from '@material-ui/icons/EventAvailable';
-import {Lock} from '@material-ui/icons';
-import '../../src/css/GuestDashboard.css'
-import Profile from '../components/common/Profile';
-import History from '../components/common/History';
-import Booked_Dashboard from './../components/common/Booked_Dashboard';
-import Logout from '../components/common/Logout';
 import ChangePassword from './../components/common/ChangePassword';
 import ReceptionProfile from './../components/common/ReceptionProfile';
+import {Lock} from '@material-ui/icons';
+import '../../src/css/GuestDashboard.css'
 
 function ReceptionDashboard({match}) {
     const [selectOption,setSelectOption] = useState('profile');
