@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useRef} from "react";
 import Invoice from "../common/Invoice";
-import "../../css/Checkout.css";
-import {checkOutDetails, checkOut} from "../../api/reception";
-import {displayNotification} from "./../../services/notificationService";
-import {Button} from "@material-ui/core";
-import {FieldArray, Form, Formik, getIn} from "formik";
-import * as Yup from "yup";
 import MUITextField from "@material-ui/core/TextField";
 import _ from "lodash";
+import * as Yup from "yup";
+import {FieldArray, Form, Formik, getIn} from "formik";
+import {checkOutDetails, checkOut} from "../../api/reception";
+import {displayNotification} from "./../../services/notificationService";
 import {confirmAlert} from "react-confirm-alert";
+import {Button} from "@material-ui/core";
+import "../../css/Checkout.css";
 
 const validationSchema = Yup.object().shape({
   items: Yup.array().of(
@@ -43,7 +43,6 @@ function CheckOut({match}) {
 
   const getDetails = async () => {
     const {data, status} = await checkOutDetails(bookingId);
-    console.log('checkout data',data)
     if (status !== 200) {
       displayNotification("error", data);
       setTimeout(() => {
@@ -51,12 +50,12 @@ function CheckOut({match}) {
       }, 1000);
     }
     setDetails(data);
-    setTotal(Number(data.price)+Number(data.extraBedTotal));
+    setTotal(Number(data.price) + Number(data.extraBedTotal));
     setGrandTotal(Number(data.price));
     setRestaurantBillAmount(data.restaurantBillAmount);
     setAccomodationTotal(data.accomodationTotal);
     setExtraBedTotal(data.extraBedTotal);
-    setRoomNumbers(data.roomNumbers)
+    setRoomNumbers(data.roomNumbers);
     if (removeButtonRef.current) {
       removeButtonRef.current.click();
     }
@@ -70,10 +69,6 @@ function CheckOut({match}) {
     const d = new Date();
     let month = d.getMonth() + 1;
     const date = d.getDate() + "/" + month + "/" + d.getFullYear();
-    console.log(inputFields)
-    // Dummy Room details
-
-// let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
     Invoice(
       details?.name,
       details?.address,
@@ -85,14 +80,14 @@ function CheckOut({match}) {
       accomodationTotal,
       details?.roomDetails,
       extraBedTotal,
-      details?.lateStartingDayOfStay||details?.startingDayOfStay
+      details?.lateStartingDayOfStay || details?.startingDayOfStay
     );
 
-    window.location="/reception/dashboard"
+    window.location = "/reception/dashboard";
   }
 
   const handleSubmit = async values => {
-    values["roomNumbers"]=roomNumbers
+    values["roomNumbers"] = roomNumbers;
     confirmAlert({
       title: "Confirm Checkout",
       message: "Are you sure want to checkout.",
@@ -100,9 +95,9 @@ function CheckOut({match}) {
         {
           label: "Yes",
           onClick: async () => {
-            setEnableAddorDeduct(false)
+            setEnableAddorDeduct(false);
             const {data, status} = await checkOut(bookingId, values);
-            if (status !== 200) return displayNotification("error", "Something went wrong");
+            if (status !== 200) return displayNotification("error", data || "Something went wrong");
             displayNotification("info", "Checkout successfull");
             setIsPaid(true);
           },
@@ -254,35 +249,39 @@ function CheckOut({match}) {
                                         </div>
                                       )}
                                   </div>
-                                  {enableAddorDeduct&&<div
-                                    ref={removeButtonRef}
-                                    className="btn btn-danger"
-                                    onClick={() => {
-                                      remove(index);
-                                      setGrandTotal(
-                                        Number(total) -
-                                          Number(getFieldProps(`items[${index}].itemPrice`).value)
-                                      );
-                                      if(index==0) setGrandTotal(Number(total))
-                                    }}
-                                  >
-                                    Delete
-                                  </div>}
+                                  {enableAddorDeduct && (
+                                    <div
+                                      ref={removeButtonRef}
+                                      className="btn btn-danger"
+                                      onClick={() => {
+                                        remove(index);
+                                        setGrandTotal(
+                                          Number(total) -
+                                            Number(getFieldProps(`items[${index}].itemPrice`).value)
+                                        );
+                                        if (index == 0) setGrandTotal(Number(total));
+                                      }}
+                                    >
+                                      Delete
+                                    </div>
+                                  )}
                                 </div>
                               );
                             })}
-                            {enableAddorDeduct&&<Button
-                              type="button"
-                              className="mt-3"
-                              style={{marginRight: "130px"}}
-                              variant="contained"
-                              onClick={() => {
-                                if (!isValid) return;
-                                push({itemName: "", itemPrice: ""});
-                              }}
-                            >
-                              Add or Deduct Charges
-                            </Button>}
+                            {enableAddorDeduct && (
+                              <Button
+                                type="button"
+                                className="mt-3"
+                                style={{marginRight: "130px"}}
+                                variant="contained"
+                                onClick={() => {
+                                  if (!isValid) return;
+                                  push({itemName: "", itemPrice: ""});
+                                }}
+                              >
+                                Add or Deduct Charges
+                              </Button>
+                            )}
                           </div>
                         )}
                       </FieldArray>

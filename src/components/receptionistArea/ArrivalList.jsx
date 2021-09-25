@@ -1,36 +1,30 @@
 import React, {useEffect, useState, useMemo} from "react";
-import "../../css/ArrivalList.css";
-import Sidebar from "./Sidebar";
-import {getBookings, cancelBooking} from "../../api/reception";
-import DataTable, {createTheme} from "react-data-table-component";
-import InputBox from "./../common/InputBox";
+import DataTable from "react-data-table-component";
 import _ from "lodash";
-import "../../css/Dashboard.css"
+import {getBookings, cancelBooking} from "../../api/reception";
 import {displayNotification} from "./../../services/notificationService";
 import {confirmAlert} from "react-confirm-alert";
+import "../../css/Dashboard.css"
+import "../../css/ArrivalList.css";
 
 function ArrivalList() {
   const handleClick = data => {
     window.location = `/reception/dashboard/checkin/${data}`;
-    console.log(data);
   };
 
   const [booking, setBooking] = useState();
   const [fullBooking, setFullBooking] = useState();
 
   var dateObj = new Date();
-  let month = dateObj.getUTCMonth() + 1; //months from 1-12
+  let month = dateObj.getUTCMonth() + 1;
   let date = dateObj.getUTCDate();
   let year = dateObj.getUTCFullYear();
-  month = month.toString();
-  if (month.length == 1) {
-    month = "0" + month;
-  }
 
+  month = month.toString();
   date = date.toString();
-  if (date.length == 1) {
-    date = "0" + date;
-  }
+
+  if (month.length == 1) month = "0" + month;
+  if (date.length == 1) date = "0" + date;
 
   let newdate = year + "-" + month + "-" + date;
 
@@ -134,7 +128,6 @@ function ArrivalList() {
     []
   );
   
-  console.log(booking, "bknh");
   const handleChange = ({target}) => {
     let booking = fullBooking;
     setBooking(
@@ -152,22 +145,7 @@ function ArrivalList() {
         cursor: 'pointer',
       },
     },
-  },
-  //   {
-  //   when: row => row.startingDayOfStay >= newdate,
-  //   style: {
-  //     backgroundColor: "#52C98C",
-  //     color: 'white',
-  //     '&:hover': {
-  //       cursor: 'pointer',
-  //     },
-  //   },
-  // },
-  // You can also pass a callback to style for additional customization
-  // {
-  //   when: row => row.startingDayOfStay >= newdate,
-  //   style: row => ({ backgroundColor: row.isSpecial ? 'pink' : 'inerit' }),
-  // },
+  }
 ]
 
   const getAllBookings = async () => {

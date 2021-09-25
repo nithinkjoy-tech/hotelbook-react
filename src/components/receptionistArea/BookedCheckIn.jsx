@@ -1,56 +1,36 @@
 import React, {useState, useEffect} from "react";
 import Webcam from "react-webcam";
-import {Card, CardContent, MenuItem, InputLabel, FormHelperText} from "@material-ui/core";
-import {
-  Formik,
-  Form,
-  Field,
-  FieldArray,
-  FormikConfig,
-  FormikValues,
-  useFormikContext,
-  getIn,
-  ErrorMessage,
-} from "formik";
-import {TextField, Select} from "formik-material-ui";
 import MUISelect from "@material-ui/core/Select";
 import MUITextField from "@material-ui/core/TextField";
-import FormControl from "@material-ui/core/FormControl";
-import "../../css/BookedCheckIn.css";
-import {makeStyles} from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import {DropzoneArea} from "material-ui-dropzone";
-import * as Yup from "yup";
-import {getBookingDetails} from "../../api/reception";
-import PropertyInputBox from "./../common/PropertyInputBox";
-import PropertySelectBox from "./../common/PropertySelectBox";
 import _ from "lodash";
-import Error from "../../components/forms/Error";
+import * as Yup from "yup";
+import {Formik, Form, Field, FieldArray, getIn} from "formik";
+import {Card, CardContent, MenuItem} from "@material-ui/core";
+import {displayNotification} from "./../../services/notificationService";
+import {getBookingDetails} from "../../api/reception";
+import {TextField, Select} from "formik-material-ui";
+import {DropzoneArea} from "material-ui-dropzone";
+import {makeStyles} from "@material-ui/core/styles";
 import {checkIn} from "../../api/reception";
-import {KeyboardReturnTwoTone} from "@material-ui/icons";
-import { displayNotification } from './../../services/notificationService';
+import "../../css/BookedCheckIn.css";
 
 let dateObj = new Date();
-let month = dateObj.getUTCMonth() + 1; //months from 1-12
+let month = dateObj.getUTCMonth() + 1;
 let date = dateObj.getUTCDate();
 let year = dateObj.getUTCFullYear();
-month = month.toString();
-if (month.length == 1) {
-  month = "0" + month;
-}
 
+month = month.toString();
 date = date.toString();
-if (date.length == 1) {
-  date = "0" + date;
-}
+
+if (month.length == 1) month = "0" + month;
+if (date.length == 1) date = "0" + date;
 
 let newdate = year + "/" + month + "/" + date;
-
-let a = 0;
 let roomNumberObject = {};
 let duplicateVal;
 let globalProp;
@@ -66,11 +46,6 @@ const validate = Yup.object().shape({
       /^(((\d{4}\/((0[13578]\/|1[02]\/)(0[1-9]|[12]\d|3[01])|(0[13456789]\/|1[012]\/)(0[1-9]|[12]\d|30)|02\/(0[1-9]|1\d|2[0-8])))|((([02468][048]|[13579][26])00|\d{2}([13579][26]|0[48]|[2468][048])))\/02\/29)){0,10}$/,
       "Invalid date"
     )
-    // .test({
-    //   name: "arrival",
-    //   test: value => (value < newdate ? false : true),
-    //   message: "Invalid lDate",
-    // })
     .required(),
   endingDayOfStay: Yup.string()
     .matches(
@@ -91,7 +66,7 @@ const validate = Yup.object().shape({
         .typeError("Room Number should be a Number")
         .test({
           name: "unique",
-          test: values => {
+          test: () => {
             let roomNos = [];
             for (let [key, value] of Object.entries(roomNumberObject)) {
               roomNos.push(value);
@@ -106,17 +81,21 @@ const validate = Yup.object().shape({
           message: "Repeated Room Numbers!",
         })
         .required("Room Number is required"),
-      roomBoy:Yup.string().min(2).max(50).test({
-        name:"shouldSelect",
-        test:values=>{
-          if(values==="Select Room Boy"){
-            return false
-          }else{
-            return true
-          }
-        },
-        message:"Allocate a Room Boy"
-      }).required(),
+      roomBoy: Yup.string()
+        .min(2)
+        .max(50)
+        .test({
+          name: "shouldSelect",
+          test: values => {
+            if (values === "Select Room Boy") {
+              return false;
+            } else {
+              return true;
+            }
+          },
+          message: "Allocate a Room Boy",
+        })
+        .required(),
       adults: Yup.number()
         .typeError("Room Number should be a Number")
         .min(1, "Minimum one adult should be there.")
@@ -147,7 +126,7 @@ const validate = Yup.object().shape({
         .required("Number of Children is required")
         .label("Children"),
       selectedExtraBed: Yup.mixed().nullable(),
-      roomBoyId:Yup.string()
+      roomBoyId: Yup.string(),
     })
   ),
 });
@@ -163,31 +142,25 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
-  multilineColor:{
-    color:'red'
-}
+  multilineColor: {
+    color: "red",
+  },
 }));
 
 function BookedCheckIn({match}) {
   const classes = useStyles();
+  const [prev, setPrev] = useState();
   const [activeStep, setActiveStep] = React.useState(0);
-  const steps = getSteps();
-
-  const [prev, setPrev] = useState(); // Save uploaded Document
   const [initialValues, setInitialValues] = useState();
-  
-
-  console.log();
+  const steps = getSteps();
 
   const handleImageChange = (data, setFieldValue) => {
     if (!data[0]) return;
-    // console.log(data,"dta")
     const reader = new FileReader();
-    setPrev(null)
+    setPrev(null);
     reader.onload = () => {
       if (reader.readyState === 2) {
         let imageBase64 = reader.result;
-        console.log(imageBase64, "64");
         setFieldValue("identityProof", imageBase64);
       }
     };
@@ -195,12 +168,11 @@ function BookedCheckIn({match}) {
   };
 
   const getDetails = async () => {
-    const {data,status} = await getBookingDetails(match.params.bookingId);
-    if(status!==200) return displayNotification("error",data||"Could not checkin!")
+    const {data, status} = await getBookingDetails(match.params.bookingId);
+    if (status !== 200) return displayNotification("error", data || "Could not checkin!");
     data.startingDayOfStay = data.startingDayOfStay.replaceAll("-", "/");
     data.endingDayOfStay = data.endingDayOfStay.replaceAll("-", "/");
     setInitialValues(data);
-    console.log(data, "dt");
   };
 
   useEffect(() => {
@@ -220,24 +192,13 @@ function BookedCheckIn({match}) {
   };
 
   const handleSubmit = async values => {
-    console.log(values, "vlss");
-    const {data,status} = await checkIn(values);
-    if(status!==200) return displayNotification("error","Could not checkin, something went wrong")
-    displayNotification("info","Checkin Successfull")
+    const {status} = await checkIn(values);
+    if (status !== 200)
+      return displayNotification("error", "Could not checkin, something went wrong");
+    displayNotification("info", "Checkin Successfull");
     setTimeout(() => {
-      window.location='/reception/dashboard'
-    },1000)
-  };
-
-  const Input = ({field, form: {errors}}) => {
-    const errorMessage = getIn(errors, field.name);
-
-    return (
-      <>
-        <MUITextField {...field} />
-        {errorMessage && <div style={{color: "red"}}>{errorMessage}</div>}
-      </>
-    );
+      window.location = "/reception/dashboard";
+    }, 1000);
   };
 
   if (!initialValues) return null;
@@ -251,20 +212,13 @@ function BookedCheckIn({match}) {
           validationSchema={validate}
         >
           {({
-            values,
             errors,
-            touched,
             handleChange,
             handleBlur,
-            handleSubmit,
-            isSubmitting,
             getFieldProps,
             getFieldMeta,
             setFieldTouched,
             setFieldValue,
-            setFieldMeta,
-            isValid,
-            /* and other goodies */
           }) => (
             <Form>
               <div className={classes.root}>
@@ -287,20 +241,14 @@ function BookedCheckIn({match}) {
                         {getStepContent(
                           activeStep,
                           initialValues,
-                          Input,
-                          Select,
-                          classes,
                           handleChange,
                           getFieldProps,
-                          values,
                           errors,
                           getIn,
                           handleBlur,
-                          touched,
                           getFieldMeta,
                           setFieldTouched,
                           setFieldValue,
-                          setFieldMeta,
                           handleImageChange,
                           prev,
                           setPrev
@@ -342,20 +290,14 @@ export default BookedCheckIn;
 function getStepContent(
   stepIndex,
   initialValues,
-  Input,
-  Select,
-  classes,
   handleChange,
   getFieldProps,
-  values,
   errors,
   getIn,
   handleBlur,
-  touched,
   getFieldMeta,
   setFieldTouched,
   setFieldValue,
-  setFieldMeta,
   handleImageChange,
   prev,
   setPrev
@@ -385,7 +327,7 @@ function getStepContent(
           </div>
           <div className="third-row w-3/6">
             <Field
-            fullWidth
+              fullWidth
               name="identityProofNumber"
               component={TextField}
               label="Aadhar or Passport Number"
@@ -394,7 +336,7 @@ function getStepContent(
           </div>
           <div className="third-row w-3/6">
             <Field
-            fullWidth
+              fullWidth
               name="email"
               disabled
               component={TextField}
@@ -428,7 +370,7 @@ function getStepContent(
       return (
         <div style={{margin: "auto", width: "68%"}}>
           <FieldArray name="roomFinalDetails">
-            {({push, remove}) => (
+            {({}) => (
               <div>
                 {initialValues.roomFinalDetails.map((p, index) => {
                   return (
@@ -450,7 +392,7 @@ function getStepContent(
                       >
                         <MenuItem value={p.roomType}>{p.roomType}</MenuItem>
                       </MUISelect>
-                      
+
                       <MUITextField
                         fullWidth
                         name={`roomFinalDetails[${index}].adults`}
@@ -461,15 +403,12 @@ function getStepContent(
                         onBlur={handleBlur}
                         placeholder="Input zero if none"
                       />
-                      {/* {errors.roomFinalDetails[index].adults?} */}
-                      {/* const errorMessage = getIn(errors, field.name) */}
                       {getIn(errors, `roomFinalDetails[${index}].adults`) &&
                         getFieldMeta(`roomFinalDetails[${index}].adults`).touched && (
                           <div style={{color: "red"}}>
                             {getIn(errors, `roomFinalDetails[${index}].adults`)}
                           </div>
                         )}
-                      {/* <ErrorMessage name={getFieldProps(`roomFinalDetails[${index}].adults`).name} component={Error} /> */}
                       <MUITextField
                         fullWidth
                         name={`roomFinalDetails[${index}].children`}
@@ -486,7 +425,7 @@ function getStepContent(
                             {getIn(errors, `roomFinalDetails[${index}].children`)}
                           </div>
                         )}
-                        <MUISelect
+                      <MUISelect
                         fullWidth
                         name={`roomFinalDetails[${index}].roomNumber`}
                         defaultValue={p.roomNumber}
@@ -500,7 +439,6 @@ function getStepContent(
                         value={getFieldProps(`roomFinalDetails[${index}].roomNumber`).value}
                       >
                         <MenuItem value="Select Room Number">Select Room Number</MenuItem>
-                        {console.log(p.availableRoomNumbers)}
                         {p.availableRoomNumbers.map((no, ind) => (
                           <MenuItem value={no} key={ind.toString()}>
                             {no}
@@ -517,18 +455,18 @@ function getStepContent(
                           </div>
                         )}
 
-
-
-                        <MUISelect
+                      <MUISelect
                         fullWidth
                         name={`roomFinalDetails[${index}].roomBoy`}
                         defaultValue={p.roomBoy}
                         className="mt-3"
                         onChange={e => {
                           setFieldValue(`roomFinalDetails[${index}].roomBoy`, e.target.value);
-                          setFieldValue(`roomFinalDetails[${index}].roomBoyId`, initialValues.roomBoys.filter(boy=>boy.name===e.target.value)[0]._id);
+                          setFieldValue(
+                            `roomFinalDetails[${index}].roomBoyId`,
+                            initialValues.roomBoys.filter(boy => boy.name === e.target.value)[0]._id
+                          );
                           setFieldTouched(`roomFinalDetails[${index}].roomBoy`);
-                          
                         }}
                         value={getFieldProps(`roomFinalDetails[${index}].roomBoy`).value}
                       >
@@ -540,20 +478,15 @@ function getStepContent(
                         ))}
                       </MUISelect>
                       {getIn(errors, `roomFinalDetails[${index}].roomBoy`) &&
-                        getFieldMeta(`roomFinalDetails[${index}].roomBoy`).touched  && (
+                        getFieldMeta(`roomFinalDetails[${index}].roomBoy`).touched && (
                           <div style={{color: "red"}}>
                             {getIn(errors, `roomFinalDetails[${index}].roomBoy`)}
                           </div>
                         )}
 
-
-
-
-
                       <MUISelect
                         fullWidth
                         name={`roomFinalDetails[${index}].selectedExtraBed`}
-                        // defaultValue={"Extra Bed- None"}
                         onChange={handleChange}
                         className="mt-3"
                         displayEmpty
@@ -563,11 +496,12 @@ function getStepContent(
                         }
                       >
                         <MenuItem value="Extra Bed- None">Extra Bed- None</MenuItem>
-                        {initialValues.extraBed&&_.range(1, p.noOfExtraBeds + 1).map((no, ind) => (
-                          <MenuItem value={no} key={ind.toString()}>
-                            {no}
-                          </MenuItem>
-                        ))}
+                        {initialValues.extraBed &&
+                          _.range(1, p.noOfExtraBeds + 1).map((no, ind) => (
+                            <MenuItem value={no} key={ind.toString()}>
+                              {no}
+                            </MenuItem>
+                          ))}
                       </MUISelect>
                       <div className="col-span-6 sm:col-span-3">
                         <p style={{marginTop: "30px"}}>{p.pricePerExtraBed} Rs per Extra Bed</p>
@@ -596,13 +530,13 @@ function getStepContent(
               <div style={{color: "red"}}>{getIn(errors, "identityProof")}</div>
             )}
           </div>
-          <p style={{fontSize: "30px",textAlign: "center"}} >Or</p>
-          <div className="second-row space-right" style={{margin:"auto",width:"50%"}}>
+          <p style={{fontSize: "30px", textAlign: "center"}}>Or</p>
+          <div className="second-row space-right" style={{margin: "auto", width: "50%"}}>
             <h3 className="camera-heading">Take a Snap</h3>
             <Camera setFieldValue={setFieldValue} setPrev={setPrev} />
           </div>
-          {prev?<img style={{margin:"auto",width:"50%"}} src={prev} />:null}
-        </div> 
+          {prev ? <img style={{margin: "auto", width: "50%"}} src={prev} /> : null}
+        </div>
       );
     default:
       return "Unknown stepIndex";
@@ -613,15 +547,13 @@ function getSteps() {
   return ["Personal Informations", "Room Details", "Verifications"];
 }
 
-const Camera = ({setFieldValue,setPrev}) => {
+const Camera = ({setFieldValue, setPrev}) => {
   const webcamRef = React.useRef(null);
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
-    setFieldValue("identityProof",imageSrc);
+    setFieldValue("identityProof", imageSrc);
     setPrev(imageSrc);
   }, [webcamRef]);
-
-  // return null;
 
   return (
     <>

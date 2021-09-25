@@ -1,56 +1,50 @@
 import React, {useEffect, useState, useMemo} from "react";
-import "../../css/ArrivalList.css";
-import Sidebar from "./Sidebar";
-import {getCompletedStays,downloadInvoice} from "../../api/reception";
-import DataTable, {createTheme} from "react-data-table-component";
-import InputBox from "./../common/InputBox";
-import _ from "lodash";
+import DataTable from "react-data-table-component";
 import Calendar from "./../landingPageComponent/Calendar";
+import Invoice from "./../common/Invoice";
+import _ from "lodash";
 import * as Yup from "yup";
-import {Formik,Form} from "formik"
-import Invoice from './../common/Invoice';
-import { displayNotification } from './../../services/notificationService';
+import {getCompletedStays, downloadInvoice} from "../../api/reception";
+import {displayNotification} from "./../../services/notificationService";
+import {Formik, Form} from "formik";
+import "../../css/ArrivalList.css";
 
 const dateValidator = Yup.object()
-    .shape({
-      day: Yup.number().min(1).max(31).required(),
-      month: Yup.number().min(1).max(12).required(),
-      year: Yup.number().min(2021).max(3000).required(),
-    })
-    .nullable();
+  .shape({
+    day: Yup.number().min(1).max(31).required(),
+    month: Yup.number().min(1).max(12).required(),
+    year: Yup.number().min(2021).max(3000).required(),
+  })
+  .nullable();
 
-  const validationSchema = Yup.object().shape({
-    selectedDayRange: Yup.object().shape({
-      from: dateValidator,
-      to: dateValidator,
-    }),
-    // rooms: Yup.number().min(1).max(9999).required(),
-  });
+const validationSchema = Yup.object().shape({
+  selectedDayRange: Yup.object().shape({
+    from: dateValidator,
+    to: dateValidator,
+  }),
+});
 
 function CompletedStays() {
-
-  const handleDownloadInvoice=async(bookingId)=>{
-    console.log(bookingId,"download")
-    const {data,status}=await downloadInvoice(bookingId)
-    if(status !== 200) return displayNotification("error", data||"Something unexpected happened");
-    generateInvoice(data)
-  }
+  const handleDownloadInvoice = async bookingId => {
+    const {data, status} = await downloadInvoice(bookingId);
+    if (status !== 200)
+      return displayNotification("error", data || "Something unexpected happened");
+    generateInvoice(data);
+  };
 
   function generateInvoice(details) {
-
-let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
     Invoice(
       details?.name,
       details?.address,
       details?.phoneNumber,
       details?.inputFields,
-      details?.earlyEndingDayOfStay||details?.endingDayOfStay,
+      details?.earlyEndingDayOfStay || details?.endingDayOfStay,
       details?.price,
       details?.restaurantBillAmount,
       details?.accomodationTotal,
-      details?.roomDetails||roomDetails,
+      details?.roomDetails,
       details?.extraBedTotal,
-      details?.lateStartingDayOfStay||details?.startingDayOfStay
+      details?.lateStartingDayOfStay || details?.startingDayOfStay
     );
   }
 
@@ -64,19 +58,17 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
     );
   };
 
-  
-
   const getAllBookings = async () => {
     const {data, status} = await getCompletedStays();
     if (status !== 200) return;
-    data.map(ele=>{
-      if(ele.lateStartingDayOfStay){
-        ele.startingDayOfStay=ele.lateStartingDayOfStay
+    data.map(ele => {
+      if (ele.lateStartingDayOfStay) {
+        ele.startingDayOfStay = ele.lateStartingDayOfStay;
       }
-      if(ele.earlyEndingDayOfStay){
-        ele.endingDayOfStay=ele.earlyEndingDayOfStay
+      if (ele.earlyEndingDayOfStay) {
+        ele.endingDayOfStay = ele.earlyEndingDayOfStay;
       }
-    })
+    });
     setBooking(data);
     setFullBooking([...data]);
   };
@@ -91,7 +83,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
         name: "Booking ID",
         selector: "hotelBookingId",
         sortable: true,
-        grow:0
+        grow: 0,
       },
       {
         name: "Name",
@@ -101,7 +93,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       {
         name: "Phone Number",
         selector: "phoneNumber",
-        grow:1
+        grow: 1,
       },
       {
         name: "Booked Date",
@@ -112,13 +104,13 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
         name: "Check In",
         selector: "startingDayOfStay",
         sortable: true,
-        grow:0
+        grow: 0,
       },
       {
         name: "Check Out",
         selector: "endingDayOfStay",
         sortable: true,
-        grow:0
+        grow: 0,
       },
       {
         name: "Email",
@@ -128,7 +120,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
         name: "Booking Mode",
         sortable: true,
         selector: "bookingMode",
-        grow:0,
+        grow: 0,
         cell: row =>
           row.bookingMode === "online" ? (
             <span className="badge badge-success">Online</span>
@@ -138,82 +130,63 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       },
       {
         name: "Download Invoice",
-        cell: row =><button onClick={()=>handleDownloadInvoice(row._id)} className="btn btn-secondary">Download</button>
+        cell: row => (
+          <button onClick={() => handleDownloadInvoice(row._id)} className="btn btn-secondary">
+            Download
+          </button>
+        ),
       },
     ],
     []
   );
 
-  
-
-  
-
-  const handleSubmit=async(values)=>{
+  const handleSubmit = async values => {
     const {data, status} = await getCompletedStays(values);
-    console.log(data)
     if (status !== 200) {
-        setBooking([]);
-        setFullBooking([]);
-        return};
+      setBooking([]);
+      setFullBooking([]);
+      return;
+    }
     setBooking(data);
     setFullBooking([...data]);
-  }
+  };
 
   return (
     <React.Fragment>
       <Formik
-      initialValues={{
-        selectedDayRange: {
-          from: null,
-          to: null,
-        },
-        // rooms: 1,
-      }}
-      validationSchema={validationSchema}
-      onSubmit={values => handleSubmit(values)}
-    >
-      {({errors, touched, values, handleChange, handleBlur}) => (
-        <Form>
-          <section className="w3l-availability-form" id="booking" style={{marginLeft: "400px"}}>
-            {/* <div className="w3l-availability-form-main py-5">
-              <div className="container pt-lg-3 pb-lg-5">
-                <div className="forms-top">
-                  <div className="form-right">
-                    <div className="mt-6 form-inner-cont"> */}
-                      <h3 className="title-small">Search Completed Stays by Date</h3>
-                      <div className="row book-form">
-                        <div className="form-input col-md-4 col-sm-6 mt-3 ">
-                          <Calendar
-                            name="selectedDayRange"
-                            onChange={handleChange}
-                            selectedDayRange={values.selectedDayRange}
-                            minimumDate={false}
-                            placeholder="Select date 📅"
-                          />
-                        </div>
-                        
-                        {/* <div className="form-input col-md-3 col-sm-6 mt-3">
-                          <RoomRequirement name="rooms" rooms={values.rooms} />
-                        </div> */}
-
-                        <div className="bottom-btn col-md-2 col-sm-6 mt-3">
-                          <button
-                            type="submit"
-                            className="btn btn-style btn-primary py-3 w-100 px-2"
-                          >
-                            Search
-                          </button>
-                        </div>
-                      {/* </div>
-                    </div>
-                  </div>
+        initialValues={{
+          selectedDayRange: {
+            from: null,
+            to: null,
+          },
+        }}
+        validationSchema={validationSchema}
+        onSubmit={values => handleSubmit(values)}
+      >
+        {({values, handleChange}) => (
+          <Form>
+            <section className="w3l-availability-form" id="booking" style={{marginLeft: "400px"}}>
+              <h3 className="title-small">Search Completed Stays by Date</h3>
+              <div className="row book-form">
+                <div className="form-input col-md-4 col-sm-6 mt-3 ">
+                  <Calendar
+                    name="selectedDayRange"
+                    onChange={handleChange}
+                    selectedDayRange={values.selectedDayRange}
+                    minimumDate={false}
+                    placeholder="Select date 📅"
+                  />
                 </div>
-              </div> */}
-            </div>
-          </section>
-        </Form>
-      )}
-    </Formik>
+                <div className="bottom-btn col-md-2 col-sm-6 mt-3">
+                  <button type="submit" className="btn btn-style btn-primary py-3 w-100 px-2">
+                    Search
+                  </button>
+                </div>
+              </div>
+            </section>
+          </Form>
+        )}
+      </Formik>
       <div className="dashboard-items">
         <div className="arrivallist" style={{margin: 0}}>
           <>
