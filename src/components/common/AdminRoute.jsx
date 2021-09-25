@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import auth from "../../services/authService";
 
-const RenterRoute = ({ component: Component, render, ...rest }) => {
+const AdminRoute = ({ component: Component, render, ...rest }) => {
   return (
     <Route
       {...rest}
@@ -22,4 +22,4 @@ const RenterRoute = ({ component: Component, render, ...rest }) => {
   );
 };
 
-export default RenterRoute;
+export default AdminRoute;

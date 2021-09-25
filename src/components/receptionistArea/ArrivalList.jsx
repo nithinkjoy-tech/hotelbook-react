@@ -1,10 +1,11 @@
 import React, {useEffect, useState, useMemo} from "react";
 import "../../css/ArrivalList.css";
 import Sidebar from "./Sidebar";
-import {getBookings, cancelBooking} from "../../api/renter";
+import {getBookings, cancelBooking} from "../../api/reception";
 import DataTable, {createTheme} from "react-data-table-component";
 import InputBox from "./../common/InputBox";
 import _ from "lodash";
+import "../../css/Dashboard.css"
 import {displayNotification} from "./../../services/notificationService";
 import {confirmAlert} from "react-confirm-alert";
 

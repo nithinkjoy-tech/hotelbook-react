@@ -16,6 +16,7 @@ import {DropzoneArea} from "material-ui-dropzone";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import _ from "lodash";
+import "../css/Dashboard.css"
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(1).max(50).required(),

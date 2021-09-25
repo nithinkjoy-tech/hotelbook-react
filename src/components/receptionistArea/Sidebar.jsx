@@ -23,7 +23,7 @@ import { BiCog } from "react-icons/bi";
 import "react-pro-sidebar/dist/css/styles.css";
 import "../../css/Sidebar.css";
 import ArrivalList from './ArrivalList';
-import OverView from './OverView';
+// import OverView from './OverView';
 import BookNow from './BookNow';
 import UpcomingArrivalList from './UpcomingArrivalList';
 import CurrentlyStaying from './CurrentlyStaying';
@@ -77,7 +77,7 @@ const Sidebar = () => {
         </div>
       </Router>
     </div> 
-    {choice==="overview"?<OverView/>:""}
+    {/* {choice==="overview"?<OverView/>:""} */}
     {choice==="booknow"?<BookNow/>:""}
     {choice==="arrivalList"?<ArrivalList/>:""}
     {choice==="upcomingArrivalList"?<UpcomingArrivalList/>:""}

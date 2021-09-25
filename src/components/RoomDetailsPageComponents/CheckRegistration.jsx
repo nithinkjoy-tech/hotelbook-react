@@ -6,7 +6,7 @@ import {useFormikContext, ErrorMessage} from "formik";
 import {Form, Formik} from "formik";
 import Error from "../forms/Error";
 import * as Yup from "yup";
-import {offlineGuestCheck} from "../../api/renter";
+import {offlineGuestCheck} from "../../api/reception";
 import { displayNotification } from './../../services/notificationService';
 
 

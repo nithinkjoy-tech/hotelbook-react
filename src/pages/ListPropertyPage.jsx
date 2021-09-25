@@ -3,7 +3,7 @@ import Step1 from "./../components/listPropertyPageComponent/Step1";
 import Step2 from "./../components/listPropertyPageComponent/Step2";
 import Step3 from "./../components/listPropertyPageComponent/Step3";
 import Step4 from "./../components/listPropertyPageComponent/Step4";
-import Step5 from "./../components/listPropertyPageComponent/Step5";
+// import Step5 from "./../components/listPropertyPageComponent/Step5";
 import Stepper from "react-stepper-horizontal";
 import {Formik, Form} from "formik";
 import * as Yup from "yup";

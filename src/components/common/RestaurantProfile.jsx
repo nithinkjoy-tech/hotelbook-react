@@ -8,8 +8,8 @@ import ReactLoading from 'react-loading'
 import "../../css/Profile.css";
 import {displayNotification} from "../../services/notificationService";
 import * as Yup from "yup";
-import {editRestaurantData } from "../../api/renter";
-import {getRestaurant } from "../../api/renter";
+import {editRestaurantData,getRestaurant } from "../../api/restaurant";
+// import {getRestaurant } from "../../api/renter";
 
 const nameSchema = Yup.object().shape({
   name: Yup.string().min(2).max(50).required("Name is required").label("Name"),

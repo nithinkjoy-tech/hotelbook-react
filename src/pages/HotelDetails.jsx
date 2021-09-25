@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {ImportContactsTwoTone} from "@material-ui/icons";
 import PriceandImageSection from "../components/RoomDetailsPageComponents/PriceandImageSection";
-import RoomDescription from "../components/RoomDetailsPageComponents/RoomDescription";
+// import RoomDescription from "../components/RoomDetailsPageComponents/RoomDescription";
 import Amenities from "../components/RoomDetailsPageComponents/Amenities";
 import Reviews from "../components/RoomDetailsPageComponents/Reviews";
 import {getHotel, getRoomsbyId} from "./../api/guest";

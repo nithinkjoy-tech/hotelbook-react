@@ -2,8 +2,6 @@ import React, {useState} from "react";
 import InputBox from "./InputBox";
 import {Formik, Form} from "formik";
 import {forgotGuestPassword} from "../../api/guest";
-import {renterSignin} from "../../api/renter";
-import {restaurantSignin} from "../../api/restaurant";
 import {forgotAdminPassword} from "../../api/admin";
 import * as Yup from "yup";
 import {setAuthToken} from "../../services/authService";

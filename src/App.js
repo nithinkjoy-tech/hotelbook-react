@@ -9,7 +9,7 @@ import SignupPage from "./pages/SignupPage";
 import Footer from "./components/common/Footer";
 import ListPropertyPage from "./pages/ListPropertyPage";
 import {ToastContainer} from "react-toastify";
-import ListPropertyWelcomePage from "./pages/ListPropertyWelcomePage";
+// import ListPropertyWelcomePage from "./pages/ListPropertyWelcomePage";
 import GuestDashboard from "./pages/GuestDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import HotelDetails from "./pages/HotelDetails";
@@ -19,12 +19,12 @@ import ReceptionRoute from "./components/common/ReceptionRoute";
 import RestaurantRoute from "./components/common/RestaurantRoute";
 import AdminRoute from "./components/common/AdminRoute";
 import GuestRoute from "./components/common/GuestRoute";
-import RoomDescription from "./components/RoomDetailsPageComponents/RoomDescription";
+// import RoomDescription from "./components/RoomDetailsPageComponents/RoomDescription";
 import RoomDetails from "./pages/RoomDetails";
 import BookedRoomDetails from "./components/RoomDetailsPageComponents/BookedRoomDetails";
-import AdminBook from "./components/common/AdminBook";
-import Dashboard from "./components/receptionistArea/Dashboard";
-import OverView from "./components/receptionistArea/OverView";
+// import AdminBook from "./components/common/AdminBook";
+// import Dashboard from "./components/receptionistArea/Dashboard";
+// import OverView from "./components/receptionistArea/OverView";
 import ArrivalList from "./components/receptionistArea/ArrivalList";
 import Sidebar from "./components/receptionistArea/Sidebar";
 import ReceptionDashboard from "./pages/ReceptionDashboard";
@@ -63,8 +63,6 @@ function App() {
         <Route exact path="/hoteldetails/:hotelId" component={HotelDetails} />
         <Route exact path="/linkreview/:id" component={LinkReview} />
         <Route exact path="/hotel/roomdetails/:roomId" component={RoomDetails} />
-        {/* <Route exact path="/renter/welcome" component={ListPropertyWelcomePage} /> */}
-        {/* <Route path="/reception/dashboard/arrivals" component={ArrivalList} /> */}
         <ReceptionRoute exact path="/reception/dashboard/checkin/:bookingId" component={BookedCheckIn} />
         <ReceptionRoute exact path="/reception/dashboard/checkout/:bookingId" component={CheckOut} />
         <ReceptionRoute exact path="/reception/dashboard" component={Sidebar} />
@@ -74,17 +72,6 @@ function App() {
         <Route exact path="/restaurant/signin" component={SigninPage} />
         <RestaurantRoute exact path="/restaurant/addfooditem" component={AddFoodItem} />
         <RestaurantRoute exact path="/restaurant/additemstobill/:bookingId" component={AddItemsToBill} />
-        {/* <Route exact path="/renter/signup" component={SignupPage} />
-        <Route exact path="/renter/prof" component={AdminBook} /> */}
-        {/* <Route exact path="reception/dashboard/book" component={CheckIn}/> 
-         <Route exact path="/arrivalslist" component={ArrivalList} />
-     <Route exact path="/" component={OverView} /> */}
-        {/* <RenterRoute path="/renter/dashboard" component={RenterDashboard} /> */}
-        {/* <RenterRoute path="/renter/room/:hotelId" component={RoomCard} />
-        <RenterRoute path="/renter/listproperty/:id" component={ListPropertyPage} />
-        <RenterRoute path="/renter/listproperty" component={ListPropertyPage} />
-        <RenterRoute path="/renter/addroom/:hotelId" component={AddRoom} />
-        <RenterRoute path="/renter/editroom/:roomId" component={AddRoom} /> */}
         <AdminRoute exact path="/admin/reception/signup/:hotelId" component={SignupPage} />
         <AdminRoute exact path="/admin/reception/account/:receptionId" component={ReceptionDashboard} />
         <AdminRoute exact path="/admin/restaurant/signup/:hotelId" component={SignupPage} />

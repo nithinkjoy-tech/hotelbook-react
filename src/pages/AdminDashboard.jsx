@@ -16,7 +16,7 @@ import Booked_Dashboard from '../components/common/Booked_Dashboard';
 import ChangePassword from '../components/common/ChangePassword';
 import HotelIcon from '@material-ui/icons/Hotel';
 import AdminProfile from '../components/common/AdminProfile';
-import AdminBook from '../components/common/AdminBook';
+// import AdminBook from '../components/common/AdminBook';
 // import AdminHotelsSection from '../components/common/AdminHistory';
 import AdminHotels from './../components/common/AdminHotels';
 import {Link} from "react-router-dom"

@@ -1,7 +1,7 @@
 import { ImportContactsTwoTone } from '@material-ui/icons';
 import React from 'react';
 import PriceSection from '../components/RoomDetailsPageComponents/PriceSection';
-import RoomDescription from '../components/RoomDetailsPageComponents/RoomDescription';
+// import RoomDescription from '../components/RoomDetailsPageComponents/RoomDescription';
 import Amenities from '../components/RoomDetailsPageComponents/Amenities';
 
 

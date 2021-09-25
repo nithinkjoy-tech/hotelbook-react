@@ -25,12 +25,12 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {DropzoneArea} from "material-ui-dropzone";
 import * as Yup from "yup";
-import {getBookingDetails} from "../../api/renter";
+import {getBookingDetails} from "../../api/reception";
 import PropertyInputBox from "./../common/PropertyInputBox";
 import PropertySelectBox from "./../common/PropertySelectBox";
 import _ from "lodash";
 import Error from "../../components/forms/Error";
-import {checkIn} from "../../api/renter";
+import {checkIn} from "../../api/reception";
 import {KeyboardReturnTwoTone} from "@material-ui/icons";
 import { displayNotification } from './../../services/notificationService';
 

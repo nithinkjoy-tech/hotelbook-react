@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useMemo} from "react";
 import "../../css/ArrivalList.css";
 import Sidebar from "./Sidebar";
-import {getCurrentlyStaying} from "../../api/renter";
+import {getCurrentlyStaying} from "../../api/reception";
 import DataTable, {createTheme} from "react-data-table-component";
 import InputBox from "./../common/InputBox";
 import _ from "lodash";

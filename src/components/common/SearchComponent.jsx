@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 import {useHistory} from "react-router-dom";
-import RoomRequirement from "../landingPageComponent/RoomRequirement";
+// import RoomRequirement from "../landingPageComponent/RoomRequirement";
 import Calendar from "../landingPageComponent/Calendar";
 import * as Yup from "yup";
 import {Formik, Form} from "formik";

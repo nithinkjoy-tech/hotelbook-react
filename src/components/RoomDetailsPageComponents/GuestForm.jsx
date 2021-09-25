@@ -6,7 +6,7 @@ import {useFormikContext, ErrorMessage} from "formik";
 import {Form, Formik} from "formik";
 import Error from "./../forms/Error";
 import * as Yup from "yup";
-import {offlineGuestSignup} from "../../api/renter";
+import {offlineGuestSignup} from "../../api/reception";
 import { displayNotification } from './../../services/notificationService';
 
 const validateEmail=Yup.object().shape({

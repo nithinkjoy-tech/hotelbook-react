@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import Invoice from "../common/Invoice";
 import "../../css/Checkout.css";
-import {checkOutDetails, checkOut} from "../../api/renter";
+import {checkOutDetails, checkOut} from "../../api/reception";
 import {displayNotification} from "./../../services/notificationService";
 import {Button} from "@material-ui/core";
 import {FieldArray, Form, Formik, getIn} from "formik";
@@ -73,7 +73,7 @@ function CheckOut({match}) {
     console.log(inputFields)
     // Dummy Room details
 
-let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
+// let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
     Invoice(
       details?.name,
       details?.address,
@@ -83,7 +83,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
       grandTotal,
       restaurantBillAmount,
       accomodationTotal,
-      details?.roomDetails||roomDetails,
+      details?.roomDetails,
       extraBedTotal,
       details?.lateStartingDayOfStay||details?.startingDayOfStay
     );
@@ -207,6 +207,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                                       label="Item Name"
                                       className="mt-14"
                                       onChange={handleChange}
+                                      disabled={!enableAddorDeduct}
                                       value={getFieldProps(`items[${index}].itemName`).value}
                                       onBlur={handleBlur}
                                     />
@@ -228,6 +229,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                                       name={`items[${index}].itemPrice`}
                                       label="Item Price"
                                       className="mt-14"
+                                      disabled={!enableAddorDeduct}
                                       onChange={async e => {
                                         await setFieldValue(
                                           `items[${index}].itemPrice`,
@@ -252,7 +254,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                                         </div>
                                       )}
                                   </div>
-                                  <div
+                                  {enableAddorDeduct&&<div
                                     ref={removeButtonRef}
                                     className="btn btn-danger"
                                     onClick={() => {
@@ -265,7 +267,7 @@ let roomDetails = [{roomNumber:56,roomBoy:'ravi',roomType:'king'}]
                                     }}
                                   >
                                     Delete
-                                  </div>
+                                  </div>}
                                 </div>
                               );
                             })}

@@ -8,7 +8,7 @@ import ModalComponent from "./ModalComponent";
 import {displayNotification} from "./../../services/notificationService";
 import _ from "lodash";
 import {bookHotel} from "./../../api/guest";
-import {bookOfflineHotel} from "./../../api/renter";
+import {bookOfflineHotel} from "./../../api/reception";
 import {getCurrentUser} from "../../services/authService";
 import {confirmAlert} from "react-confirm-alert";
 

@@ -97,6 +97,10 @@ function AddRoom({match}) {
     window.scrollTo(0, 0);
     if (roomId) {
       getRoom(roomId);
+    }else{
+      setTimeout(() => {
+        setIsLoading(false)
+      },500)
     }
   }, []);
 
