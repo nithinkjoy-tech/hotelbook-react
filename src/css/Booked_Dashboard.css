@@ -1,8 +1,8 @@
-.booked{
-    width: 70%;
-    margin-top: 10%;
-    margin-left: 20px;
-    background-color:#fff ;
+.booked {
+  width: 70%;
+  margin-top: 10%;
+  margin-left: 20px;
+  background-color: #fff;
   box-shadow: 0 3px 30px 0 rgb(0 0 0 / 10%);
   border-radius: 10px;
   padding: 20px;
@@ -32,13 +32,13 @@
   width: auto;
   height: auto;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   -o-object-position: 50% 50%;
-     object-position: 50% 50%;
+  object-position: 50% 50%;
 }
 
 .book {
-  border: 2px solid #F2F2F2;
+  border: 2px solid #f2f2f2;
   border-radius: 8px;
   overflow: hidden;
   margin-top: 20px;
@@ -57,18 +57,18 @@
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: #E05D26;
+  color: #e05d26;
 }
 .book-title {
   margin: 0;
   font-size: clamp(1.4em, 2.1vw, 2.1em);
   font-family: "Roboto Slab", Helvetica, Arial, sans-serif;
   font-weight: bold;
-  color:#003580;
+  color: #003580;
 }
 
 .book-title:hover {
-  color: #BC5B01; 
+  color: #bc5b01;
 }
 
 .book-title a {
@@ -81,7 +81,7 @@
 .book-rating {
   font-size: 1.2em;
   letter-spacing: 0.05em;
-  color: #E05D26;
+  color: #e05d26;
 }
 .book-rating span {
   color: var(--grey);
@@ -89,23 +89,23 @@
 .book-votes {
   font-size: 0.825em;
   font-style: italic;
-  color:lightgray;
+  color: lightgray;
 }
 
-.book-details{
-display: flex;
-justify-content: space-between;
+.book-details {
+  display: flex;
+  justify-content: space-between;
 }
 
-.pay{
-    margin-right: 10px;
-    font-size: 18px;
+.pay {
+  margin-right: 10px;
+  font-size: 18px;
 }
 
-.book-desc-more{
-       font-size: 15px;
+.book-desc-more {
+  font-size: 15px;
 }
 
-.book-details-desc{
+.book-details-desc {
   font-size: 18px;
 }

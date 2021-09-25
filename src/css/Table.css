@@ -1,16 +1,15 @@
-.features{
-    display: flex;
-    /* justify-content:space-around; */
+.features {
+  display: flex;
 }
 
 .columns {
-    flex: 50%;
+  flex: 50%;
 }
 
-.features_list{
-    margin-left:2%;
+.features_list {
+  margin-left: 2%;
 }
 
-.persons{
-    display: flex;
+.persons {
+  display: flex;
 }
