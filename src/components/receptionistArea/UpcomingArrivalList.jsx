@@ -36,7 +36,8 @@ function UpcomingArrivalList() {
             const {data, status} = await cancelBooking(bookingId);
             if (status !== 200)
               return displayNotification("error", data || "Could not cancel booking");
-            displayNotification("success", data);
+            setBooking(data)  
+            displayNotification("success", "Booking cancelled");
           },
         },
         {
