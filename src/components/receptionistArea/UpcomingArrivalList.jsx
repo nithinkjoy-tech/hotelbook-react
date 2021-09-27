@@ -25,6 +25,9 @@ const validationSchema = Yup.object().shape({
 });
 
 function UpcomingArrivalList() {
+  const [booking, setBooking] = useState();
+  const [fullBooking, setFullBooking] = useState();
+
   const handleCancel = async bookingId => {
     confirmAlert({
       title: "Cancel Booking",
@@ -36,7 +39,7 @@ function UpcomingArrivalList() {
             const {data, status} = await cancelBooking(bookingId);
             if (status !== 200)
               return displayNotification("error", data || "Could not cancel booking");
-            setBooking(data)  
+            setBooking(data)
             displayNotification("success", "Booking cancelled");
           },
         },
@@ -104,9 +107,6 @@ function UpcomingArrivalList() {
     ],
     []
   );
-
-  const [booking, setBooking] = useState();
-  const [fullBooking, setFullBooking] = useState();
 
   const handleChange = ({target}) => {
     let booking = fullBooking;
