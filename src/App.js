@@ -43,7 +43,9 @@ function App() {
       <NavBar />
       <Switch>
         <Route exact path="/about" component={AboutPage} />
-        <Route exact path="/search" component={SearchPage} />
+        {/* <Route exact path="/search" component={SearchPage} /> */}
+        <Route exact path="/contact" component={Contact} />
+        <Route exact path="/about" component={AboutPage} />
         <Route exact path="/signin" component={SigninPage} />
         <Route exact path="/signup" component={SignupPage} />
         <Route exact path="/logout" component={Logout} />
