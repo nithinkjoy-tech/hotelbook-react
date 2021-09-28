@@ -25,7 +25,7 @@ const SupportPage = () => {
                         </div>
                         <div className="cont-right">
                             <h6>Call Us</h6>
-                            <p><a href="tel:+44 99 555 42">+123 45 67 89</a></p>
+                            <p><a href="tel:+44 99 555 42">+91 9483236236</a></p>
                         </div>
                     </div>
                     <div className="cont-top margin-up">
@@ -34,7 +34,7 @@ const SupportPage = () => {
                         </div>
                         <div className="cont-right">
                             <h6>Email Us</h6>
-                            <p><a href="mailto:example@mail.com" className="mail">example@mail.com</a></p>
+                            <p><a href="mailto:info@adithyaview.com" className="mail">info@adithyaview.com</a></p>
                         </div>
                     </div>
                     <div className="cont-top margin-up">
@@ -43,7 +43,7 @@ const SupportPage = () => {
                         </div>
                         <div className="cont-right">
                             <h6>Address</h6>
-                            <p>Address Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            <p>On the banks of Neria River,<br/>Nidle,<br/>Dharmastala</p>
                         </div>
                     </div>
                 </div>

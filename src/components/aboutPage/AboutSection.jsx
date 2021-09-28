@@ -1,7 +1,7 @@
 import React from "react";
-import img1 from "../../images/about1.jpg";
-import img2 from "../../images/about2.jpg";
-import img3 from "../../images/about3.jpg";
+import img1 from "../../images/kinderplay.jpg";
+import img2 from "../../images/restuarant.jpg";
+import img3 from "../../images/pool.jpg";
 
 function AboutSection() {
   return (
@@ -41,9 +41,10 @@ function AboutSection() {
                   <figcaption className="w3set-hny">
                     <div>
                       <h4>
-                        Top Restaurant <span> Hotels</span>
+                      Kinder Play
+                        {/* Top Restaurant <span> Hotels</span> */}
                       </h4>
-                      <p>Breakfast and Dinner</p>
+                      <p>A play area for small kids with play equipments.</p>
                     </div>
                   </figcaption>
                 </figure>
@@ -56,9 +57,9 @@ function AboutSection() {
                   <figcaption className="w3set-hny">
                     <div>
                       <h4>
-                        Spa and Wellness <span> Hotels</span>
+                      Restaurant
                       </h4>
-                      <p>Open Daily </p>
+                      <p>Variety of food of your choice.</p>
                     </div>
                   </figcaption>
                 </figure>
@@ -71,9 +72,9 @@ function AboutSection() {
                   <figcaption className="w3set-hny">
                     <div>
                       <h4>
-                        Best Luxury Rooms <span> Hotels</span>
+                      Swimming Pool
                       </h4>
-                      <p>Cool view</p>
+                      <p>Beautiful swimming pool for relaxation.</p>
                     </div>
                   </figcaption>
                 </figure>

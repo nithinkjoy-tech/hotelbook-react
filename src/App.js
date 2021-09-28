@@ -39,7 +39,7 @@ import ResetPassword from './components/common/ResetPassword';
 import LinkReview from './components/common/LinkReview';
 import NotFound from './components/common/NotFound';
 import Logout from './components/common/Logout';
-
+import Contact from './pages/ContactSupportPage'
 function App() {
   return (
     <React.Fragment>
@@ -48,6 +48,7 @@ function App() {
 
       <Switch>
         <Route exact path="/about" component={AboutPage} />
+        <Route exact path="/contact" component={Contact} />
         <Route exact path="/search" component={SearchPage} />
         <Route exact path="/signin" component={SigninPage} />
         <Route exact path="/dashboard" component={GuestDashboard} />

@@ -13,18 +13,18 @@ const Footer = () => {
                 <ul>
                   <li>
                     <p>
-                      <span className="fa fa-map-marker"></span> Address
+                      <span className="fa fa-map-marker"></span> On the banks of Neria River,Nidle,Dharmastala
                     </p>
                   </li>
                   <li>
                     <a href="#">
-                      <span className="fa fa-phone"></span> +91 9874563210
+                      <span className="fa fa-phone"></span> +91 9483236236
                     </a>
                   </li>
                   <li>
                     <a href="#" className="mail">
                       <span className="fa fa-envelope-open-o"></span>
-                      hotelbookgroup@gmail.com
+                      info@adithyaview.com
                     </a>
                   </li>
                 </ul>
@@ -36,13 +36,13 @@ const Footer = () => {
                     <a href="#">Home</a>
                   </li>
                   <li>
-                    <a href="#">About hotels</a>
+                    <a href="/about">About hotel</a>
                   </li>
                   <li>
                     <a href="#">Login/Signup</a>
                   </li>
                   <li>
-                    <a href="#">Contact us</a>
+                    <a href="/contact">Contact us</a>
                   </li>
                 </ul>
               </div>
