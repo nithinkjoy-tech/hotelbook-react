@@ -1,12 +1,12 @@
-import {Button, TextField} from "@material-ui/core";
-import {Field, FieldArray, FieldProps, Form, Formik, getIn} from "formik";
 import React, {useState, useEffect} from "react";
-import * as Yup from "yup";
 import MUITextField from "@material-ui/core/TextField";
-import {displayNotification} from "./../../services/notificationService";
 import _ from "lodash";
+import * as Yup from "yup";
+import {Field, FieldArray, FieldProps, Form, Formik, getIn} from "formik";
+import {displayNotification} from "./../../services/notificationService";
+import {Button, TextField} from "@material-ui/core";
+import {saveFoodItems} from "./../../api/restaurant";
 import {getFoodItems} from "../../api/restaurant";
-import { saveFoodItems } from './../../api/restaurant';
 
 const validationSchema = Yup.object().shape({
   items: Yup.array().of(
@@ -24,8 +24,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const handleSubmit = async (values, setFieldError) => {
-  await saveFoodItems(values)
-  displayNotification("info","Successfully Saved")
+  await saveFoodItems(values);
+  displayNotification("info", "Successfully Saved");
 };
 
 const AddFoodItem = () => {
@@ -35,10 +35,10 @@ const AddFoodItem = () => {
     const {data, status} = await getFoodItems();
     if (status !== 200) return displayNotification("error", "Something went wrong");
     if (!data.items[0]) {
-      setInitialValues({items:[{itemName: "", itemPrice: ""}]});
+      setInitialValues({items: [{itemName: "", itemPrice: ""}]});
       return displayNotification("info", "There is no food items. Please add any");
     }
-    setInitialValues(data)
+    setInitialValues(data);
   };
 
   useEffect(() => {
@@ -49,8 +49,8 @@ const AddFoodItem = () => {
 
   return (
     <div className="dashboard-items">
-      <div style={{textAlign: "center",marginTop:"75px"}}>
-      <h1>Add Food items</h1>
+      <div style={{textAlign: "center", marginTop: "75px"}}>
+        <h1>Add Food items</h1>
         <Formik
           initialValues={initialValues}
           onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
@@ -115,12 +115,6 @@ const AddFoodItem = () => {
                                 </div>
                               )}
                           </div>
-                          {/* {getIn(errors, `items[${index}].itemPrice`) &&
-                        getFieldMeta(`items[${index}].itemPrice`).touched && (
-                          <div style={{color: "red"}}>
-                            {getIn(errors, `items[${index}].itemPrice`)}
-                          </div>
-                        )} */}
                           <div className="btn btn-danger" onClick={() => remove(index)}>
                             Delete
                           </div>

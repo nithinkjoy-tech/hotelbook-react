@@ -1,14 +1,12 @@
 import React, {useEffect, useState, useMemo} from "react";
-// import "../../css/ArrivalList.css";
-import {getRoomBoys, deleteRoomBoy,getHotelRooms} from "../api/admin";
-import DataTable, {createTheme} from "react-data-table-component";
+import DataTable from "react-data-table-component";
 import _ from "lodash";
-import {confirmAlert} from "react-confirm-alert";
+import {getRoomBoys, deleteRoomBoy, getHotelRooms} from "../api/admin";
 import {displayNotification} from "../services/notificationService";
+import {confirmAlert} from "react-confirm-alert";
 
 function ManageRoomBoy({hotelId}) {
   const handleEdit = roomBoyId => {
-    console.log(roomBoyId);
     window.location = `/admin/manageHotel/roomBoy/${roomBoyId}`;
   };
 
@@ -16,8 +14,6 @@ function ManageRoomBoy({hotelId}) {
   const [fullRoomBoys, setFullRoomBoys] = useState();
 
   const handleDelete = roomBoyId => {
-    // window.location=`/reception/dashboard/checkout/${data}`
-    // console.log(data);
     confirmAlert({
       title: "Delete Room Boy",
       message: "Are you sure want to delete room boy",
@@ -28,7 +24,7 @@ function ManageRoomBoy({hotelId}) {
             const {data, status} = await deleteRoomBoy(roomBoyId);
             if (status !== 200) return displayNotification("error", data);
 
-            setRoomBoys(data)
+            setRoomBoys(data);
             displayNotification("info", "Successfully deleted room boy.");
           },
         },
@@ -98,14 +94,13 @@ function ManageRoomBoy({hotelId}) {
   };
 
   const getAllRoomBoys = async () => {
-
-    if(hotelId){
-      const {data:validHotel,status:resStatus}=await getHotelRooms(hotelId);
-    if(resStatus !== 200) return displayNotification("error","Invalid URL")
+    if (hotelId) {
+      const {status: resStatus} = await getHotelRooms(hotelId);
+      if (resStatus !== 200) return displayNotification("error", "Invalid URL");
     }
 
     const {data, status} = await getRoomBoys(hotelId);
-    if (status !== 200) return displayNotification("error",data);
+    if (status !== 200) return displayNotification("error", data);
     setRoomBoys(data);
     setFullRoomBoys([...data]);
   };

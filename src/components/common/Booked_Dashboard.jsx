@@ -1,21 +1,29 @@
 import React, {useEffect, useState} from "react";
-import "../../css/Booked_Dashboard.css";
-import {useHistory} from "react-router-dom";
 import Rating from "./Rating";
+import {useHistory} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
 import {getBookings, cancelBooking} from "../../api/guest";
 import {displayNotification} from "./../../services/notificationService";
+import Loader from "./Loader";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import "../../css/Booked_Dashboard.css";
 
 function Booked_Dashboard() {
   const history = useHistory();
   const [bookings, setBookings] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   const getAllBookings = async () => {
     const {data, status} = await getBookings({isStayCompleted: false});
     if (status !== 200) return displayNotification("error", data);
-    // console.log(data,"dtt")
+    if (data === "No bookings found") {
+      setBookings(null);
+      return setIsLoading(false);
+    }
     setBookings(data);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   };
 
   const diffBetweenDays = (startingDate, endingDate) => {
@@ -35,10 +43,10 @@ function Booked_Dashboard() {
       buttons: [
         {
           label: "Yes",
-          onClick: async() => {
+          onClick: async () => {
             await cancelBooking(bookingId);
-            setBookings(bookings.filter(booking =>bookingId!==booking._id))
-            displayNotification("info","Successfully cancelled your booking.")
+            setBookings(bookings.filter(booking => bookingId !== booking._id));
+            displayNotification("info", "Successfully cancelled your booking.");
           },
         },
         {
@@ -54,6 +62,8 @@ function Booked_Dashboard() {
   useEffect(() => {
     getAllBookings();
   }, []);
+
+  if (isLoading) return <Loader />;
 
   if (!bookings)
     return (
@@ -80,9 +90,20 @@ function Booked_Dashboard() {
                 >
                   <a>{booking?.hotelName}</a>{" "}
                 </h1>
-                <span className="badge badge-warning">
-                  <p style={{margin: 0, color: "#000"}}>Stay not completed</p>
-                </span>
+                {booking?.status === "yettostay" ? (
+                  <span className="badge badge-warning">
+                    <p style={{margin: 0, color: "#000"}}>Yet to Stay</p>
+                  </span>
+                ) : (
+                  ""
+                )}
+                {booking?.status === "checkedin" ? (
+                  <span className="badge badge-success">
+                    <p style={{margin: 0, color: "#000"}}>Checked In</p>
+                  </span>
+                ) : (
+                  ""
+                )}
               </div>
 
               <p className="book-metadata">
@@ -95,17 +116,18 @@ function Booked_Dashboard() {
               </p>
               <div className="book-details">
                 <div className="book-details-right">
-                  {/* <h5 className="book-details-desc">Hotel Booking ID : 5897458631</h5> */}
                   <h5 className="pay">Booking ID: {booking?.hotelBookingId}</h5>
                   <h5 className="book-details-desc">Booked On : {booking?.bookedOn}</h5>
-                  <h5 className="book-details-desc">Check In : {booking?.lateStartingDayOfStay||booking?.startingDayOfStay}</h5>
+                  <h5 className="book-details-desc">
+                    Check In : {booking?.lateStartingDayOfStay || booking?.startingDayOfStay}
+                  </h5>
                   <h5 className="book-details-desc">Check Out : {booking?.endingDayOfStay}</h5>
                 </div>
                 <div className="book-details-left">
-                <h5 className="pay">
+                  <h5 className="pay">
                     Accomodtion Total: Rs.{" "}
                     {booking?.totalPrice *
-                      (diffBetweenDays(booking.startingDayOfStay, booking.endingDayOfStay))}
+                      diffBetweenDays(booking.startingDayOfStay, booking.endingDayOfStay)}
                   </h5>
                   <h5 className="pay">Extra Cost: {booking?.additionalCharges}</h5>
                   <h5 className="pay">Total Beds: {booking?.totalBeds}</h5>
@@ -126,9 +148,13 @@ function Booked_Dashboard() {
                 >
                   Get Details
                 </button>
-                {booking?.status==="yettostay"?<button onClick={() => cancelRoomBooking(booking._id)} className="btn btn-danger">
-                  Cancel Booking
-                </button>:""}
+                {booking?.status === "yettostay" ? (
+                  <button onClick={() => cancelRoomBooking(booking._id)} className="btn btn-danger">
+                    Cancel Booking
+                  </button>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </article>

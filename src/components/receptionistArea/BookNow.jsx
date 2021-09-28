@@ -1,13 +1,11 @@
 import React from "react";
 import Calendar from "./../landingPageComponent/Calendar";
-import HotelDetails from "./../../pages/HotelDetails";
-import {Formik, Form} from "formik";
-import * as Yup from "yup";
-import {getHotelInfo} from "../../api/guest"
 import auth from "../../services/authService";
+import * as Yup from "yup";
+import {Formik, Form} from "formik";
+import {getHotelInfo} from "../../api/guest";
 
 function BookNow() {
-  // console.log(auth?.getCurrentUser)
   const dateValidator = Yup.object()
     .shape({
       day: Yup.number().min(1).max(31).required(),
@@ -21,17 +19,15 @@ function BookNow() {
       from: dateValidator,
       to: dateValidator,
     }),
-    // rooms: Yup.number().min(1).max(9999).required(),
   });
 
   const handleSubmit = async values => {
-    console.log(values, "vls");
-    values["hotelId"]=auth.getCurrentUser()?.hotelId
-    localStorage.setItem("selectedDays",JSON.stringify(values.selectedDayRange))
+    values["hotelId"] = auth.getCurrentUser()?.hotelId;
+    localStorage.setItem("selectedDays", JSON.stringify(values.selectedDayRange));
     const {data} = await getHotelInfo(values);
-    let {hotels,numberOfDays}=data
-    localStorage.setItem("numberOfDays",numberOfDays)
-    window.location=`/hoteldetails/${auth.getCurrentUser()?.hotelId}`
+    let {numberOfDays} = data;
+    localStorage.setItem("numberOfDays", numberOfDays);
+    window.location = `/hoteldetails/${auth.getCurrentUser()?.hotelId}`;
   };
 
   return (
@@ -41,12 +37,11 @@ function BookNow() {
           from: null,
           to: null,
         },
-        // rooms: 1,
       }}
       validationSchema={validationSchema}
       onSubmit={values => handleSubmit(values)}
     >
-      {({errors, touched, values, handleChange, handleBlur}) => (
+      {({values, handleChange}) => (
         <Form>
           <section className="w3l-availability-form" id="booking" style={{marginLeft: "400px"}}>
             <div className="w3l-availability-form-main py-5">
@@ -64,11 +59,6 @@ function BookNow() {
                             minimumDate={true}
                           />
                         </div>
-                        
-                        {/* <div className="form-input col-md-3 col-sm-6 mt-3">
-                          <RoomRequirement name="rooms" rooms={values.rooms} />
-                        </div> */}
-
                         <div className="bottom-btn col-md-2 col-sm-6 mt-3">
                           <button
                             type="submit"

@@ -1,7 +1,7 @@
-import React from 'react'
-import {BrowserRouter as Router,Link} from 'react-router-dom';
-import img1 from '../../images/top.jpg';
-import img2 from '../../images/bottom.jpg';
+import React from "react";
+import img1 from "../../images/top.jpg";
+import img2 from "../../images/bottom.jpg";
+import {Link} from "react-router-dom";
 
 function AboutHome() {
     return (
@@ -34,4 +34,4 @@ function AboutHome() {
     )
 }
 
-export default AboutHome
+export default AboutHome;

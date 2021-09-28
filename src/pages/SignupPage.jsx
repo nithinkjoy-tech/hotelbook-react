@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import InputBox from "./../components/common/InputBox";
+import * as Yup from "yup";
+import {displayNotification} from "./../services/notificationService";
+import {restaurantSignup} from "../api/restaurant";
+import {receptionSignup} from "../api/reception";
+import {setAuthToken} from "./../services/authService";
 import {Formik, Form} from "formik";
 import {guestSignup} from "../api/guest";
-import {receptionSignup,restaurantSignup} from "../api/renter";
 import {adminSignup} from "../api/admin";
-import * as Yup from "yup";
-import {setAuthToken} from "./../services/authService";
-import { displayNotification } from './../services/notificationService';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(2).max(50).required("Name is required").label("Name"),
@@ -19,69 +20,46 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
 });
 
-function SignupPage({location,match}) {
+function SignupPage({location, match}) {
   const [passwordType, setPasswordType] = useState("password");
-
-  // let pagecolor = "";
-  // let traycolor = "";
-  // if (location.pathname === "/signup") {
-  //   traycolor = "white";
-  //   pagecolor = "white";
-  // }
-  // if (location.pathname === "/admin/dashboard/createreception") {
-  //   traycolor = "";
-  //   pagecolor = "#fc5c65";
-  // }
-  // if (location.pathname === "/admin/signup") {
-  //   traycolor = "";
-  //   pagecolor = "#fc5c65";
-  // }
 
   const handleSubmit = async (values, setFieldError) => {
     if (location.pathname === "/signup") {
       const {data, status} = await guestSignup(values);
-      console.log(data.property, data.msg, status);
       if (status === 400) setFieldError(data.property, data.msg);
       else {
-        setAuthToken(data)
+        setAuthToken(data);
         window.location = "/dashboard";
       }
     }
-    console.log(location.pathname)
+
     if (location.pathname.includes("/admin/reception/signup")) {
-      if(!match.params.hotelId) return displayNotification("error", "Something went wrong")
-      values["hotelId"]=match.params.hotelId
-      console.log("here")
+      if (!match.params.hotelId) return displayNotification("error", "Something went wrong");
+      values["hotelId"] = match.params.hotelId;
       const {data, status} = await receptionSignup(values);
-      if(data.property==="toast") return displayNotification("error", data.msg)
-      console.log(data.property, data.msg, status);
+      if (data.property === "toast") return displayNotification("error", data.msg);
       if (status === 400) setFieldError(data.property, data.msg);
       else {
-        // setAuthToken(data)
         window.location = "/admin/dashboard";
       }
     }
 
     if (location.pathname.includes("/admin/restaurant/signup")) {
-      if(!match.params.hotelId) return displayNotification("error", "Something went wrong")
-      values["hotelId"]=match.params.hotelId
-      console.log("here")
+      if (!match.params.hotelId) return displayNotification("error", "Something went wrong");
+      values["hotelId"] = match.params.hotelId;
       const {data, status} = await restaurantSignup(values);
-      if(data.property==="toast") return displayNotification("error", data.msg)
-      console.log(data.property, data.msg, status);
+      if (data.property === "toast") return displayNotification("error", data.msg);
       if (status === 400) setFieldError(data.property, data.msg);
       else {
-        // setAuthToken(data)
         window.location = "/admin/dashboard";
       }
     }
 
     if (location.pathname === "/admin/signup") {
       const {data, status} = await adminSignup(values);
-      console.log(data.property, data.msg, status);
       if (status === 400) setFieldError(data.property, data.msg);
       else {
-        setAuthToken(data)
+        setAuthToken(data);
         window.location = "/admin/dashboard";
       }
     }
@@ -115,7 +93,7 @@ function SignupPage({location,match}) {
                 <div className="flex content-center items-center justify-center h-full">
                   <div className="w-full lg:w-4/12 px-4">
                     <div
-                      style={{ width: "110%"}}
+                      style={{width: "110%"}}
                       className="mt-24 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0"
                     >
                       <div className="rounded-t mb-0 px-6 py-6">

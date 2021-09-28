@@ -26,13 +26,10 @@ function LinkReview({match}) {
   const setValues = getFieldProps => {
     const {value: ratingValue} = getFieldProps("rating");
     if (ratingValue) setRatingValue(ratingValue);
-    //   const {value:reviewValue}=getFieldProps("review")
-    //   if(reviewValue) setReviewValue(reviewValue)
   };
 
   const getReview = async () => {
     const {data, status} = await getLinkReview(match?.params?.id);
-    console.log(data, "gg");
     setFetchedDB(true);
     if (status !== 200) {
         displayNotification("error", data)

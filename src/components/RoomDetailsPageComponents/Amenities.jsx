@@ -1,5 +1,4 @@
 import React from "react";
-import facilities from "../../images/facilities.jpg";
 import "../../css/room.css";
 
 const Amenities = ({mainPhoto, facilities}) => {
@@ -11,7 +10,7 @@ const Amenities = ({mainPhoto, facilities}) => {
             <h3 className="title-small">Amenities provided</h3>
             <ul className="w3l-right-book mt-4">
               {facilities.map(facility => (
-                <li key={facility} >
+                <li key={facility}>
                   <span className="fa fa-check" aria-hidden="true" />
                   {facility}
                 </li>

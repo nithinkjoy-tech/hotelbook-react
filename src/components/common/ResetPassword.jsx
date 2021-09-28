@@ -1,54 +1,38 @@
 import React, {useState} from "react";
 import InputBox from "./InputBox";
+import * as Yup from "yup";
 import {Formik, Form} from "formik";
 import {resetGuestPassword} from "../../api/guest";
-import {renterSignin} from "../../api/renter";
+import {receptionSignin} from "../../api/reception";
 import {restaurantSignin} from "../../api/restaurant";
 import {adminSignin} from "../../api/admin";
-import * as Yup from "yup";
 import {setAuthToken} from "../../services/authService";
-import { displayNotification } from './../../services/notificationService';
+import {displayNotification} from "./../../services/notificationService";
 
 const validationSchema = Yup.object().shape({
   newPassword: Yup.string().required("Email or Username is required").label("Email or Username"),
   confirmPassword: Yup.string().required("Password is required").label("Password"),
 });
 
-function ResetPassword({location,match}) {
-    const token=match.params.token
+function ResetPassword({location, match}) {
+  const {token} = match.params;
   const [passwordType, setPasswordType] = useState("password");
 
-  let bgcolor = "";
-  let traycolor = "";
-  if (location.pathname === "/signin") {
-    traycolor = "";
-    bgcolor = "";
-  }
-  if (location.pathname === "/renter/signin") {
-    traycolor = "red";
-    bgcolor = "red";
-  }
-  if (location.pathname === "/admin/signin") {
-    traycolor = "blue";
-    bgcolor = "blue";
-  }
-
   const handleSubmit = async (values, setFieldError) => {
-
     if (location.pathname.includes("/resetpassword/")) {
-      const {data, status} = await resetGuestPassword(values,token);
+      const {data, status} = await resetGuestPassword(values, token);
       if (status === 400) setFieldError("userId", data);
-      if(status!==200) return displayNotification("error","Something went wrong")
+      if (status !== 200) return displayNotification("error", "Something went wrong");
       else {
-        displayNotification("success","Successfully updated password")
-        setTimeout(()=>{
-            window.location = "/signin";
-        },1000)
+        displayNotification("success", "Successfully updated password");
+        setTimeout(() => {
+          window.location = "/signin";
+        }, 1000);
       }
     }
- 
+
     if (location.pathname === "/reception/signin") {
-      const {data, status} = await renterSignin(values);
+      const {data, status} = await receptionSignin(values);
       if (status === 400) setFieldError("userId", data);
       else {
         setAuthToken(data);
@@ -64,7 +48,7 @@ function ResetPassword({location,match}) {
         window.location = "/restaurant/dashboard";
       }
     }
-    
+
     if (location.pathname === "/admin/signin") {
       const {data, status} = await adminSignin(values);
       if (status === 400) setFieldError("userId", data);
@@ -86,12 +70,11 @@ function ResetPassword({location,match}) {
     >
       {({errors, touched, values, handleChange, handleBlur}) => (
         <Form>
-          <main style={{backgroundColor: bgcolor}}>
+          <main style={{backgroundColor: "white"}}>
             <section className="w-full h-full">
               <div
                 className="top-0 w-full h-full bg-gray-900"
                 style={{
-                  // backgroundColor: "red",
                   backgroundSize: "100%",
                   backgroundRepeat: "no-repeat",
                 }}
@@ -100,13 +83,13 @@ function ResetPassword({location,match}) {
                 <div className="flex content-center items-center justify-center h-full">
                   <div className="w-full lg:w-4/12 px-4">
                     <div
-                      style={{backgroundColor: traycolor, width: "110%"}}
+                      style={{backgroundColor: "white", width: "110%"}}
                       className="mt-24 relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0"
                     >
                       <div style={{marginTop: "20px"}} className="rounded-t mb-0 px-6 py-6">
                         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                           <div className="relative w-full mb-3">
-                          <InputBox
+                            <InputBox
                               error={errors}
                               handleBlur={handleBlur}
                               touched={touched}
@@ -161,14 +144,13 @@ function ResetPassword({location,match}) {
                               Update Password
                             </button>
                           </div>
-                          
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-          </section>
+            </section>
           </main>
         </Form>
       )}

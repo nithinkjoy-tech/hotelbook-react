@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from "react";
 import PersonIcon from "@material-ui/icons/Person";
-import "bootstrap/dist/css/bootstrap.css";
 import ImageGallery from "react-image-gallery";
-import "../../css/Table.css";
-import {getRoombyId} from "../../api/guest";
 import ModalComponent from "./ModalComponent";
-import {displayNotification} from "./../../services/notificationService";
 import _ from "lodash";
+import {getRoombyId} from "../../api/guest";
+import {displayNotification} from "./../../services/notificationService";
 import {bookHotel} from "./../../api/guest";
-import {bookOfflineHotel} from "./../../api/renter";
+import {bookOfflineHotel} from "./../../api/reception";
 import {getCurrentUser} from "../../services/authService";
 import {confirmAlert} from "react-confirm-alert";
+import "bootstrap/dist/css/bootstrap.css";
+import "../../css/Table.css";
 
 function Table({rooms}) {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -21,19 +21,14 @@ function Table({rooms}) {
   const [price, setPrice] = useState();
   const [roomsNumber, setRoomsNumber] = useState();
   const [object, setObject] = useState({});
-  // // let images=[]
-  // const [open, setOpen] = React.useState(false);
+
   let numberOfDays = localStorage.getItem("numberOfDays");
   useEffect(() => {
     localStorage.removeItem("offlineGuestId");
   }, []);
-  const handleRoomClick = room => {
-    console.log("clicke");
-    window.location = `/hotel/roomdetails/${room._id}`;
-  };
+
   let selectedDays = JSON.parse(localStorage.getItem("selectedDays"));
 
-  // const object = {};
   const handleBooking = async hotelId => {
     confirmAlert({
       title: "Confirm Booking",
@@ -44,13 +39,12 @@ function Table({rooms}) {
           onClick: async () => {
             if (!getCurrentUser()?.isGuest && !getCurrentUser()?.isReception)
               return (window.location = `/signin?redirecturl=${window.location.href}`);
-            console.log(object);
+
             if (_.isEmpty(object))
               return displayNotification("error", "Please select rooms for booking");
+
             let roomsArray = [];
             for (let [key, value] of Object.entries(object)) {
-              console.log(key, "key");
-              console.log(object, "obj");
               roomsArray.push({roomId: key, noOfRooms: value});
             }
 
@@ -59,7 +53,7 @@ function Table({rooms}) {
               selectedDayRange: JSON.parse(localStorage.getItem("selectedDays")),
               hotelId,
             };
-            console.log(finalData, "dtt");
+
             if (getCurrentUser()?.isGuest) {
               const {data, status} = await bookHotel(finalData);
               if (status !== 200) return displayNotification("error", data);
@@ -90,42 +84,13 @@ function Table({rooms}) {
         },
       ],
     });
-
-    // setTimeout(() => {
-    //   window.location="/dashboard"
-    // },1000)
-    // {
-    //   "roomDetails":[{"roomId": "60995ece56a3f64368509ce9",
-    //         "noOfRooms":3
-    //       },
-    //       {
-    //         "roomId":"60995ee156a3f64368509cea",
-    //         "noOfRooms":2
-    //       }],
-    //   "selectedDate":{"from":{
-    //   "day":19,
-    //   "month":5,
-    //   "year":2021
-    // },
-    // "to":{
-    //   "day":29,
-    //   "month":5,
-    //   "year":2021
-    // }}
-    // }
   };
 
-  const handleExtraBedSelect = selected => {};
-
   const handleSelect = selected => {
-    // let object={...object}
-
-    console.log(object, "ob");
     let key = selected.slice(0, 24);
     let value = Number(selected.slice(24, selected.length));
     object[key] = value;
     setObject(object);
-    console.log(value, "vl");
 
     let bedsNo = 0,
       personsNo = 0,
@@ -133,9 +98,7 @@ function Table({rooms}) {
       roomsNo = 0;
     let values = [];
     let datas = [];
-    console.log(object, "ob1");
     for (let [key, value] of Object.entries(object)) {
-      console.log(value, typeof value, "cc");
       if (Number(value) === 0) {
         setObject(_.omit(object, [key.toString()]));
       }
@@ -147,23 +110,15 @@ function Table({rooms}) {
       datas.push(data);
     }
     for (let index in values) {
-      console.log(index, typeof values[index]);
-      console.log(index, typeof Number(datas[index].numberOfBeds), "bb");
       bedsNo += values[index] * Number(datas[index].numberOfBeds);
       personsNo += values[index] * Number(datas[index].numberOfGuestsInaRoom);
       priceNo += values[index] * Number(datas[index].basePricePerNight * numberOfDays);
       roomsNo += values[index];
     }
-    // let data=_.filter(rooms, { '_id': key})[0]
     setBeds(bedsNo);
     setPersons(personsNo);
     setPrice(priceNo);
     setRoomsNumber(roomsNo);
-    // setBeds(Number(data.numberOfBeds)*values)
-    // setPersons(Number(data.numberOfGuestsInaRoom)*values)
-    // setPrice((Number(data.basePricePerNight)*numberOfDays)*values)
-    // setRoomsNumber(values)
-    // console.log(data,"dtt")
   };
 
   const getRoomDetails = async roomId => {
@@ -184,7 +139,7 @@ function Table({rooms}) {
         <h1>There is no room left for booking</h1>
       </div>
     );
-  console.log(rooms, "rm");
+
   return (
     <div style={{margin: "auto", width: "85%", marginTop: "30px"}}>
       <table className="table table-bordered">

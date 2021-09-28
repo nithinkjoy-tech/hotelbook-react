@@ -3,14 +3,12 @@ import Step1 from "./../components/listPropertyPageComponent/Step1";
 import Step2 from "./../components/listPropertyPageComponent/Step2";
 import Step3 from "./../components/listPropertyPageComponent/Step3";
 import Step4 from "./../components/listPropertyPageComponent/Step4";
-import Step5 from "./../components/listPropertyPageComponent/Step5";
 import Stepper from "react-stepper-horizontal";
-import {Formik, Form} from "formik";
 import * as Yup from "yup";
-import {toast} from "react-toastify";
-import {displayNotification} from "./../services/notificationService";
 import {registerHotels, getAdminHotelsbyId, editHotelById} from "./../api/admin";
-let pincodeDirectory = require("india-pincode-lookup");
+import {displayNotification} from "./../services/notificationService";
+import {Formik, Form} from "formik";
+import {toast} from "react-toastify";
 
 const validationSchema = Yup.object().shape({
   hotelName: Yup.string().min(1).max(50).required(),
@@ -20,7 +18,7 @@ const validationSchema = Yup.object().shape({
     .length(12)
     .matches(/^[0-9]+$/, "Mobile number must include only numbers"),
   address: Yup.string().required().min(8).max(255),
-  description:Yup.string().required().min(120).max(160),
+  description: Yup.string().required().min(120).max(160),
   city: Yup.string().required().min(1).max(50),
   postalCode: Yup.string()
     .required()
@@ -70,13 +68,9 @@ function ListPropertyPage({match}) {
 
   async function getHotels(id) {
     const {data} = await getAdminHotelsbyId(id);
-    console.log(data, "dt");
     const transform = obj =>
       booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === true ? "Yes" : "No"}), obj);
     setInitialValues(transform(data));
-
-    // localStorage.setItem("coverPhoto", JSON.stringify(data.mainPhoto));
-    // localStorage.setItem("numberOfImages", data.photos.length);
   }
 
   useEffect(() => {
@@ -107,12 +101,6 @@ function ListPropertyPage({match}) {
   };
 
   const handleSubmit = async (values, setFieldError) => {
-    console.log(values, "initialValues");
-    // if (pincodeDirectory.lookup(values.postalCode).length === 0) {
-    //   setFieldError("postalCode", "No place with given postal code");
-    //   return displayNotification("error", "Please check your form. You missed something");
-    // }
-
     const transform = obj =>
       booleanKeys.reduce((acc, key) => ({...acc, [key]: obj[key] === "Yes"}), obj);
 
@@ -123,7 +111,6 @@ function ListPropertyPage({match}) {
       isEdited = true;
     } else {
       const {data, status} = await registerHotels(transform(values));
-      console.log(data, "gere");
       if (status === 400) return setFieldError(data.property, data.msg);
     }
     toast.dismiss();
@@ -243,24 +230,6 @@ function ListPropertyPage({match}) {
               </div>
             </>
           )}
-          {/* {currentPage === 5 && (
-            <>
-              <Step5 saveAsDraft={saveAsDraft} />
-              <div style={{display: "flex", justifyContent: "space-between"}}>
-                <button style={previousButtonStyle} className="btn btn-secondary" onClick={prev}>
-                  Back
-                </button>
-                <button
-                  style={nextButtonStyle}
-                  type="submit"
-                  onClick={() => handleClick(isValid)}
-                  className="btn btn-success"
-                >
-                  Submit
-                </button>
-              </div>
-            </>
-          )} */}
         </Form>
       )}
     </Formik>

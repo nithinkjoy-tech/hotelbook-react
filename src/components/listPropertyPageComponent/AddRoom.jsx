@@ -1,54 +1,58 @@
-//aadhard card photo only
-//passport for forieneers
-//no room change after 10 mins
-//
-
 import React, {useEffect, useState} from "react";
 import PropertyInputBox from "../common/PropertyInputBox";
 import PropertySelectBox from "./../common/PropertySelectBox";
-import "react-phone-input-2/lib/style.css";
-import * as Yup from "yup";
+import Loader from "./../common/Loader";
 import FormCheckBox from "./../common/FormCheckBox";
 import Error from "./../forms/Error";
 import ImageUpload from "./ImageUpload";
+import _ from "lodash";
+import * as Yup from "yup";
 import {Delete} from "@material-ui/icons";
-import {Formik, Form, ErrorMessage} from "formik";
-import {addRoom, getAdminRoomById, editRoomById} from "../../api/admin";
 import {toast} from "react-toastify";
 import {displayNotification} from "./../../services/notificationService";
-import _ from "lodash";
+import {Formik, Form, ErrorMessage} from "formik";
+import {addRoom, getAdminRoomById, editRoomById} from "../../api/admin";
+import "react-phone-input-2/lib/style.css";
 
 const validationSchema = Yup.object().shape({
   roomType: Yup.string().min(1).max(50).required(),
-  numberOfRoomsOfThisType: Yup.number().typeError("This field cannot be a string").positive().min(1).max(9999).required(),
+  numberOfRoomsOfThisType: Yup.number()
+    .typeError("This field cannot be a string")
+    .positive()
+    .min(1)
+    .max(9999)
+    .required(),
   roomNumbers: Yup.string()
     .required()
     .matches(/^[0-9,]+$/, "Only number seperated by commas allowed")
     .test({
       name: "duplicate",
       test: (values, params) => {
-        if(values){
-          let invalidNos
+        if (values) {
+          let invalidNos;
           if (values[values.length - 1] == ",") {
             values = values.substring(0, values.length - 1);
           }
           let roomNos = values.split(",");
 
-          roomNos.forEach(no=>{
-            if(no=='') invalidNos=true
-          })
+          roomNos.forEach(no => {
+            if (no == "") invalidNos = true;
+          });
 
-          if(invalidNos) return params.createError({message: "Comma(, ,) without a number between is not allowed"});
+          if (invalidNos)
+            return params.createError({
+              message: "Comma(, ,) without a number between is not allowed",
+            });
 
           if (roomNos.length > Number(params.parent.numberOfRoomsOfThisType))
             return params.createError({message: "You added extra room numbers"});
           if (roomNos.length < Number(params.parent.numberOfRoomsOfThisType))
             return params.createError({message: "You added less room numbers"});
-  
+
           let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
-  
+
           let duplicateVal = findDuplicates(roomNos);
-  
+
           if (_.isEmpty(duplicateVal)) return true;
           else return params.createError({message: "Repeated Room Numbers!"});
         }
@@ -79,19 +83,27 @@ function AddRoom({match}) {
     photos: [],
     hotelId: null,
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   async function getRoom(id) {
     const {data} = await getAdminRoomById(id);
+    data.roomNumbers = data.roomNumbers.toString();
     setInitialValues(data);
-
     setPrev(data.mainPhoto);
     setNumberOfImages(data.photos.length);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   }
 
   useEffect(() => {
     window.scrollTo(0, 0);
     if (roomId) {
       getRoom(roomId);
+    } else {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     }
   }, []);
 
@@ -134,28 +146,30 @@ function AddRoom({match}) {
   };
 
   const handleSubmit = async (values, setFieldError) => {
-    // if (values.roomNumbers[values.roomNumbers.length - 1] == ",") {
-    //   values.roomNumbers = values.roomNumbers.substring(0, values.roomNumbers.length - 1);
-    // }
-    // let roomNos = values.roomNumbers.split(",");
-    // console.log(roomNos.length, Number(values.numberOfRoomsOfThisType));
-    // if (roomNos.length > Number(values.numberOfRoomsOfThisType))
-    //   return setFieldError("roomNumbers", "You added extra room numbers");
-    // if (roomNos.length < Number(values.numberOfRoomsOfThisType))
-    //   return setFieldError("roomNumbers", "You added less room numbers");
-
     values["hotelId"] = match.params.hotelId || initialValues.hotelId;
     let isEdited = false;
     if (roomId) {
       values["isMainPhotoChanged"] = values.mainPhoto == prev ? false : true;
       const {data, status} = await editRoomById(values, roomId);
+
+      if (status === 422) {
+        displayNotification("error", "Room Numbers already taken");
+        return setFieldError(data.property, data.msg);
+      }
+
       if (status === 400) {
-        displayNotification("Error", "You missed something in your form, please check");
+        displayNotification("error", "You missed something in your form, please check");
         setFieldError(data.property, data.msg);
       }
       isEdited = true;
     } else {
       const {data, status} = await addRoom(values);
+
+      if (status === 422) {
+        displayNotification("error", "Room Numbers already taken");
+        return setFieldError(data.property, data.msg);
+      }
+
       if (status === 400 && data.property === "toast") return toast.error(data.msg);
       if (status === 400) return setFieldError(data.property, data.msg);
     }
@@ -191,6 +205,8 @@ function AddRoom({match}) {
     "Hot & Cold Water",
   ];
 
+  if (isLoading) return <Loader />;
+
   if (roomId && !initialValues?.roomType) return null;
 
   return (
@@ -203,7 +219,9 @@ function AddRoom({match}) {
       {({setFieldValue, getFieldProps}) => (
         <Form>
           <div style={{marginTop: "60px"}}>
-            <h1 style={{textAlign: "center", marginTop: "70px", marginBottom: "0"}}>Add room</h1>
+            <h1 style={{textAlign: "center", marginTop: "70px", marginBottom: "0"}}>
+              {roomId ? "Edit Room" : "Add Room"}
+            </h1>
             <div
               style={{marginLeft: "7.75vw", width: "85%", marginBottom: "2rem"}}
               className="md:grid md:grid-cols-1 md:gap-6"

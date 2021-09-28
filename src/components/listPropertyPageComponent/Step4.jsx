@@ -1,16 +1,15 @@
 import React, {useEffect} from "react";
 import PropertySelectBox from "./../common/PropertySelectBox";
-import {useFormikContext} from "formik";
 import SaveAsDraftButton from "./SaveAsDraftButton";
+import {useFormikContext} from "formik";
 
 function Step4({saveAsDraft}) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const {getFieldProps, values} = useFormikContext();
+  const {values} = useFormikContext();
 
-  let {value: freeCancellation} = getFieldProps("freeCancellationAvailable");
   let time;
   let check_in_out = [];
   for (let i = 0; i < 12; i++) {
@@ -43,20 +42,6 @@ function Step4({saveAsDraft}) {
             <div className="shadow overflow-hidden sm:rounded-md">
               <div className="px-4 py-5 bg-white sm:p-6">
                 <div className="grid grid-cols-6 gap-6">
-                  {/* <div className="col-span-6 sm:col-span-3">
-                    <PropertySelectBox
-                      label="How many days in advance can guests cancel free of charge?"
-                      name="freeCancellationAvailable"
-                      options={["None.(Guest cannot cancel once booked)", "Day of arrival","1 day","2 days","3 days","7 days","14 days"]}
-                    />
-                  </div>
-                  {(freeCancellation&&!freeCancellation.startsWith("None"))?<div className="col-span-6 sm:col-span-3">
-                    <PropertySelectBox
-                      label="or guests will pay 100%"
-                      name="ifNotCancelledBeforeDate"
-                      options={["of the first day","of the full stay"]}
-                    />
-                  </div>:<div></div>} */}
                   <div className="col-span-3 sm:col-span-3">
                     <PropertySelectBox
                       label="Check-in"
@@ -81,13 +66,6 @@ function Step4({saveAsDraft}) {
                       options={check_in_out}
                     />
                   </div>
-                  {/* <div className="col-span-3 sm:col-span-3">
-                    <PropertySelectBox
-                      label="Can you accommodate children?"
-                      name="accomodateChildren"
-                      options={["No","Yes"]}
-                    />
-                  </div> */}
                   <div className="col-span-3 sm:col-span-3">
                     <PropertySelectBox
                       label="Do you allow pets?"
@@ -95,13 +73,6 @@ function Step4({saveAsDraft}) {
                       options={["No", "Yes"]}
                     />
                   </div>
-                  {/* <div className="col-span-3 sm:col-span-3">
-                    <PropertySelectBox
-                      label="Do you provide dormitory for driver"
-                      name="provideDormitoryForDriver"
-                      options={["No","Yes"]}
-                    />
-                  </div> */}
                 </div>
               </div>
               <SaveAsDraftButton values={values} saveAsDraft={saveAsDraft} />

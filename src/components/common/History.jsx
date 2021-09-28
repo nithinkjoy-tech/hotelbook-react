@@ -1,16 +1,15 @@
 import React, {useState, useEffect} from "react";
-import "../../css/History.css";
 import ReactStars from "react-rating-stars-component";
 import ModalComponent from "./ModalComponent";
-import {useFormikContext, Formik, Form} from "formik";
-import * as Yup from "yup";
-import InputBox from "./InputBox";
-import "../../css/Booked_Dashboard.css";
-import {useHistory} from "react-router-dom";
 import Rating from "./Rating";
+import Invoice from "./Invoice";
+import * as Yup from "yup";
+import {Formik, Form} from "formik";
+import {useHistory} from "react-router-dom";
 import {getBookings, addReview, editReview, getReviewById, downloadInvoice} from "../../api/guest";
 import {displayNotification} from "./../../services/notificationService";
-import Invoice from "./Invoice";
+import "../../css/Booked_Dashboard.css";
+import "../../css/History.css";
 
 const reviewSchema = Yup.object().shape({
   review: Yup.string().min(2).max(100000).required(),
@@ -31,12 +30,11 @@ function History() {
   const getAllBookings = async () => {
     const {data, status} = await getBookings({isStayCompleted: true});
     if (status !== 200) return displayNotification("error", data);
-    // console.log(data,"dtt")
+    if (data === "No bookings found") return setBookings(null);
     setBookings(data);
   };
 
   const handleDownloadInvoice = async bookingId => {
-    console.log(bookingId, "download");
     const {data, status} = await downloadInvoice(bookingId);
     if (status !== 200)
       return displayNotification("error", data || "Something unexpected happened");
@@ -44,19 +42,18 @@ function History() {
   };
 
   function generateInvoice(details) {
-    let roomDetails = [{roomNumber: 56, roomBoy: "ravi", roomType: "king"}];
     Invoice(
       details?.name,
       details?.address,
       details?.phoneNumber,
       details?.inputFields,
-      details?.earlyEndingDayOfStay||details?.endingDayOfStay,
+      details?.earlyEndingDayOfStay || details?.endingDayOfStay,
       details?.price,
       details?.restaurantBillAmount,
       details?.accomodationTotal,
-      details?.roomDetails || roomDetails,
+      details?.roomDetails,
       details?.extraBedTotal,
-      details?.lateStartingDayOfStay||details?.startingDayOfStay
+      details?.lateStartingDayOfStay || details?.startingDayOfStay
     );
   }
 
@@ -67,7 +64,6 @@ function History() {
     let datas = {};
     if (reviewId) {
       const {data} = await getReviewById(reviewId);
-      console.log(data);
       datas["review"] = data.review;
       datas["rating"] = data.rating;
       setRatingValue(data.rating);
@@ -99,18 +95,18 @@ function History() {
   }, []);
 
   const handleSubmit = async (values, resetForm) => {
-    console.log(values, "val");
     values["bookingId"] = bookingId;
     if (!revId) {
       const {data, status} = await addReview(hotelId, values);
       if (status !== 200) return displayNotification("error", data);
       displayNotification("success", "Review Posted Successfully");
+      getAllBookings();
     } else {
       const {data, status} = await editReview(revId, values);
       if (status !== 200) return displayNotification("error", data);
       displayNotification("success", "Review Edited Successfully");
+      getAllBookings();
     }
-
     resetForm({values: ""});
   };
 
@@ -142,7 +138,6 @@ function History() {
                 <p style={{margin: 0, color: "#000"}}>Stay completed</p>
               </span>
             </div>
-
             <p className="book-metadata">
               <span className="book-rating">
                 <Rating value={booking?.rating} className="rating" />
@@ -153,11 +148,14 @@ function History() {
             </p>
             <div className="book-details">
               <div className="book-details-right">
-                {/* <h5 className="book-details-desc">Hotel Booking ID : 5897458631</h5> */}
                 <h5 className="pay">Booking ID: {booking?.hotelBookingId}</h5>
                 <h5 className="book-details-desc">Booked On : {booking?.bookedOn}</h5>
-                <h5 className="book-details-desc">Check In : {booking?.lateStartingDayOfStay||booking?.startingDayOfStay}</h5>
-                <h5 className="book-details-desc">Check Out : {booking?.earlyEndingDayOfStay||booking?.endingDayOfStay}</h5>
+                <h5 className="book-details-desc">
+                  Check In : {booking?.lateStartingDayOfStay || booking?.startingDayOfStay}
+                </h5>
+                <h5 className="book-details-desc">
+                  Check Out : {booking?.earlyEndingDayOfStay || booking?.endingDayOfStay}
+                </h5>
               </div>
               <div className="book-details-left">
                 <h5 className="pay">

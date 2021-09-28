@@ -134,3 +134,8 @@ code {
   margin-top:65px;
   display:"flex"
 }
+
+.center-loader {
+  margin-top: 300px;
+  margin-bottom: 300px
+}

@@ -1,19 +1,18 @@
-import React,{useEffect} from "react";
-import PropertyInputBox from "../common/PropertyInputBox";
+import React, {useEffect} from "react";
 import PropertySelectBox from "./../common/PropertySelectBox";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
-import {useFormikContext, ErrorMessage} from "formik";
-import Error from "./../forms/Error";
 import SaveAsDraftButton from "./SaveAsDraftButton";
+import PropertyInputBox from "../common/PropertyInputBox";
+import PhoneInput from "react-phone-input-2";
+import Error from "./../forms/Error";
+import {useFormikContext, ErrorMessage} from "formik";
+import "react-phone-input-2/lib/style.css";
 
 function Step1({saveAsDraft}) {
   useEffect(() => {
-    window.scrollTo(0, 0) 
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
   const {handleBlur, getFieldProps, values, setFieldValue} = useFormikContext();
-
   let {value, name} = getFieldProps("phoneNumber");
 
   const changePhoneNumber = number => {
@@ -63,11 +62,7 @@ function Step1({saveAsDraft}) {
                     <PropertyInputBox label="City" type="text" name="city" />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <PropertyInputBox
-                      label="Postal Code"
-                      type="text"
-                      name="postalCode"
-                    />
+                    <PropertyInputBox label="Postal Code" type="text" name="postalCode" />
                   </div>
                 </div>
               </div>

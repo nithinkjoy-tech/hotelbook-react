@@ -1,8 +1,8 @@
 import React from "react";
 
-function FormCheckBox({label,onChange,defaultChecked,...others}) {
+function FormCheckBox({label, onChange, defaultChecked, ...others}) {
   return (
-    <span style={{marginLeft:"2.3vw",marginRight:"6.4vw",marginBottom:"8px"}}>
+    <span style={{marginLeft: "2.3vw", marginRight: "6.4vw", marginBottom: "8px"}}>
       <input
         style={{cursor: "pointer"}}
         className="form-check-input"

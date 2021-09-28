@@ -1,4 +1,4 @@
-import jsPDFInvoiceTemplate, {OutputType, jsPDF} from "jspdf-invoice-template";
+import jsPDFInvoiceTemplate from "jspdf-invoice-template";
 
 export default function Invoice(
   name,
@@ -10,8 +10,7 @@ export default function Invoice(
   restaurantBillAmount,
   accomodationTotal,
   roomDetails,
-  extraBedTotal,
-  checkinDate
+  extraBedTotal
 ) {
   if (restaurantBillAmount) {
     inputFields.items.splice(0, 0, {itemName: "Restaurant Bill", itemPrice: restaurantBillAmount});
@@ -20,21 +19,19 @@ export default function Invoice(
     inputFields.items.splice(0, 0, {itemName: "Extra Bed Cost", itemPrice: extraBedTotal});
   }
   inputFields.items.splice(0, 0, {itemName: "Accomodation Total", itemPrice: accomodationTotal});
-  // roomNumber:56,roomBoy:'ravi',roomType:'king'
 
   var props = {
-    // outputType: OutputType.Save,
     returnJsPDFDocObject: true,
     fileName: "Invoice",
     orientationLandscape: false,
     logo: {
-        src: '/adithyalogo.png',
-        width: 53.33, //aspect ratio = width/height
-        height: 26.66,
-        margin: {
-            top: 0, //negative or positive num, from the current position
-            left: 0 //negative or positive num, from the current position
-        }
+      src: "/adithyalogo.png",
+      width: 53.33,
+      height: 26.66,
+      margin: {
+        top: 0,
+        left: 0,
+      },
     },
     business: {
       name: "Hotel Adithya",
@@ -63,25 +60,7 @@ export default function Invoice(
       invTotalLabel: "Total:",
       invTotal: `${grandTotal}`,
       invCurrency: "ALL",
-      // row1: {
-      //     col1: 'VAT:',
-      //     col2: '20',
-      //     col3: '%',
-      //     style: {
-      //         fontSize: 10 //optional, default 12
-      //     }
-      // },
-      // row2: {
-      //     col1: 'SubTotal:',
-      //     col2: '116,199.90',
-      //     col3: 'ALL',
-      //     style: {
-      //         fontSize: 10 //optional, default 12
-      //     }
-      // },
-
       invDescLabel: "Room Details",
-
       invDesc: `${roomDetails?.map(details => [
         "Room Number - ",
         details.roomNumber,

@@ -11,25 +11,22 @@ function AboutSection() {
           <div className="row about-text">
             <div className="col-lg-6">
               <h3 className="title-big mt-3">
-                Best luxury Hotel in Dharmastala since 2000. Our hotel has been
-                present for over 20 years.
+                Best luxury Hotel in Dharmastala since 2000. Our hotel has been present for over 20
+                years.
               </h3>
             </div>
             <div className="col-lg-6">
               <p>
-                Hotel Adithya View Dharamasthala is a boutique property with
-                valley views in Dharamasthala. It is attuned to the surrounding
-                environment through a thoughtful design that respects Indian
-                rich artistry and cultural heritage.
+                Hotel Adithya View Dharamasthala is a boutique property with valley views in
+                Dharamasthala. It is attuned to the surrounding environment through a thoughtful
+                design that respects Indian rich artistry and cultural heritage.
               </p>
               <p className="mt-3">
-                Hotel Adithya View is located in Dharamasthala, 2KM from
-                Dharamasthala Temple. Providing a restaurant, the property also
-                has a garden. Guests can enjoy pool views. The units in the
-                hotel are fitted with a flat-screen TV with satellite channels.
-                The private bathroom is equipped with a shower. Speaking
-                English, Hindi and Kannada, staff are always on hand to help at
-                the reception.
+                Hotel Adithya View is located in Dharamasthala, 2KM from Dharamasthala Temple.
+                Providing a restaurant, the property also has a garden. Guests can enjoy pool views.
+                The units in the hotel are fitted with a flat-screen TV with satellite channels. The
+                private bathroom is equipped with a shower. Speaking English, Hindi and Kannada,
+                staff are always on hand to help at the reception.
               </p>
             </div>
           </div>

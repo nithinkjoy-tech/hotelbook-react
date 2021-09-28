@@ -1,12 +1,12 @@
-import {Button, TextField} from "@material-ui/core";
-import {Field, FieldArray, FieldProps, Form, Formik, getIn} from "formik";
 import React, {useState, useEffect} from "react";
-import * as Yup from "yup";
 import MUITextField from "@material-ui/core/TextField";
-import {displayNotification} from "./../../services/notificationService";
 import _ from "lodash";
+import * as Yup from "yup";
+import {FieldArray, Form, Formik, getIn} from "formik";
+import {displayNotification} from "./../../services/notificationService";
+import {addFoodItemstoBill} from "./../../api/restaurant";
 import {getFoodItems} from "../../api/restaurant";
-import { addFoodItemstoBill } from './../../api/restaurant';
+import {Button} from "@material-ui/core";
 
 const validationSchema = Yup.object().shape({
   items: Yup.array().of(
@@ -23,28 +23,27 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-
 const AddItemsToBill = ({match}) => {
-    const {bookingId} = match.params
-    const [initialValues, setInitialValues] = useState({});
+  const {bookingId} = match.params;
+  const [initialValues, setInitialValues] = useState({});
 
-    const handleSubmit = async (values, setFieldError) => {
-        values["bookingId"]=bookingId
-      await addFoodItemstoBill(values)
-      displayNotification("info","Successfully Added to bill")
-      setTimeout(() => {
-        window.location="/restaurant/dashboard"
-      },1000)
-    };
+  const handleSubmit = async values => {
+    values["bookingId"] = bookingId;
+    await addFoodItemstoBill(values);
+    displayNotification("info", "Successfully Added to bill");
+    setTimeout(() => {
+      window.location = "/restaurant/dashboard";
+    }, 1000);
+  };
 
   const getFoodItemsList = async () => {
     const {data, status} = await getFoodItems();
     if (status !== 200) return displayNotification("error", "Something went wrong");
     if (!data.items[0]) {
-      setInitialValues({items:[{itemName: "", itemQuantity: ""}]});
+      setInitialValues({items: [{itemName: "", itemQuantity: ""}]});
       return displayNotification("info", "There is no food items. Please add any");
     }
-    setInitialValues(data)
+    setInitialValues(data);
   };
 
   useEffect(() => {
@@ -55,17 +54,17 @@ const AddItemsToBill = ({match}) => {
 
   return (
     <div style={{margin: "auto", width: "85%"}}>
-      <div style={{textAlign: "center",marginTop:"75px"}}>
+      <div style={{textAlign: "center", marginTop: "75px"}}>
         <h1>Add Items to Bill</h1>
         <Formik
           initialValues={initialValues}
           onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
           validationSchema={validationSchema}
         >
-          {({values, errors, isValid, getFieldProps, getFieldMeta, handleChange, handleBlur}) => (
+          {({values, errors, getFieldProps, getFieldMeta, handleChange, handleBlur}) => (
             <Form>
               <FieldArray name="items">
-                {({push, remove}) => (
+                {({}) => (
                   <div>
                     {values.items.map((p, index) => {
                       return (

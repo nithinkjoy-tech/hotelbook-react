@@ -1,13 +1,10 @@
 import React,{useState,useEffect} from "react";
-import {useHistory} from "react-router-dom";
-import RoomRequirement from "../landingPageComponent/RoomRequirement";
 import Calendar from "../landingPageComponent/Calendar";
-import * as Yup from "yup";
-import {Formik, Form} from "formik";
-import InputBox from "./InputBox";
-import {getHotelsName,getHotelInfo,getHotels} from "../../api/guest";
 import PropertySelectBox from './PropertySelectBox';
 import _ from "lodash";
+import * as Yup from "yup";
+import {Formik, Form} from "formik";
+import {getHotelsName,getHotelInfo} from "../../api/guest";
 
 const dateValidator = Yup.object()
   .shape({
@@ -23,18 +20,13 @@ const validationSchema = Yup.object().shape({
     from: dateValidator,
     to: dateValidator,
   }),
-  // rooms: Yup.number().min(1).max(9999).required(),
 });
 
 function SearchComponent({initialValues}) {
-  // console.log(pageNumber,pageSize,"pnps")
-  const history = useHistory();
-
   const [options,setOptions]=useState()
 
   const getHotels=async ()=>{
     const {data}=await getHotelsName()
-    console.log(data,"dt")
     setOptions(data)
   }
 
@@ -43,17 +35,11 @@ function SearchComponent({initialValues}) {
   },[])
 
   const handleSubmit = async values => {
-    console.log(values,"vlds")
     localStorage.setItem("selectedDays",JSON.stringify(values.selectedDayRange))
-    values["pageNumber"]=0
-    values["pageSize"]=9
     const {data} = await getHotelInfo(values);
-    console.log(data,"dt")
-    let {hotels,numberOfDays}=data
+    let {numberOfDays}=data
     localStorage.setItem("numberOfDays",numberOfDays)
-    let forcePage=0
     window.location=`/hoteldetails/${data.hotels._id}`
-    // history.push("/search", {data:hotels, hotelsCount,values,forcePage});
   };
 
   if(!options) return null
@@ -67,13 +53,12 @@ function SearchComponent({initialValues}) {
             from: null,
             to: null,
           },
-          // rooms: 1,
         }
       }
       validationSchema={validationSchema}
       onSubmit={values => handleSubmit(values)}
     >
-      {({errors, touched, values, handleChange, handleBlur}) => (
+      {({values, handleChange}) => (
         <Form>
           <section className="w3l-availability-form" id="booking">
             <div className="w3l-availability-form-main py-5">
@@ -99,10 +84,6 @@ function SearchComponent({initialValues}) {
                             minimumDate={true}
                           />
                         </div>
-                        {/* <div className="form-input col-md-3 col-sm-6 mt-3">
-                          <RoomRequirement name="rooms" rooms={values.rooms} />
-                        </div> */}
-
                         <div className="bottom-btn col-md-2 col-sm-6 mt-3">
                           <button
                             type="submit"

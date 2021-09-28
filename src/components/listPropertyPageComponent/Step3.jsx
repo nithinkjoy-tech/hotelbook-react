@@ -1,24 +1,20 @@
 import React, {useEffect, useState} from "react";
-import "react-phone-input-2/lib/style.css";
-import {useFormikContext, ErrorMessage} from "formik";
-import Error from "./../forms/Error";
 import SaveAsDraftButton from "./SaveAsDraftButton";
 import ImageUpload from "./ImageUpload";
+import Error from "./../forms/Error";
+import {useFormikContext, ErrorMessage} from "formik";
 import {Delete} from "@material-ui/icons";
+import "react-phone-input-2/lib/style.css";
 
-function Step3({saveAsDraft,preview,count}) {
+function Step3({saveAsDraft, preview, count}) {
   useEffect(() => {
-    window.scrollTo(0, 0) 
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
   const [prev, setPrev] = useState();
   const [numberOfImages, setNumberOfImages] = useState(0);
   const {getFieldProps, values, setFieldValue} = useFormikContext();
-
-  let {value,name} = getFieldProps("mainPhoto");
-  // console.log(value,"vll")
-  // setPrev(value)
-  // if(prev) setPrev(prev)
+  let {value, name} = getFieldProps("mainPhoto");
 
   const handleDelete = () => {
     setFieldValue(name, null);
@@ -26,41 +22,40 @@ function Step3({saveAsDraft,preview,count}) {
   };
 
   const loadImage = () => {
-    if(JSON.parse(localStorage.getItem("saveAsDraft"))?.photos?.length>0){
-      setPrev(JSON.parse(localStorage.getItem("coverPhoto")))
-      setNumberOfImages(localStorage.getItem("numberOfImages"))
+    if (JSON.parse(localStorage.getItem("saveAsDraft"))?.photos?.length > 0) {
+      setPrev(JSON.parse(localStorage.getItem("coverPhoto")));
+      setNumberOfImages(localStorage.getItem("numberOfImages"));
     }
-    if(preview) setPrev(preview)
-    if(count) setNumberOfImages(count)
+    if (preview) setPrev(preview);
+    if (count) setNumberOfImages(count);
   };
 
   useEffect(() => {
     loadImage();
   }, []);
 
-
-  let imageToBase64=(images)=>{
-    let imagesBase64=[]
-    for(let image of images){
+  let imageToBase64 = images => {
+    let imagesBase64 = [];
+    for (let image of images) {
       const reader = new FileReader();
 
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        let imageBase64=reader.result
-        imagesBase64.push(imageBase64)
-      }
-    };
-    reader.readAsDataURL(image);
-  }
-  setFieldValue("photos", imagesBase64);
-  }
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          let imageBase64 = reader.result;
+          imagesBase64.push(imageBase64);
+        }
+      };
+      reader.readAsDataURL(image);
+    }
+    setFieldValue("photos", imagesBase64);
+  };
 
   let handleImageChange = data => {
     const reader = new FileReader();
 
     reader.onload = () => {
       if (reader.readyState === 2) {
-        let imageBase64=reader.result
+        let imageBase64 = reader.result;
         setPrev(imageBase64);
         setFieldValue("mainPhoto", imageBase64);
         localStorage.setItem("coverPhoto", JSON.stringify(imageBase64));
@@ -90,7 +85,7 @@ function Step3({saveAsDraft,preview,count}) {
                 />
                 <ErrorMessage name="mainPhoto" component={Error} />
               </div>
-              {prev&&value ? (
+              {prev && value ? (
                 <div>
                   <center>
                     <img className="image" src={prev} alt="hotel" />
@@ -112,9 +107,9 @@ function Step3({saveAsDraft,preview,count}) {
                   onChange={event => {
                     let images = event.target.files;
                     setFieldValue("photos", images);
-                    imageToBase64(images)
+                    imageToBase64(images);
                     setNumberOfImages(images.length);
-                    localStorage.setItem("numberOfImages",images.length)
+                    localStorage.setItem("numberOfImages", images.length);
                   }}
                   numberOfImages={numberOfImages}
                 />

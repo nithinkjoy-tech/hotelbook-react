@@ -2,16 +2,16 @@ import React from "react";
 import auth from "../../services/authService";
 import {Route, Redirect} from "react-router-dom";
 
-const AdminRoute = ({component: Component, render, ...rest}) => {
+const RestaurantRoute = ({component: Component, render, ...rest}) => {
   return (
     <Route
       {...rest}
       render={props => {
-        if (!auth.getCurrentUser()?.isAdmin)
+        if (!auth.getCurrentUser()?.isRestaurant)
           return (
             <Redirect
               to={{
-                pathname: "/admin/signin",
+                pathname: "/restaurant/signin",
                 state: {from: props.location},
               }}
             />
@@ -22,4 +22,4 @@ const AdminRoute = ({component: Component, render, ...rest}) => {
   );
 };
 
-export default AdminRoute;
+export default RestaurantRoute;

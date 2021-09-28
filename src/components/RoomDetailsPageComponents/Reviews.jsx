@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {getReviews} from "../../api/guest";
 import ReactStars from "react-rating-stars-component";
-import _ from "lodash"
+import _ from "lodash";
 
 function Reviews({hotelId}) {
-  console.log("here");
   const [reviews, setReviews] = useState();
 
   const getHotelReviews = async () => {
-    const {data,status} = await getReviews(hotelId);
-    if(status !== 200) return setReviews(null)
-    console.log(data, "sb");
+    const {data, status} = await getReviews(hotelId);
+    if (status !== 200) return setReviews(null);
     setReviews(data);
   };
 
