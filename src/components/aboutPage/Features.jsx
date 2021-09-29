@@ -41,11 +41,7 @@ function Features() {
             <div className="col-lg-6 title" style={{marginLeft: "10px"}}>
               <h3 className="title-big">We have a great funfact! Relax & Enjoy your Holiday</h3>
               <p className="mt-4">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nemo, soluta impedit.
-                Consequatur, quasi mollitia? Adipisci exercitationem amet dolore expedita
-                repudiandae voluptatem impedit ipsa vero repellendus? Lorem ipsum dolor, sit amet
-                consectetur adipisicing elit. Odio molestiae ex aut possimus atque explicabo nostrum
-                recusandae ab quisquam at!
+              The Group's commitment to excellence, attention to detail and personalised service has ensured a loyal list of guests and accolades in the worldwide hospitality industry.
               </p>
             </div>
           </div>

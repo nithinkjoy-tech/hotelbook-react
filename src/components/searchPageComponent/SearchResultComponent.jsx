@@ -98,7 +98,7 @@ function SearchResultComponent({hotels, user}) {
                         <div className="room-info-bottom">
                           <ul className="room-amenities"></ul>
                           <a onClick={() => handleHotelClick(hotel._id)} className="btn view">
-                            Full Info →
+                            Manage Hotel →
                           </a>
                         </div>
                       </div>

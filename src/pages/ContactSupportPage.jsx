@@ -12,9 +12,7 @@ const SupportPage = () => {
                     <h3 className="title-big">Contact for Support</h3>
                 </div>
                 <div className="map-content-9">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit tempore sapiente, distinctio
-                        perferendis voluptas consequatur quaerat incidunt. Similique, officia! Dolorum fugiat et aliquam
-                        necessitatibus quas reiciendis, totam voluptatibus deleniti tempore doloribus.</p>
+                    <p></p>
                 </div>
             </div>
             <div className="d-grid contact-view">
@@ -48,18 +46,18 @@ const SupportPage = () => {
                     </div>
                 </div>
                 <div className="map-content-9 mt-lg-0 mt-4">
-                    <form>
+                    <form action="https://formspree.io/f/mwkazpvd" method="POST">
                         <div className="twice-two">
-                            <input type="text" className="form-control" name="w3lName" id="w3lName" placeholder="Name"
+                            <input type="text" className="form-control" name="name" id="w3lName" placeholder="Name"
                                 required="" />
-                            <input type="email" className="form-control" name="w3lSender" id="w3lSender" placeholder="Email"
+                            <input type="email" className="form-control" name="_replyto" id="w3lSender" placeholder="Email"
                                 required="" />
                         </div>
                         <div className="twice">
                             <input type="text" className="form-control" name="w3lSubject" id="w3lSubject"
                                 placeholder="Subject" required="" />
                         </div>
-                        <textarea name="w3lMessage" className="form-control" id="w3lMessage" placeholder="Message"
+                        <textarea name="message" className="form-control" id="w3lMessage" placeholder="Message"
                             required="" ></textarea>
                         <button type="submit" className="btn btn-contact">Send Message</button>
                     </form>
