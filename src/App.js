@@ -77,6 +77,7 @@ function App() {
         <AdminRoute exact path="/admin/manageHotel/:hotelId" component={HotelSidebar} />
         <AdminRoute exact path="/admin/addroom/:hotelId" component={AddRoom} />
         <AdminRoute exact path="/admin/editroom/:roomId" component={AddRoom} />
+        <Route exact path="/admin/resetpassword/:token" component={ResetPassword} />
 
         <GuestRoute exact path="/dashboard" component={GuestDashboard} />
         <GuestRoute exact path="/bookedroomdetails" component={BookedRoomDetails} />

@@ -57,6 +57,12 @@ const HotelDetails = ({match, location}) => {
           description: hotel.description,
           postalCode: hotel.postalCode,
           starRating: hotel.starRating,
+          policy:{
+            checkInStarts:hotel.checkInStart,
+            checkInEnds:hotel.checkInEnd,
+            checkOutStarts:hotel.checkOutStart,
+            checkOutEnds:hotel.checkOutEnd
+          }
         }}
       />
       <Amenities mainPhoto={hotel.mainPhoto} facilities={hotel.facilities} />

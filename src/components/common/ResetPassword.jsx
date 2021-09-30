@@ -3,6 +3,7 @@ import InputBox from "./InputBox";
 import * as Yup from "yup";
 import {Formik, Form} from "formik";
 import {resetGuestPassword} from "../../api/guest";
+import {resetAdminPassword} from "../../api/admin";
 import {receptionSignin} from "../../api/reception";
 import {restaurantSignin} from "../../api/restaurant";
 import {adminSignin} from "../../api/admin";
@@ -19,6 +20,19 @@ function ResetPassword({location, match}) {
   const [passwordType, setPasswordType] = useState("password");
 
   const handleSubmit = async (values, setFieldError) => {
+    if (location.pathname.includes("/admin/resetpassword/")) {
+      const {data, status} = await resetAdminPassword(values, token);
+      if (status === 400) setFieldError("userId", data);
+      if (status !== 200) return displayNotification("error", "Something went wrong");
+      else {
+        displayNotification("success", "Successfully updated password");
+        setTimeout(() => {
+          window.location = "/admin/signin";
+        }, 1000);
+        return
+      }
+    }
+
     if (location.pathname.includes("/resetpassword/")) {
       const {data, status} = await resetGuestPassword(values, token);
       if (status === 400) setFieldError("userId", data);

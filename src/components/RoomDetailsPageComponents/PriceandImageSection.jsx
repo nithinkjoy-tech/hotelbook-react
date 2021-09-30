@@ -12,7 +12,12 @@ function PriceandImageSection({hotelDetails}) {
       <div className="content-with-slider">
         <div className="container">
           <div className="content-photo-1 d-grid">
+            <div>
             <ImageGallery items={images} />
+            <p style={{marginTop:'25px'}}>Check In : {hotelDetails.policy.checkInStarts} - {hotelDetails.policy.checkInEnds=="00 : 00"?'12:00 AM':hotelDetails.policy.checkInEnds}</p>
+            <p style={{marginTop:'25px'}}>Check Out : {hotelDetails.policy.checkOutStarts} - {hotelDetails.policy.checkOutEnds}</p>
+            </div>
+            
             <div className="content-photo-right">
               <div className="content-photo-left text-center">
                 <h4>{hotelDetails.hotelName}</h4>

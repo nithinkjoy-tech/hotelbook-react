@@ -12,9 +12,21 @@ const validationSchema = Yup.object().shape({
 
 function ForgotPassword({location}) {
   const handleSubmit = async (values, setFieldError) => {
+    if (location.pathname === "/admin/forgotpassword") {
+      const {data, status} = await forgotAdminPassword(values);
+      if (status !== 200) setFieldError("userId", data?.msg || "Something went wrong");
+      else {
+        displayNotification("info", "Verify mail to reset password");
+        setTimeout(() => {
+          window.location = "/";
+        }, 2000);
+        return
+      }
+    }
+
     if (location.pathname === "/forgotpassword") {
       const {data, status} = await forgotGuestPassword(values);
-      if (status === 400) setFieldError("userId", data);
+      if (status === 400) setFieldError("userId", data?.msg|| "Something went wrong");
       else {
         displayNotification("info", "Verify mail to reset password");
         setTimeout(() => {
@@ -23,16 +35,7 @@ function ForgotPassword({location}) {
       }
     }
 
-    if (location.pathname === "/admin/forgotpassword") {
-      const {data, status} = await forgotAdminPassword(values);
-      if (status !== 200) setFieldError("userId", data.msg || "Something went wrong");
-      else {
-        displayNotification("info", "Verify mail to reset password");
-        setTimeout(() => {
-          window.location = "/";
-        }, 2000);
-      }
-    }
+    
   };
 
   return (

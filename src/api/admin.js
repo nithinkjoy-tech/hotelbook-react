@@ -40,6 +40,10 @@ export function adminChangePassword(values){
     return apiClient.post("/admin/changePassword", values);
 }
 
+export function resetAdminPassword(values,token){
+    return apiClient.put(`/admin/forgot/${token}`,values);
+}
+
 export function registerHotels(values){
     return apiClient.post("/admin/hotel", values);
 }
