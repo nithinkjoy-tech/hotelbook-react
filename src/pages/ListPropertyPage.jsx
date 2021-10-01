@@ -17,6 +17,11 @@ const validationSchema = Yup.object().shape({
     .required()
     .length(12)
     .matches(/^[0-9]+$/, "Mobile number must include only numbers"),
+  landLine: Yup.string()
+    .required()
+    .length(11)
+    .matches(/^[0-9]+$/, "Land Line number must include only numbers"),
+  email: Yup.string().required("Email is required").email("Email must be valid").label("Email"),
   address: Yup.string().required().min(8).max(255),
   description: Yup.string().required().min(120).max(160),
   city: Yup.string().required().min(1).max(50),
@@ -47,6 +52,8 @@ function ListPropertyPage({match}) {
     hotelName: "",
     starRating: "",
     phoneNumber: "",
+    landLine: "",
+    email:"",
     address: "",
     description: "",
     city: "",

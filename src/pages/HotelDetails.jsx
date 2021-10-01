@@ -54,6 +54,8 @@ const HotelDetails = ({match, location}) => {
           hotelName: hotel.hotelName,
           address: hotel.address,
           phoneNumber: hotel.phoneNumber,
+          landLine: hotel.landLine,
+          email:hotel.email,
           description: hotel.description,
           postalCode: hotel.postalCode,
           starRating: hotel.starRating,

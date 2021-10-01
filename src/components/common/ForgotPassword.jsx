@@ -20,13 +20,13 @@ function ForgotPassword({location}) {
         setTimeout(() => {
           window.location = "/";
         }, 2000);
-        return
+        return;
       }
     }
 
     if (location.pathname === "/forgotpassword") {
       const {data, status} = await forgotGuestPassword(values);
-      if (status === 400) setFieldError("userId", data?.msg|| "Something went wrong");
+      if (status === 400) setFieldError("userId", data?.msg || "Something went wrong");
       else {
         displayNotification("info", "Verify mail to reset password");
         setTimeout(() => {
@@ -34,8 +34,6 @@ function ForgotPassword({location}) {
         }, 2000);
       }
     }
-
-    
   };
 
   return (

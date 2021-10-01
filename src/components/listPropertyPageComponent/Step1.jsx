@@ -52,6 +52,12 @@ function Step1({saveAsDraft}) {
                     />
                     <ErrorMessage name="phoneNumber" component={Error} />
                   </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <PropertyInputBox label="Land Line" type="text" name="landLine" />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <PropertyInputBox label="Email" type="text" name="email" />
+                  </div>
                   <div className="col-span-6 ">
                     <PropertyInputBox label="Address" type="text" name="address" />
                   </div>

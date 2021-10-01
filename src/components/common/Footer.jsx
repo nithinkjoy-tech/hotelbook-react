@@ -33,13 +33,13 @@ const Footer = () => {
                 <ul>
                   <h6 className="footer-title-29">Useful Links</h6>
                   <li>
-                    <a href="#">Home</a>
+                    <a href="/">Home</a>
                   </li>
                   <li>
                     <a href="/about">About hotel</a>
                   </li>
                   <li>
-                    <a href="#">Login/Signup</a>
+                    <a href="/signin">Login/Signup</a>
                   </li>
                   <li>
                     <a href="/contact">Contact us</a>

@@ -38,7 +38,8 @@ function PriceandImageSection({hotelDetails}) {
                   <span className="fa fa-map-marker" style={{color: "red"}} /> Address
                 </h3>
                 <p>{hotelDetails.address}</p>
-                <p>Contact: {hotelDetails.phoneNumber}</p>
+                <p>Contact: {hotelDetails.phoneNumber}, {hotelDetails.landLine.substring(0,5)+"-"+hotelDetails.landLine.substring(5,11)}</p>
+                <p>Email: {hotelDetails.email}</p>
                 <p>Pincode: {hotelDetails.postalCode}</p>
                 <p>{hotelDetails.description}</p>
                 <p>
