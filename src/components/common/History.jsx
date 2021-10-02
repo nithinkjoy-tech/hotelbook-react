@@ -138,15 +138,15 @@ function History() {
                 <p style={{margin: 0, color: "#000"}}>Stay completed</p>
               </span>
             </div>
-            <p className="book-metadata">
+            {/* <p className="book-metadata">
               <span className="book-rating">
                 <Rating value={booking?.rating} className="rating" />
               </span>
-            </p>
-            <p className="book-desc">
+            </p> */}
+            <p className="book-desc" style={{marginTop:'20px'}}>
               <h5 className="book-desc-more">Address :{booking.address} </h5>
             </p>
-            <div className="book-details">
+            <div className="book-details" style={{marginTop:'20px'}}>
               <div className="book-details-right">
                 <h5 className="pay">Booking ID: {booking?.hotelBookingId}</h5>
                 <h5 className="book-details-desc">Booked On : {booking?.bookedOn}</h5>
@@ -191,7 +191,7 @@ function History() {
               <button
                 onClick={() => onReviewClick(booking.hotelId, booking._id, booking.reviewId)}
                 className="btn btn-secondary"
-              >
+                style={{marginTop:'20px'}} >
                 {booking?.reviewId ? "Edit Review" : "Add Review"}
               </button>
             </div>
