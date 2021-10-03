@@ -34,7 +34,7 @@ export default function Invoice(
       },
     },
     business: {
-      name: "Hotel Adithya",
+      name: "Hotel Adithya Group",
       address: "Bangalore Road, Dharmastala",
       phone: "9874563210",
       email: "info@adithyahotel.com",
@@ -45,12 +45,10 @@ export default function Invoice(
       name: name,
       address: address,
       phone: phone,
-      email: "client@website.al",
-      otherInfo: "www.website.al",
     },
     invoice: {
       label: "Invoice #: ",
-      num: 19,
+      num: Math.floor(Math.random()*1000),
       invDate: `CheckIn Date: ${date}`,
       invGenDate: `CheckOut Date: ${date}`,
       headerBorder: false,

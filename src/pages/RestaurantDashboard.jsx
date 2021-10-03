@@ -27,7 +27,6 @@ function RestaurantDashboard({match}) {
           </li>
         </ul>
       </div>
-
       {(() => {
         if (selectOption === "profile")
           return (

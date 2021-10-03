@@ -15,6 +15,7 @@ const reviewSchema = Yup.object().shape({
   review: Yup.string().min(2).max(100000).required(),
   rating: Yup.number().required().oneOf([1, 2, 3, 4, 5]),
 });
+console.log(reviewSchema)
 
 function History() {
   const history = useHistory();
@@ -60,17 +61,34 @@ function History() {
   const onReviewClick = async (hotelId, bookingId, reviewId) => {
     setHotelId(hotelId);
     setBookingId(bookingId);
-
+    console.log(reviewId,"rid");
     let datas = {};
     if (reviewId) {
       const {data} = await getReviewById(reviewId);
       datas["review"] = data.review;
       datas["rating"] = data.rating;
       setRatingValue(data.rating);
-    }
-    setInitialValues(datas);
+      setInitialValues(datas);
     setRevId(reviewId);
     setIsOpen(true);
+  }else{
+      const {data} = await getReviewById(reviewId);
+      datas["review"] = "";
+      datas["rating"] = 0;
+      setRatingValue(0);
+      setReviewValue("")
+      setInitialValues({
+        rating: "",
+        review: "",
+      })
+      setInitialValues(datas);
+    setRevId(reviewId);
+    setIsOpen(true);
+    }
+    console.log(datas,"ds")
+    // setInitialValues(datas);
+    // setRevId(reviewId);
+    // setIsOpen(true);
   };
 
   const setValues = getFieldProps => {

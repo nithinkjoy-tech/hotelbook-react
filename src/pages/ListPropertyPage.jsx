@@ -121,7 +121,12 @@ function ListPropertyPage({match}) {
       if (status === 400) return setFieldError(data.property, data.msg);
     }
     toast.dismiss();
-    if (isEdited) toast.info("Successfully modified details");
+    if (isEdited) {
+      toast.info("Successfully modified details")
+      localStorage.removeItem("coverPhoto");
+      localStorage.removeItem("numberOfImages");
+      localStorage.removeItem("saveAsDraft");
+    }
     else {
       toast.info("Successfully added hotel");
       localStorage.removeItem("coverPhoto");
